@@ -10,12 +10,12 @@
   --navy-600:#1d5fa3;--navy-500:#2563eb;--navy-200:#bfdbfe;--navy-100:#dbeafe;--navy-50:#eff6ff;
   --green-700:#15803d;--green-600:#16a34a;--green-100:#dcfce7;--green-50:#f0fdf4;
   --red-700:#b91c1c;--red-600:#dc2626;--red-100:#fee2e2;--red-50:#fef2f2;
-  --amber-700:#b45309;--amber-600:#d97706;--amber-100:#fef3c7;--amber-50:#fffbeb;
+  --amber-700:#b45309;--amber-600:#d97706;--amber-500:#f59e0b;--amber-100:#fef3c7;--amber-50:#fffbeb;
   --slate-900:#0f172a;--slate-800:#1e293b;--slate-700:#334155;--slate-600:#475569;
   --slate-500:#64748b;--slate-400:#94a3b8;--slate-300:#cbd5e1;--slate-200:#e2e8f0;
   --slate-150:#edf2f7;--slate-100:#f1f5f9;--slate-50:#f8fafc;--white:#fff;
   --font:'Segoe UI',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
-  --r-xs:6px;--r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:20px;--r-full:9999px;
+  --r-xs:6px;--r-sm:8px;--r-md:10px;--r-lg:12px;--r-xl:16px;--r-full:9999px;
   --sh-xs:0 1px 2px rgba(0,0,0,.04);
   --sh-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
   --sh-md:0 4px 8px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.04);
@@ -29,13 +29,13 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 /* ─── HEADER ─── */
 .hdr{
   background:linear-gradient(160deg,var(--navy-950) 0%,var(--navy-900) 45%,var(--navy-800) 100%);
-  padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 24px;height:56px;display:flex;align-items:center;justify-content:space-between;
   position:sticky;top:0;z-index:300;box-shadow:0 2px 16px rgba(0,0,0,.28);
   border-bottom:1px solid rgba(255,255,255,.06);
 }
 .hdr-left{display:flex;align-items:center;gap:12px}
 .hdr-mark{
-  width:36px;height:36px;border-radius:var(--r-sm);
+  width:34px;height:34px;border-radius:var(--r-sm);
   background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);
   display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
 }
@@ -48,102 +48,90 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 }
 
 /* ─── CONTAINER ─── */
-.wrap{max-width:1360px;margin:0 auto;padding:22px 18px 48px}
+.wrap{max-width:1400px;margin:0 auto;padding:18px 16px 40px}
 
-/* ─── METRIC CARDS ─── */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
-.mc{
-  background:var(--white);border-radius:var(--r-md);padding:14px 16px;
-  box-shadow:var(--sh-sm);border-left:3px solid var(--navy-500);
-  transition:box-shadow var(--t),transform var(--t);cursor:default;
+/* ─── CONFIG CARD ─── */
+.config-card{
+  background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);
+  overflow:hidden;margin-bottom:16px;
 }
-.mc:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
-.mc.g{border-left-color:var(--green-600)}
-.mc.r{border-left-color:var(--red-600)}
-.mc.a{border-left-color:var(--amber-600)}
-.mc-lbl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--slate-500);margin-bottom:5px}
-.mc-val{font-size:1.1rem;font-weight:700;color:var(--slate-900);letter-spacing:-.3px;line-height:1.1}
-.mc.g .mc-val{color:var(--green-700)}
-.mc.r .mc-val{color:var(--red-700)}
-.mc.a .mc-val{color:var(--amber-700)}
-.mc-note{font-size:.62rem;color:var(--slate-400);margin-top:3px;font-weight:400}
+.config-hd{
+  padding:11px 16px;border-bottom:1px solid var(--slate-100);
+  display:flex;align-items:center;gap:8px;background:var(--white);
+}
+.config-hd-ico{
+  width:24px;height:24px;border-radius:var(--r-xs);background:var(--navy-50);
+  display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;
+}
+.config-hd-txt{font-size:.82rem;font-weight:700;color:var(--navy-800);letter-spacing:-.15px}
+.config-body{padding:14px 16px}
 
-/* ─── TWO-COLUMN LAYOUT ─── */
-.grid2{display:grid;grid-template-columns:410px 1fr;gap:18px;align-items:start;margin-bottom:18px}
+/* ─── 2-COLUMN CONFIG GRID ─── */
+.config-grid{
+  display:grid;
+  grid-template-columns: 380px 1fr;
+  gap:14px;
+}
 
-/* ─── CARD ─── */
-.card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);overflow:hidden}
-.card+.card{margin-top:14px}
-.card-hd{
-  padding:13px 18px;border-bottom:1px solid var(--slate-100);
-  display:flex;align-items:center;gap:9px;background:var(--white);
+.config-section{
+  background:var(--slate-50);border:1px solid var(--slate-150);
+  border-radius:var(--r-md);padding:12px 14px;
 }
-.card-hd-ico{
-  width:26px;height:26px;border-radius:var(--r-xs);background:var(--navy-50);
-  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
-}
-.card-hd-txt{font-size:.85rem;font-weight:700;color:var(--navy-800);letter-spacing:-.15px}
-.card-body{padding:16px 18px}
 
-/* ─── SECTION DIVIDER ─── */
-.sec-div{
-  font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.65px;
-  color:var(--slate-400);padding-bottom:7px;margin:14px 0 9px;
-  border-bottom:1px solid var(--slate-100);
+.config-section-title{
+  font-size:.6rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.6px;color:var(--slate-500);margin-bottom:8px;
+  padding-bottom:5px;border-bottom:1px solid var(--slate-150);
 }
-.sec-div:first-child{margin-top:0}
 
 /* ─── FORM ROWS ─── */
 .fr{
   display:flex;align-items:center;justify-content:space-between;
-  padding:8px 0;border-bottom:1px solid var(--slate-100);gap:10px;
+  padding:4px 0;border-bottom:1px solid var(--slate-100);gap:8px;
 }
 .fr:last-of-type{border-bottom:none}
-.fr label{font-size:.8rem;font-weight:500;color:var(--slate-700);flex:1;min-width:0}
+.fr label{font-size:.75rem;font-weight:500;color:var(--slate-700);flex:1;min-width:0}
 .fi,.fs{
-  font-family:var(--font);font-size:.82rem;padding:6px 9px;
+  font-family:var(--font);font-size:.78rem;padding:5px 8px;
   border:1.5px solid var(--slate-200);border-radius:var(--r-sm);
-  background:var(--slate-50);color:var(--slate-900);width:128px;flex-shrink:0;
+  background:var(--white);color:var(--slate-900);width:110px;flex-shrink:0;
   outline:none;transition:border-color var(--t),box-shadow var(--t),background var(--t);
+  height:32px;
 }
 .fi:focus,.fs:focus{border-color:var(--navy-500);background:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
 .fi:disabled{background:var(--slate-100);color:var(--slate-400);cursor:not-allowed}
 .fs{
-  appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:28px;
+  appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:26px;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-  background-repeat:no-repeat;background-position:right 9px center;
+  background-repeat:no-repeat;background-position:right 8px center;
 }
 .fs:focus{border-color:var(--navy-500);background-color:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
-.fi-sm{width:78px !important}
+.fi-sm{width:65px !important}
 
-/* ─── ADJUSTED BASIC BOX ─── */
-.ab-box{
-  background:linear-gradient(135deg,var(--navy-50),#e0edff);
-  border:1.5px solid var(--navy-200);border-radius:var(--r-md);
-  padding:13px 16px;text-align:center;margin:12px 0;
+/* ─── ADJUSTED BASIC DISPLAY ─── */
+.ab-display{
+  font-size:1.15rem;font-weight:700;color:var(--navy-800);
+  padding:6px 0;text-align:center;letter-spacing:-.3px;
 }
-.ab-box .lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--navy-600);margin-bottom:3px}
-.ab-box .val{font-size:1.28rem;font-weight:700;color:var(--navy-800);letter-spacing:-.4px}
-.ab-box .hint{font-size:.62rem;color:var(--navy-500);margin-top:2px}
 
-/* ─── COMPONENT ROWS ─── */
+/* ─── COMPONENT ROWS (COMPACT) ─── */
 .comp{
   border:1px solid var(--slate-200);border-radius:var(--r-sm);
-  padding:9px 11px;margin-bottom:6px;background:var(--slate-50);
+  padding:6px 8px;margin-bottom:4px;background:var(--white);
   transition:border-color var(--t),background var(--t);
 }
-.comp:hover{border-color:var(--slate-300);background:var(--white)}
-.comp-top{display:flex;align-items:center;gap:5px;margin-bottom:7px}
-.comp-ico{font-size:12px;flex-shrink:0}
-.comp-name{font-size:.78rem;font-weight:600;color:var(--slate-800)}
-.comp-pct{font-size:.63rem;color:var(--slate-400);font-weight:500;margin-left:auto}
+.comp:hover{border-color:var(--slate-300)}
+.comp-top{display:flex;align-items:center;gap:5px;margin-bottom:3px}
+.comp-ico{font-size:11px;flex-shrink:0}
+.comp-name{font-size:.74rem;font-weight:600;color:var(--slate-800)}
+.comp-pct{font-size:.6rem;color:var(--slate-400);font-weight:500;margin-left:auto}
 
-/* ─── RADIO TOGGLE (auto/manual pill) ─── */
-.radio-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+/* ─── RADIO TOGGLE ─── */
+.radio-group{display:flex;align-items:center;gap:3px;flex-wrap:wrap}
 .radio-group label{
-  display:inline-flex;align-items:center;padding:4px 11px;
+  display:inline-flex;align-items:center;padding:3px 8px;
   border:1.5px solid var(--slate-200);border-radius:var(--r-full);
-  font-size:.7rem;font-weight:500;color:var(--slate-500);cursor:pointer;
+  font-size:.65rem;font-weight:500;color:var(--slate-500);cursor:pointer;
   user-select:none;transition:all var(--t);background:var(--white);line-height:1.3;
 }
 .radio-group label:hover{border-color:var(--navy-300,#93c5fd);color:var(--navy-600)}
@@ -152,66 +140,103 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 }
 .radio-group input[type="radio"]{display:none}
 .manual-input{
-  width:105px;font-size:.78rem;padding:4px 8px;
+  width:85px;font-size:.72rem;padding:3px 6px;
   border:1.5px solid var(--slate-200);border-radius:var(--r-sm);
   background:var(--white);color:var(--slate-900);outline:none;
-  transition:all var(--t);font-family:var(--font);
+  transition:all var(--t);font-family:var(--font);height:28px;
 }
 .manual-input:focus{border-color:var(--navy-500);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
 .manual-input:disabled{background:var(--slate-100);color:var(--slate-400);cursor:not-allowed}
 
 /* ─── CHECKBOX ─── */
-.cbrow{display:flex;align-items:center;gap:8px;padding:7px 0}
-.cbrow input[type="checkbox"]{width:15px;height:15px;accent-color:var(--navy-500);cursor:pointer;flex-shrink:0}
-.cbrow label{font-size:.8rem;font-weight:500;color:var(--slate-700);cursor:pointer}
+.cbrow{display:flex;align-items:center;gap:7px;padding:4px 0}
+.cbrow input[type="checkbox"]{width:14px;height:14px;accent-color:var(--navy-500);cursor:pointer;flex-shrink:0}
+.cbrow label{font-size:.75rem;font-weight:500;color:var(--slate-700);cursor:pointer}
 
 /* ─── EL TAX PILL ─── */
 .el-info{
-  display:flex;gap:14px;margin-top:7px;padding:7px 11px;
+  display:flex;gap:12px;margin-top:4px;padding:5px 8px;
   background:var(--amber-50);border:1px solid var(--amber-100);border-radius:var(--r-sm);
-  font-size:.72rem;font-weight:500;color:var(--amber-700);flex-wrap:wrap;
+  font-size:.68rem;font-weight:500;color:var(--amber-700);flex-wrap:wrap;
 }
 .el-info strong{color:var(--amber-700);font-weight:700}
+
+/* ─── METRIC CARDS ─── */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.mc{
+  background:var(--white);border-radius:var(--r-md);padding:12px 14px;
+  box-shadow:var(--sh-sm);border-left:3px solid var(--navy-500);
+  transition:box-shadow var(--t),transform var(--t);cursor:default;
+}
+.mc:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.mc.g{border-left-color:var(--green-600)}
+.mc.r{border-left-color:var(--red-600)}
+.mc.a{border-left-color:var(--amber-500)}
+.mc.b{border-left-color:var(--navy-600)}
+.mc-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--slate-500);margin-bottom:4px}
+.mc-val{font-size:1rem;font-weight:700;color:var(--slate-900);letter-spacing:-.3px;line-height:1.1}
+.mc.g .mc-val{color:var(--green-700)}
+.mc.r .mc-val{color:var(--red-700)}
+.mc.a .mc-val{color:var(--amber-700)}
+.mc.b .mc-val{color:var(--navy-700)}
+.mc-note{font-size:.6rem;color:var(--slate-400);margin-top:2px;font-weight:400}
+
+/* ─── TWO-COLUMN LAYOUT (Summary + Bonus) ─── */
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;margin-bottom:16px}
+
+/* ─── CARD ─── */
+.card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);overflow:hidden}
+.card+.card{margin-top:12px}
+.card-hd{
+  padding:11px 16px;border-bottom:1px solid var(--slate-100);
+  display:flex;align-items:center;gap:8px;background:var(--white);
+}
+.card-hd-ico{
+  width:24px;height:24px;border-radius:var(--r-xs);background:var(--navy-50);
+  display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;
+}
+.card-hd-txt{font-size:.82rem;font-weight:700;color:var(--navy-800);letter-spacing:-.15px}
+.card-body{padding:14px 16px}
 
 /* ─── SUMMARY ROWS ─── */
 .sr{
   display:flex;justify-content:space-between;align-items:flex-start;
-  padding:8px 0;border-bottom:1px solid var(--slate-100);gap:8px;
+  padding:6px 0;border-bottom:1px solid var(--slate-100);gap:8px;
 }
 .sr:last-child{border-bottom:none}
-.sr.divider{border-top:2px solid var(--slate-200);padding-top:11px;margin-top:3px;border-bottom:none}
-.sr-lbl{font-size:.78rem;color:var(--slate-600);font-weight:500;flex:1;line-height:1.4}
-.sr-lbl.bold{font-weight:700;color:var(--slate-800);font-size:.82rem}
-.sr-val{font-size:.8rem;font-weight:700;color:var(--slate-900);text-align:right;white-space:nowrap}
+.sr.divider{border-top:2px solid var(--slate-200);padding-top:9px;margin-top:2px;border-bottom:none}
+.sr-lbl{font-size:.75rem;color:var(--slate-600);font-weight:500;flex:1;line-height:1.4}
+.sr-lbl.bold{font-weight:700;color:var(--slate-800);font-size:.78rem}
+.sr-val{font-size:.78rem;font-weight:700;color:var(--slate-900);text-align:right;white-space:nowrap}
 .sr-val.r{color:var(--red-600)}
 .sr-val.g{color:var(--green-600)}
-.sr-val.lg{font-size:.88rem}
-.sr-val.lr{font-size:.88rem;color:var(--red-600)}
+.sr-val.lg{font-size:.85rem}
+.sr-val.lr{font-size:.85rem;color:var(--red-600)}
 .slab-bar{
   background:var(--amber-50);border:1px solid var(--amber-100);
-  border-radius:var(--r-sm);padding:9px 12px;font-size:.7rem;
-  color:var(--amber-700);margin-top:10px;line-height:1.55;font-weight:500;
+  border-radius:var(--r-sm);padding:7px 10px;font-size:.68rem;
+  color:var(--amber-700);margin-top:8px;line-height:1.55;font-weight:500;
 }
 
 /* ─── BONUS CARD ─── */
 .bonus-card{
   background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);
-  border-left:3px solid var(--amber-500);overflow:hidden;margin-top:14px;
+  border-left:3px solid var(--amber-500);overflow:hidden;
 }
 .bc-hd{
-  padding:12px 18px;background:linear-gradient(135deg,var(--amber-50),#fffef7);
+  padding:11px 16px;background:linear-gradient(135deg,var(--amber-50),#fffef7);
   border-bottom:1px solid var(--amber-100);display:flex;align-items:center;gap:7px;
 }
-.bc-hd-txt{font-size:.83rem;font-weight:700;color:#92400e}
-.bc-note{font-size:.62rem;color:var(--amber-600);margin-left:auto;font-weight:400;text-align:right}
-.bc-body{padding:13px 18px}
+.bc-hd-txt{font-size:.8rem;font-weight:700;color:#92400e}
+.bc-note{font-size:.6rem;color:var(--amber-600);margin-left:auto;font-weight:400;text-align:right}
+.bc-body{padding:12px 16px}
 .bi{
   display:flex;justify-content:space-between;align-items:center;
-  padding:7px 0;border-bottom:1px dashed rgba(217,119,6,.18);font-size:.82rem;
+  padding:6px 0;border-bottom:1px dashed rgba(217,119,6,.18);font-size:.78rem;
 }
 .bi:last-child{
   border-bottom:none;border-top:2px solid rgba(217,119,6,.22);
-  padding-top:11px;margin-top:3px;font-weight:700;font-size:.88rem;
+  padding-top:9px;margin-top:2px;font-weight:700;font-size:.82rem;
 }
 .bi .bl{color:var(--slate-700)}
 .bi .bv{font-weight:600}
@@ -221,84 +246,87 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 /* ─── MONTHLY TABLE ─── */
 .tbl-card{
   background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);
-  overflow:hidden;margin-bottom:18px;
+  overflow:hidden;margin-bottom:16px;
 }
 .tbl-hd{
-  padding:13px 18px;border-bottom:1px solid var(--slate-100);
+  padding:11px 16px;border-bottom:1px solid var(--slate-100);
   display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
 }
-.tbl-title{font-size:.85rem;font-weight:700;color:var(--navy-800)}
-.tbl-sub{font-size:.67rem;color:var(--slate-400)}
+.tbl-title{font-size:.82rem;font-weight:700;color:var(--navy-800)}
+.tbl-sub{font-size:.65rem;color:var(--slate-400)}
 .tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-.mt{width:100%;border-collapse:collapse;font-size:.76rem;min-width:780px}
+.mt{width:100%;border-collapse:collapse;font-size:.74rem;min-width:780px}
 .mt thead th{
-  background:var(--navy-800);color:#fff;padding:9px 11px;
-  text-align:right;font-weight:600;font-size:.68rem;letter-spacing:.3px;white-space:nowrap;
+  background:var(--navy-800);color:#fff;padding:8px 10px;
+  text-align:right;font-weight:600;font-size:.66rem;letter-spacing:.3px;white-space:nowrap;
 }
-.mt thead th:first-child{text-align:left;padding-left:18px}
+.mt thead th:first-child{text-align:left;padding-left:16px}
 .mt tbody td{
-  padding:8px 11px;text-align:right;border-bottom:1px solid var(--slate-100);white-space:nowrap;
+  padding:7px 10px;text-align:right;border-bottom:1px solid var(--slate-100);white-space:nowrap;
 }
-.mt tbody td:first-child{text-align:left;padding-left:18px;font-weight:600;color:var(--slate-700)}
+.mt tbody td:first-child{text-align:left;padding-left:16px;font-weight:600;color:var(--slate-700)}
 .mt tbody tr:hover td{background:var(--slate-50)}
 .mt tbody tr.highlight-row td{background:#fffdf7}
 .mt tbody tr.highlight-row td:first-child{color:var(--amber-600);font-weight:700}
 .mt tfoot td{
-  padding:9px 11px;text-align:right;font-weight:700;
-  background:var(--slate-100);font-size:.75rem;
+  padding:8px 10px;text-align:right;font-weight:700;
+  background:var(--slate-100);font-size:.72rem;
   border-top:2px solid var(--slate-300);color:var(--slate-800);
 }
-.mt tfoot td:first-child{text-align:left;padding-left:18px;color:var(--navy-800)}
+.mt tfoot td:first-child{text-align:left;padding-left:16px;color:var(--navy-800)}
 .extra-badge{
   display:inline-block;background:var(--amber-100);color:var(--amber-700);
-  padding:2px 7px;border-radius:10px;font-size:.65rem;font-weight:600;
+  padding:2px 7px;border-radius:10px;font-size:.62rem;font-weight:600;
 }
 .tbl-foot-note{
-  padding:7px 18px;font-size:.64rem;color:var(--slate-400);
+  padding:6px 16px;font-size:.62rem;color:var(--slate-400);
   border-top:1px solid var(--slate-100);
 }
 
 /* ─── SLAB TABLE ─── */
-.slab-tbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.slab-tbl{width:100%;border-collapse:collapse;font-size:.76rem}
 .slab-tbl th{
-  background:var(--slate-100);padding:8px 13px;text-align:left;
-  font-weight:700;color:var(--navy-800);font-size:.68rem;
+  background:var(--slate-100);padding:7px 12px;text-align:left;
+  font-weight:700;color:var(--navy-800);font-size:.66rem;
   text-transform:uppercase;letter-spacing:.3px;
 }
-.slab-tbl td{padding:8px 13px;border-bottom:1px solid var(--slate-100);color:var(--slate-700)}
+.slab-tbl td{padding:7px 12px;border-bottom:1px solid var(--slate-100);color:var(--slate-700)}
 .slab-tbl tr:last-child td{border-bottom:none}
 .slab-tbl tr:hover td{background:var(--slate-50)}
 .slab-range{font-weight:600;color:var(--slate-900);white-space:nowrap}
 
 /* ─── RESPONSIVE ─── */
 @media(max-width:1100px){
+  .config-grid{grid-template-columns:1fr}
   .grid2{grid-template-columns:1fr}
 }
 @media(max-width:768px){
-  .hdr{padding:0 14px;height:54px}
-  .hdr-title{font-size:.92rem}
+  .hdr{padding:0 14px;height:52px}
+  .hdr-title{font-size:.9rem}
   .hdr-sub{display:none}
-  .hdr-badge{padding:4px 10px;font-size:.62rem}
-  .wrap{padding:12px 10px 32px}
-  .metrics{grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
-  .mc{padding:11px 13px}
-  .mc-val{font-size:1rem}
-  .card-body{padding:13px 13px}
-  .fi,.fs{width:112px}
-  .manual-input{width:90px}
-  .fi-sm{width:70px !important}
+  .hdr-badge{padding:4px 10px;font-size:.6rem}
+  .wrap{padding:12px 10px 28px}
+  .metrics{grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+  .mc{padding:10px 11px}
+  .mc-val{font-size:.92rem}
+  .config-body{padding:12px 12px}
+  .card-body{padding:12px 12px}
+  .fi,.fs{width:95px}
+  .manual-input{width:75px}
+  .fi-sm{width:55px !important}
 }
 @media(max-width:480px){
   .hdr-badge{display:none}
   .metrics{gap:8px}
-  .mc{border-left-width:2px;padding:10px 11px}
-  .mc-val{font-size:.92rem}
+  .mc{border-left-width:2px;padding:9px 10px}
+  .mc-val{font-size:.85rem}
   .mc-note{display:none}
+  .config-grid{gap:10px}
 }
 @media print{
   body{background:#fff}
   .hdr{position:static;-webkit-print-color-adjust:exact}
-  .card,.bonus-card,.tbl-card{box-shadow:none;border:1px solid var(--slate-200)}
+  .card,.bonus-card,.tbl-card,.config-card{box-shadow:none;border:1px solid var(--slate-200)}
 }
 ::-webkit-scrollbar{width:5px;height:5px}
 ::-webkit-scrollbar-track{background:transparent}
@@ -320,71 +348,102 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 
 <div class="wrap">
 
-  <!-- METRIC CARDS -->
-  <div class="metrics">
-    <div class="mc">
-      <div class="mc-lbl">Monthly Take Home</div>
-      <div class="mc-val" id="metricMonthly">Rs. 0</div>
-      <div class="mc-note">Typical month (excl. extras)</div>
+  <!-- CONFIG: Left = Basic + Deductions + EL, Right = Allowances -->
+  <div class="config-card">
+    <div class="config-hd">
+      <div class="config-hd-ico">⚙️</div>
+      <div class="config-hd-txt">Salary Configuration</div>
     </div>
-    <div class="mc g">
-      <div class="mc-lbl">Annual Net Salary</div>
-      <div class="mc-val" id="metricAnnualNet">Rs. 0</div>
-      <div class="mc-note">After all deductions &amp; tax</div>
-    </div>
-    <div class="mc r">
-      <div class="mc-lbl">Annual Tax Liability</div>
-      <div class="mc-val" id="metricAnnualTax">Rs. 0</div>
-      <div class="mc-note">Total tax for the year</div>
-    </div>
-    <div class="mc a">
-      <div class="mc-lbl">Net Bonus (After Tax)</div>
-      <div class="mc-val" id="metricNetBonus">Rs. 0</div>
-      <div class="mc-note">Bonus received in hand</div>
-    </div>
-  </div>
+    <div class="config-body">
+      <div class="config-grid">
 
-  <!-- TWO-COLUMN GRID -->
-  <div class="grid2">
+        <!-- LEFT COLUMN -->
+        <div>
+          <div class="config-section">
+            <div class="config-section-title">Basic Information</div>
+            <div class="fr">
+              <label for="basicSalary">Basic Salary (Rs.)</label>
+              <input type="number" id="basicSalary" class="fi" value="80000" min="1" step="1">
+            </div>
+            <div class="fr">
+              <label for="incrementPct">Annual Increment</label>
+              <select id="incrementPct" class="fs">
+                <option value="0" selected>0%</option>
+                <option value="6">6%</option>
+                <option value="8">8%</option>
+                <option value="10">10%</option>
+                <option value="12">12%</option>
+                <option value="14">14%</option>
+              </select>
+            </div>
+            <div class="ab-display" id="adjustedBasicDisplay">Adjusted Basic: Rs. 80,000</div>
+          </div>
 
-    <!-- LEFT: CONFIGURATION -->
-    <div>
-      <div class="card">
-        <div class="card-hd">
-          <div class="card-hd-ico">⚙️</div>
-          <div class="card-hd-txt">Salary Configuration</div>
+          <div class="config-section" style="margin-top:10px;">
+            <div class="config-section-title">Deductions & Extras</div>
+            <div class="fr">
+              <label for="eobi">EOBI</label>
+              <input type="number" id="eobi" class="fi" value="370" min="0" step="1">
+            </div>
+            <div class="fr">
+              <label for="professionalTax">Professional Tax</label>
+              <input type="number" id="professionalTax" class="fi" value="200" min="0" step="1">
+            </div>
+            <div class="cbrow">
+              <input type="checkbox" id="pfLoanCheckbox">
+              <label for="pfLoanCheckbox">Provident Fund Loan</label>
+            </div>
+            <div id="pfLoanContainer" style="display:none">
+              <div class="fr">
+                <label for="pfLoanAmount">PF Loan Amount</label>
+                <input type="number" id="pfLoanAmount" class="fi" value="0" min="0" step="1">
+              </div>
+            </div>
+            <div class="fr" style="margin-top:4px">
+              <label for="bonusMultiplier">Annual Bonus</label>
+              <select id="bonusMultiplier" class="fs">
+                <option value="6">6× Basic</option>
+                <option value="8">8× Basic</option>
+                <option value="10" selected>10× Basic</option>
+                <option value="12">12× Basic</option>
+                <option value="14">14× Basic</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="config-section" style="margin-top:10px;">
+            <div class="config-section-title">Earned Leave</div>
+            <div class="fr">
+              <label for="elDays">Leave Days (max 15)</label>
+              <input type="number" id="elDays" class="fi fi-sm" value="15" min="0" max="15" step="1">
+            </div>
+            <div class="comp" style="margin-top:6px">
+              <div class="comp-top">
+                <span class="comp-ico">🏖️</span>
+                <span class="comp-name">EL Payment</span>
+                <span class="comp-pct">Daily gross × days</span>
+              </div>
+              <div class="radio-group" data-component="el">
+                <label class="active-radio"><input type="radio" name="mode_el" value="auto" checked>Auto</label>
+                <label><input type="radio" name="mode_el" value="manual">Manual</label>
+                <input type="number" class="manual-input" id="manualEL" disabled placeholder="Amount">
+              </div>
+              <div class="el-info" id="elTaxInfo">
+                <span>Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span>
+                <span>Net EL: <strong id="elNetOutput">Rs. 0</strong></span>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="card-body">
 
-          <div class="sec-div">Basic information</div>
-          <div class="fr">
-            <label for="basicSalary">Basic Salary (Rs.)</label>
-            <input type="number" id="basicSalary" class="fi" value="80000" min="1" step="1">
-          </div>
-          <div class="fr">
-            <label for="incrementPct">Annual Increment</label>
-            <select id="incrementPct" class="fs">
-              <option value="0" selected>0%</option>
-              <option value="6">6%</option>
-              <option value="8">8%</option>
-              <option value="10">10%</option>
-              <option value="12">12%</option>
-              <option value="14">14%</option>
-            </select>
-          </div>
-          <div class="ab-box">
-            <div class="lbl">Adjusted Basic Salary</div>
-            <div class="val" id="adjustedBasicDisplay">Rs. 80,000</div>
-            <div class="hint">Basic × (1 + increment %)</div>
-          </div>
-
-          <div class="sec-div">Allowances</div>
-
+        <!-- RIGHT COLUMN: ALLOWANCES -->
+        <div class="config-section">
+          <div class="config-section-title">Allowances</div>
           <div class="comp">
             <div class="comp-top">
               <span class="comp-ico">🏠</span>
               <span class="comp-name">House Rent Allowance</span>
-              <span class="comp-pct">45% of basic</span>
+              <span class="comp-pct">45%</span>
             </div>
             <div class="radio-group" data-component="hra">
               <label class="active-radio"><input type="radio" name="mode_hra" value="auto" checked>Auto</label>
@@ -392,12 +451,11 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
               <input type="number" class="manual-input" id="manualHRA" disabled placeholder="Amount">
             </div>
           </div>
-
           <div class="comp">
             <div class="comp-top">
               <span class="comp-ico">🔧</span>
               <span class="comp-name">Utility Allowance</span>
-              <span class="comp-pct">20% of basic</span>
+              <span class="comp-pct">20%</span>
             </div>
             <div class="radio-group" data-component="utility">
               <label class="active-radio"><input type="radio" name="mode_utility" value="auto" checked>Auto</label>
@@ -405,12 +463,11 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
               <input type="number" class="manual-input" id="manualUtility" disabled placeholder="Amount">
             </div>
           </div>
-
           <div class="comp">
             <div class="comp-top">
               <span class="comp-ico">🚗</span>
               <span class="comp-name">Conveyance Allowance</span>
-              <span class="comp-pct">15% of basic</span>
+              <span class="comp-pct">15%</span>
             </div>
             <div class="radio-group" data-component="conveyance">
               <label class="active-radio"><input type="radio" name="mode_conveyance" value="auto" checked>Auto</label>
@@ -418,12 +475,11 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
               <input type="number" class="manual-input" id="manualConveyance" disabled placeholder="Amount">
             </div>
           </div>
-
           <div class="comp">
             <div class="comp-top">
               <span class="comp-ico">🎖️</span>
               <span class="comp-name">Ex-Gratia 1</span>
-              <span class="comp-pct">7.38% of basic</span>
+              <span class="comp-pct">7.38%</span>
             </div>
             <div class="radio-group" data-component="exgratia1">
               <label class="active-radio"><input type="radio" name="mode_exgratia1" value="auto" checked>Auto</label>
@@ -431,12 +487,11 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
               <input type="number" class="manual-input" id="manualExGratia1" disabled placeholder="Amount">
             </div>
           </div>
-
           <div class="comp">
             <div class="comp-top">
               <span class="comp-ico">🏅</span>
               <span class="comp-name">Ex-Gratia 2</span>
-              <span class="comp-pct">12.18% of basic</span>
+              <span class="comp-pct">12.18%</span>
             </div>
             <div class="radio-group" data-component="exgratia2">
               <label class="active-radio"><input type="radio" name="mode_exgratia2" value="auto" checked>Auto</label>
@@ -444,12 +499,11 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
               <input type="number" class="manual-input" id="manualExGratia2" disabled placeholder="Amount">
             </div>
           </div>
-
           <div class="comp">
             <div class="comp-top">
               <span class="comp-ico">🔐</span>
-              <span class="comp-name">Provident Fund Contribution</span>
-              <span class="comp-pct">10% of basic</span>
+              <span class="comp-name">PF Contribution</span>
+              <span class="comp-pct">10%</span>
             </div>
             <div class="radio-group" data-component="pf">
               <label class="active-radio"><input type="radio" name="mode_pf" value="auto" checked>Auto</label>
@@ -457,136 +511,109 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
               <input type="number" class="manual-input" id="manualPF" disabled placeholder="Amount">
             </div>
           </div>
-
-          <div class="sec-div">Monthly deductions</div>
-          <div class="fr">
-            <label for="eobi">EOBI (Rs.)</label>
-            <input type="number" id="eobi" class="fi" value="370" min="0" step="1">
-          </div>
-          <div class="fr">
-            <label for="professionalTax">Professional Tax (Rs.)</label>
-            <input type="number" id="professionalTax" class="fi" value="200" min="0" step="1">
-          </div>
-          <div class="cbrow">
-            <input type="checkbox" id="pfLoanCheckbox">
-            <label for="pfLoanCheckbox">Provident Fund Loan deduction</label>
-          </div>
-          <div id="pfLoanContainer" style="display:none">
-            <div class="fr">
-              <label for="pfLoanAmount">PF Loan (Rs./month)</label>
-              <input type="number" id="pfLoanAmount" class="fi" value="0" min="0" step="1">
-            </div>
-          </div>
-
-          <div class="sec-div">Annual bonus &amp; earned leave</div>
-          <div class="fr">
-            <label for="bonusMultiplier">Annual Bonus</label>
-            <select id="bonusMultiplier" class="fs">
-              <option value="6">6× Basic</option>
-              <option value="8">8× Basic</option>
-              <option value="10" selected>10× Basic</option>
-              <option value="12">12× Basic</option>
-              <option value="14">14× Basic</option>
-            </select>
-          </div>
-
-          <div class="comp">
-            <div class="comp-top">
-              <span class="comp-ico">🏖️</span>
-              <span class="comp-name">Earned Leave Payment</span>
-              <span class="comp-pct">Daily gross × days</span>
-            </div>
-            <div class="fr" style="border-bottom:none;padding:5px 0 7px">
-              <label for="elDays" style="font-size:.72rem;color:var(--slate-500)">Leave days (max 15)</label>
-              <input type="number" id="elDays" class="fi fi-sm" value="15" min="0" max="15" step="1">
-            </div>
-            <div class="radio-group" data-component="el">
-              <label class="active-radio"><input type="radio" name="mode_el" value="auto" checked>Auto</label>
-              <label><input type="radio" name="mode_el" value="manual">Manual</label>
-              <input type="number" class="manual-input" id="manualEL" disabled placeholder="Amount">
-            </div>
-            <div class="el-info" id="elTaxInfo">
-              <span>Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span>
-              <span>Net EL: <strong id="elNetOutput">Rs. 0</strong></span>
-            </div>
-          </div>
-
         </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- METRIC CARDS -->
+  <div class="metrics">
+    <div class="mc g">
+      <div class="mc-lbl">Monthly Take Home</div>
+      <div class="mc-val" id="metricMonthly">Rs. 0</div>
+      <div class="mc-note">Typical month after deductions</div>
+    </div>
+    <div class="mc a">
+      <div class="mc-lbl">Yearly Bonus Take Home</div>
+      <div class="mc-val" id="metricYearlyBonusTakeHome">Rs. 0</div>
+      <div class="mc-note">Bonus after tax deduction</div>
+    </div>
+    <div class="mc b">
+      <div class="mc-lbl">Taxable Income</div>
+      <div class="mc-val" id="metricTaxableIncome">Rs. 0</div>
+      <div class="mc-note">Total income subject to tax</div>
+    </div>
+    <div class="mc r">
+      <div class="mc-lbl">This Year Tax</div>
+      <div class="mc-val" id="metricThisYearTax">Rs. 0</div>
+      <div class="mc-note">Total annual tax liability</div>
+    </div>
+  </div>
+
+  <!-- TWO-COLUMN GRID (Summary + Bonus) -->
+  <div class="grid2">
+
+    <!-- LEFT: ANNUAL SUMMARY -->
+    <div class="card">
+      <div class="card-hd">
+        <div class="card-hd-ico">📊</div>
+        <div class="card-hd-txt">Annual Tax & Summary</div>
+      </div>
+      <div class="card-body">
+        <div class="sr">
+          <span class="sr-lbl">Annual Gross Salary <small style="color:var(--slate-400);font-weight:400">(12 months + 2× extra basic)</small></span>
+          <span class="sr-val" id="sumAnnualGross">Rs. 0</span>
+        </div>
+        <div class="sr">
+          <span class="sr-lbl">Annual Bonus (<span id="sumBonusMult">10</span>× Basic)</span>
+          <span class="sr-val" id="sumAnnualBonus">Rs. 0</span>
+        </div>
+        <div class="sr">
+          <span class="sr-lbl">Earned Leave Payment (<span id="sumELDays">15</span> days)</span>
+          <span class="sr-val" id="sumELPayment">Rs. 0</span>
+        </div>
+        <div class="sr">
+          <span class="sr-lbl">Tax on EL Payment</span>
+          <span class="sr-val r" id="sumELTax">Rs. 0</span>
+        </div>
+        <div class="sr">
+          <span class="sr-lbl">Net EL Payment</span>
+          <span class="sr-val g" id="sumELNet">Rs. 0</span>
+        </div>
+        <div class="sr divider">
+          <span class="sr-lbl bold">Annual Taxable Income</span>
+          <span class="sr-val" id="sumAnnualTaxable">Rs. 0</span>
+        </div>
+        <div class="sr">
+          <span class="sr-lbl">Annual Tax Liability</span>
+          <span class="sr-val lr" id="sumAnnualTax">Rs. 0</span>
+        </div>
+        <div class="sr">
+          <span class="sr-lbl">Annual Deductions <small style="color:var(--slate-400);font-weight:400">(12 × monthly)</small></span>
+          <span class="sr-val" id="sumAnnualDeductions">Rs. 0</span>
+        </div>
+        <div class="sr divider">
+          <span class="sr-lbl bold">Annual Net Salary</span>
+          <span class="sr-val g lg" id="sumAnnualNet">Rs. 0</span>
+        </div>
+        <div class="sr">
+          <span class="sr-lbl">Effective Tax Rate</span>
+          <span class="sr-val r" id="sumEffectiveRate">0.00%</span>
+        </div>
+        <div class="slab-bar" id="taxSlabInfo">Tax calculated using progressive slab rates for FY 2026–27.</div>
       </div>
     </div>
 
-    <!-- RIGHT: SUMMARY + BONUS -->
-    <div>
-      <div class="card">
-        <div class="card-hd">
-          <div class="card-hd-ico">📊</div>
-          <div class="card-hd-txt">Annual Tax &amp; Summary</div>
-        </div>
-        <div class="card-body">
-          <div class="sr">
-            <span class="sr-lbl">Annual Gross Salary <small style="color:var(--slate-400);font-weight:400">(12 months + 2× extra basic)</small></span>
-            <span class="sr-val" id="sumAnnualGross">Rs. 0</span>
-          </div>
-          <div class="sr">
-            <span class="sr-lbl">Annual Bonus (<span id="sumBonusMult">10</span>× Basic)</span>
-            <span class="sr-val" id="sumAnnualBonus">Rs. 0</span>
-          </div>
-          <div class="sr">
-            <span class="sr-lbl">Earned Leave Payment (<span id="sumELDays">15</span> days)</span>
-            <span class="sr-val" id="sumELPayment">Rs. 0</span>
-          </div>
-          <div class="sr">
-            <span class="sr-lbl">Tax on EL Payment</span>
-            <span class="sr-val r" id="sumELTax">Rs. 0</span>
-          </div>
-          <div class="sr">
-            <span class="sr-lbl">Net EL Payment</span>
-            <span class="sr-val g" id="sumELNet">Rs. 0</span>
-          </div>
-          <div class="sr divider">
-            <span class="sr-lbl bold">Annual Taxable Income</span>
-            <span class="sr-val" id="sumAnnualTaxable">Rs. 0</span>
-          </div>
-          <div class="sr">
-            <span class="sr-lbl">Annual Tax Liability</span>
-            <span class="sr-val lr" id="sumAnnualTax">Rs. 0</span>
-          </div>
-          <div class="sr">
-            <span class="sr-lbl">Annual Deductions <small style="color:var(--slate-400);font-weight:400">(12 × monthly)</small></span>
-            <span class="sr-val" id="sumAnnualDeductions">Rs. 0</span>
-          </div>
-          <div class="sr divider">
-            <span class="sr-lbl bold">Annual Net Salary</span>
-            <span class="sr-val g lg" id="sumAnnualNet">Rs. 0</span>
-          </div>
-          <div class="sr">
-            <span class="sr-lbl">Effective Tax Rate</span>
-            <span class="sr-val r" id="sumEffectiveRate">0.00%</span>
-          </div>
-          <div class="slab-bar" id="taxSlabInfo">Tax calculated using progressive slab rates for FY 2026–27.</div>
-        </div>
+    <!-- RIGHT: BONUS TAX BREAKDOWN -->
+    <div class="bonus-card">
+      <div class="bc-hd">
+        <span>🎯</span>
+        <span class="bc-hd-txt">Bonus Tax Impact</span>
+        <span class="bc-note">Not included in monthly deductions</span>
       </div>
-
-      <!-- BONUS BREAKDOWN -->
-      <div class="bonus-card">
-        <div class="bc-hd">
-          <span>🎯</span>
-          <span class="bc-hd-txt">Bonus Tax Impact</span>
-          <span class="bc-note">Not included in monthly deductions</span>
+      <div class="bc-body">
+        <div class="bi">
+          <span class="bl">Annual Bonus (gross)</span>
+          <span class="bv" id="bonusGrossDisplay">Rs. 0</span>
         </div>
-        <div class="bc-body">
-          <div class="bi">
-            <span class="bl">Annual Bonus (gross)</span>
-            <span class="bv" id="bonusGrossDisplay">Rs. 0</span>
-          </div>
-          <div class="bi">
-            <span class="bl">Tax on Bonus</span>
-            <span class="bv r" id="bonusTaxDisplay">Rs. 0</span>
-          </div>
-          <div class="bi">
-            <span class="bl">Net Bonus (received)</span>
-            <span class="bv g" id="bonusNetDisplay">Rs. 0</span>
-          </div>
+        <div class="bi">
+          <span class="bl">Tax on Bonus</span>
+          <span class="bv r" id="bonusTaxDisplay">Rs. 0</span>
+        </div>
+        <div class="bi">
+          <span class="bl">Net Bonus (received)</span>
+          <span class="bv g" id="bonusNetDisplay">Rs. 0</span>
         </div>
       </div>
     </div>
@@ -719,14 +746,14 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
     const regMonthTax=Math.round(mGross*effReg);
     const regMonthNet=mGross-mDedXL-pfLoan-regMonthTax;
 
-    // Metric cards
+    // METRIC CARDS
     set('metricMonthly',fmt(regMonthNet));
-    set('metricAnnualNet',fmt(aNet));
-    set('metricAnnualTax',fmt(tTotal));
-    set('metricNetBonus',fmt(netBonus));
+    set('metricYearlyBonusTakeHome',fmt(netBonus));  // FIXED: bonus after tax
+    set('metricTaxableIncome',fmt(aTaxable));
+    set('metricThisYearTax',fmt(tTotal));
 
     // Adjusted basic
-    adj.textContent=fmt(ab);
+    adj.textContent='Adjusted Basic: '+fmt(ab);
 
     // Summary
     set('sumAnnualGross',fmt(aGross));
