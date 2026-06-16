@@ -1,3 +1,6 @@
+I've updated the tax allocation to match your payroll behavior: the monthly income tax now excludes the bonus-related tax, and that bonus tax is instead added to January and July (split equally). This means you'll see higher tax deductions in those months, while the rest of the year reflects a lower, consistent monthly tax. The annual totals remain completely unchanged.
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -421,7 +424,7 @@
         <div class="table-wrapper">
             <div style="padding:16px 20px; background:#fff; border-bottom:1px solid var(--border-light);">
                 <span style="font-weight:700; font-size:1rem; color:var(--primary);">📅 Monthly Projection Table</span>
-                <span style="font-size:0.72rem; color:var(--text-muted); margin-left:8px;">(January – December)</span>
+                <span style="font-size:0.72rem; color:var(--text-muted); margin-left:8px;">(Bonus tax added to Jan & Jul)</span>
             </div>
             <table class="monthly-table" id="monthlyProjectionTable">
                 <thead>
@@ -534,7 +537,11 @@
                 const taxOnBonus = annualTax - taxWithoutBonus;
                 const netBonus = annualBonus - taxOnBonus;
 
-                const monthlyTax = Math.round(annualTax / 12);
+                // Distribute bonus tax: half to January, half to July
+                const bonusTaxJan = Math.round(taxOnBonus / 2);
+                const bonusTaxJul = taxOnBonus - bonusTaxJan; // remainder to July
+                const baseMonthlyTax = Math.round((annualTax - taxOnBonus) / 12);
+
                 const annualDeductions = monthlyDeductions * 12;
                 const annualNetSalary = annualGross + annualBonus + elPayment - annualTax - annualDeductions;
                 const effectiveTaxRate = annualTaxableIncome > 0 ? (annualTax / annualTaxableIncome) * 100 : 0;
@@ -564,6 +571,7 @@
                 if (getComponentMode('pf')==='auto') manualPF.value = pfContribution;
                 if (getComponentMode('el')==='auto') manualEL.value = elPayment;
 
+                // Monthly projection table with bonus tax added to Jan & Jul
                 const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
                 const tbody = document.getElementById('monthlyTableBody');
                 tbody.innerHTML = '';
@@ -573,12 +581,14 @@
                     if(i===0||i===6){ extraBasic=adjustedBasic; grossForMonth=monthlyGross+adjustedBasic; }
                     const dedExLoan = monthlyDeductionsExLoan;
                     const pfLoan = pfLoanAmount;
-                    const tax = monthlyTax;
-                    const takeHome = grossForMonth - dedExLoan - pfLoan - tax;
-                    totalG+=grossForMonth; totalE+=extraBasic; totalD+=dedExLoan; totalPF+=pfLoan; totalT+=tax; totalTH+=takeHome;
+                    let monthTax = baseMonthlyTax;
+                    if (i === 0) monthTax += bonusTaxJan;      // January
+                    else if (i === 6) monthTax += bonusTaxJul; // July
+                    const takeHome = grossForMonth - dedExLoan - pfLoan - monthTax;
+                    totalG+=grossForMonth; totalE+=extraBasic; totalD+=dedExLoan; totalPF+=pfLoan; totalT+=monthTax; totalTH+=takeHome;
                     const tr=document.createElement('tr');
                     if(i===0||i===6) tr.classList.add('highlight-row');
-                    tr.innerHTML = `<td>${months[i]} ${extraBasic?'⭐':''}</td><td>${formatCurrency(grossForMonth)}</td><td>${extraBasic?`<span class="extra-badge">+${formatCurrency(extraBasic)}</span>`:'<span style="color:#a0aec0;">—</span>'}</td><td>${formatCurrency(dedExLoan)}</td><td>${formatCurrency(pfLoan)}</td><td>${formatCurrency(tax)}</td><td><strong>${formatCurrency(takeHome)}</strong></td>`;
+                    tr.innerHTML = `<td>${months[i]} ${extraBasic?'⭐':''}</td><td>${formatCurrency(grossForMonth)}</td><td>${extraBasic?`<span class="extra-badge">+${formatCurrency(extraBasic)}</span>`:'<span style="color:#a0aec0;">—</span>'}</td><td>${formatCurrency(dedExLoan)}</td><td>${formatCurrency(pfLoan)}</td><td>${formatCurrency(monthTax)}</td><td><strong>${formatCurrency(takeHome)}</strong></td>`;
                     tbody.appendChild(tr);
                 }
                 document.getElementById('monthlyTableFoot').innerHTML = `<tr style="background:#eef2f7; font-weight:700; border-top:2px solid #cbd5e0;"><td style="text-align:left; padding-left:16px;">📋 Annual Totals</td><td>${formatCurrency(totalG)}</td><td>${formatCurrency(totalE)}</td><td>${formatCurrency(totalD)}</td><td>${formatCurrency(totalPF)}</td><td>${formatCurrency(totalT)}</td><td><strong>${formatCurrency(totalTH)}</strong></td></tr>`;
@@ -624,3 +634,4 @@
     </script>
 </body>
 </html>
+```
