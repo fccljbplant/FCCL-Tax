@@ -32,9 +32,7 @@
             --transition: 0.2s ease;
             --font: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
         }
-
         * { margin:0; padding:0; box-sizing:border-box; }
-
         body {
             font-family: var(--font);
             background: var(--bg);
@@ -43,20 +41,11 @@
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
         }
-
         .header {
             background: linear-gradient(135deg, #0f2340 0%, #1a365d 30%, #1e4d7b 60%, #1a365d 100%);
-            padding: 20px 32px;
-            color: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 12px;
+            padding: 20px 32px; color: #fff; position: sticky; top: 0; z-index: 100;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2); display: flex; align-items: center;
+            justify-content: space-between; flex-wrap: wrap; gap: 12px;
         }
         .header-left { display: flex; align-items: center; gap: 14px; }
         .header-icon {
@@ -71,30 +60,22 @@
             padding: 8px 16px; border-radius:20px; font-size:0.78rem; font-weight:500;
             letter-spacing:0.3px; backdrop-filter: blur(4px);
         }
-
         .container { max-width:1400px; margin:0 auto; padding:24px 20px 40px; }
-
         .panel {
-            background: var(--surface);
-            border-radius: var(--radius-lg);
-            padding: 24px;
-            box-shadow: var(--shadow);
-            margin-bottom: 24px;
-            transition: box-shadow var(--transition);
+            background: var(--surface); border-radius: var(--radius-lg); padding: 24px;
+            box-shadow: var(--shadow); margin-bottom: 24px; transition: box-shadow var(--transition);
         }
         .panel:hover { box-shadow: var(--shadow-lg); }
         .panel-title {
-            font-size:1rem; font-weight:700; color:var(--primary);
-            margin-bottom:18px; padding-bottom:12px;
-            border-bottom:2px solid var(--border-light);
+            font-size:1rem; font-weight:700; color:var(--primary); margin-bottom:18px;
+            padding-bottom:12px; border-bottom:2px solid var(--border-light);
             letter-spacing:-0.2px; display:flex; align-items:center; gap:8px;
         }
         .panel-title .dot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
-
         .form-group { margin-bottom:14px; }
         .form-group label {
-            display:block; font-size:0.8rem; font-weight:600;
-            color:var(--text-secondary); margin-bottom:4px; letter-spacing:0.2px;
+            display:block; font-size:0.8rem; font-weight:600; color:var(--text-secondary);
+            margin-bottom:4px; letter-spacing:0.2px;
         }
         input[type="number"], select {
             font-family: var(--font); font-size:0.9rem; padding:9px 12px;
@@ -111,7 +92,6 @@
             background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
             background-repeat:no-repeat; background-position:right 12px center; padding-right:36px;
         }
-
         .radio-group { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
         .radio-group label {
             display:flex; align-items:center; gap:5px; font-size:0.78rem; font-weight:500;
@@ -124,17 +104,14 @@
         }
         .radio-group input[type="radio"] { display:none; }
         .manual-input {
-            width:130px; font-size:0.85rem; padding:7px 10px;
-            border:1.5px solid var(--border); border-radius:var(--radius-sm);
-            background:#fafbfc; transition:all var(--transition); outline:none;
+            width:130px; font-size:0.85rem; padding:7px 10px; border:1.5px solid var(--border);
+            border-radius:var(--radius-sm); background:#fafbfc; transition:all var(--transition); outline:none;
         }
         .manual-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(49,130,206,0.1); }
         .manual-input:disabled { background:#f1f5f9; color:#a0aec0; cursor:not-allowed; }
-
         .checkbox-group { display:flex; align-items:center; gap:8px; margin:8px 0; }
         .checkbox-group input[type="checkbox"] { width:18px; height:18px; accent-color:var(--accent); cursor:pointer; }
         .checkbox-group label { font-size:0.85rem; font-weight:500; cursor:pointer; }
-
         .component-row {
             background:#f8fafc; border-radius:var(--radius-sm); padding:12px 14px;
             margin-bottom:10px; border:1px solid var(--border-light); transition:all var(--transition);
@@ -142,28 +119,19 @@
         .component-row:hover { border-color:#d0d7e2; background:#f4f7fb; }
         .component-name { font-weight:600; font-size:0.82rem; color:var(--text); margin-bottom:6px; }
         .component-detail { font-size:0.7rem; color:var(--text-muted); margin-bottom:4px; }
-
         .el-tax-display {
-            margin-top: 8px;
-            font-size: 0.82rem;
-            display: flex;
-            gap: 20px;
-            align-items: center;
-            background: #fef9e7;
-            padding: 8px 12px;
-            border-radius: var(--radius-sm);
+            margin-top: 8px; font-size: 0.82rem; display: flex; gap: 20px; align-items: center;
+            background: #fef9e7; padding: 8px 12px; border-radius: var(--radius-sm);
             border: 1px solid #fef3cd;
         }
         .el-tax-display span { color: #856404; font-weight: 500; }
         .el-tax-display strong { color: #b45309; }
-
         .adjusted-basic-display {
             background:linear-gradient(135deg,#ebf4ff,#f0f8ff); border:1.5px solid #bee3f8;
             border-radius:var(--radius); padding:14px 18px; margin:14px 0; text-align:center;
         }
         .adjusted-basic-display .label { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); font-weight:600; }
         .adjusted-basic-display .value { font-size:1.3rem; font-weight:700; color:var(--primary); }
-
         .tax-summary-item {
             display:flex; justify-content:space-between; align-items:center;
             padding:10px 0; border-bottom:1px solid var(--border-light); font-size:0.85rem;
@@ -177,41 +145,22 @@
             background:#fffbf0; border:1px solid #fef3cd; border-radius:var(--radius-sm);
             padding:10px 14px; font-size:0.75rem; color:#856404; margin-top:8px; line-height:1.5;
         }
-
         .bonus-breakdown-card {
-            background: linear-gradient(135deg, #fef9e7, #fffbf0);
-            border-left: 5px solid #d69e2e;
-            border-radius: var(--radius);
-            padding: 20px 24px;
-            margin-bottom: 24px;
-            box-shadow: var(--shadow-sm);
+            background: linear-gradient(135deg, #fef9e7, #fffbf0); border-left: 5px solid #d69e2e;
+            border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px; box-shadow: var(--shadow-sm);
         }
         .bonus-breakdown-card .bonus-title {
-            font-weight: 700;
-            font-size: 1rem;
-            color: #856404;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-weight: 700; font-size: 1rem; color: #856404; margin-bottom: 12px;
+            display: flex; align-items: center; gap: 8px;
         }
         .bonus-breakdown-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 8px 0;
-            font-size: 0.9rem;
-            border-bottom: 1px dashed rgba(133, 100, 4, 0.2);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 8px 0; font-size: 0.9rem; border-bottom: 1px dashed rgba(133, 100, 4, 0.2);
         }
         .bonus-breakdown-item:last-child {
-            border-bottom: none;
-            font-weight: 700;
-            font-size: 1rem;
-            padding-top: 12px;
-            margin-top: 4px;
-            border-top: 2px solid rgba(214, 158, 46, 0.3);
+            border-bottom: none; font-weight: 700; font-size: 1rem; padding-top: 12px;
+            margin-top: 4px; border-top: 2px solid rgba(214, 158, 46, 0.3);
         }
-
         .table-wrapper {
             overflow-x:auto; border-radius:var(--radius-lg); box-shadow:var(--shadow); background:var(--surface);
         }
@@ -233,7 +182,6 @@
             border-radius:10px; font-size:0.7rem; font-weight:600;
         }
         .info-tip { font-size:0.68rem; color:var(--text-muted); font-style:italic; margin-top:2px; }
-
         @media (max-width:1100px) {
             .card-value { font-size:1.1rem; }
         }
@@ -271,12 +219,10 @@
         <!-- INPUT PANEL -->
         <div class="panel">
             <div class="panel-title"><span class="dot"></span> Salary Configuration</div>
-
             <div class="form-group">
                 <label for="basicSalary">Basic Salary (Rs.)</label>
                 <input type="number" id="basicSalary" value="80000" min="1" step="1">
             </div>
-
             <div class="form-group">
                 <label for="incrementPct">Annual Increment</label>
                 <select id="incrementPct">
@@ -288,7 +234,6 @@
                     <option value="14">14%</option>
                 </select>
             </div>
-
             <div class="adjusted-basic-display">
                 <div class="label">Adjusted Basic Salary</div>
                 <div class="value" id="adjustedBasicDisplay">Rs. 80,000</div>
@@ -387,7 +332,7 @@
                 </div>
                 <div class="component-row">
                     <div class="component-name">🏖️ Earned Leave (EL) Payment</div>
-                    <div class="component-detail">Auto: 15 days (0.5 × Adjusted Basic)</div>
+                    <div class="component-detail">Auto: 15 days (0.5 × Monthly Gross Salary)</div>
                     <div class="radio-group" data-component="el">
                         <label class="active-radio"><input type="radio" name="mode_el" value="auto" checked> Auto</label>
                         <label><input type="radio" name="mode_el" value="manual"> Manual</label>
@@ -474,14 +419,12 @@
             const pfLoanContainer = document.getElementById('pfLoanContainer');
             const pfLoanAmountInput = document.getElementById('pfLoanAmount');
             const manualEL = document.getElementById('manualEL');
-
             const manualHRA = document.getElementById('manualHRA');
             const manualUtility = document.getElementById('manualUtility');
             const manualConveyance = document.getElementById('manualConveyance');
             const manualExGratia1 = document.getElementById('manualExGratia1');
             const manualExGratia2 = document.getElementById('manualExGratia2');
             const manualPF = document.getElementById('manualPF');
-
             const radioGroups = document.querySelectorAll('.radio-group[data-component]');
 
             const PCT_HRA = 0.45;
@@ -490,7 +433,6 @@
             const PCT_EXGRATIA1 = 0.0738;
             const PCT_EXGRATIA2 = 0.1218;
             const PCT_PF = 0.10;
-            const PCT_EL = 0.5;
 
             function formatCurrency(value) {
                 const rounded = Math.round(value);
@@ -500,12 +442,10 @@
                 const num = parseFloat(value);
                 return isNaN(num) ? '0.00%' : num.toFixed(2) + '%';
             }
-
             function getComponentMode(componentName) {
                 const radio = document.querySelector(`input[name="mode_${componentName}"]:checked`);
                 return radio ? radio.value : 'auto';
             }
-
             function calculateAnnualTax(taxableIncome) {
                 const income = taxableIncome;
                 let tax = 0, slabDescription = '';
@@ -536,20 +476,19 @@
                 let exGratia1 = (getComponentMode('exgratia1')==='auto') ? Math.round(adjustedBasic * PCT_EXGRATIA1) : (parseFloat(manualExGratia1.value)||0);
                 let exGratia2 = (getComponentMode('exgratia2')==='auto') ? Math.round(adjustedBasic * PCT_EXGRATIA2) : (parseFloat(manualExGratia2.value)||0);
                 let pfContribution = (getComponentMode('pf')==='auto') ? Math.round(adjustedBasic * PCT_PF) : (parseFloat(manualPF.value)||0);
-                let elPayment = (getComponentMode('el')==='auto') ? Math.round(adjustedBasic * PCT_EL) : (parseFloat(manualEL.value)||0);
 
                 const monthlyGross = adjustedBasic + hra + utility + conveyance + exGratia1 + exGratia2;
                 const monthlyDeductions = pfContribution + pfLoanAmount + eobi + professionalTax;
                 const monthlyDeductionsExLoan = pfContribution + eobi + professionalTax;
 
+                // EL = half of monthly gross pay (auto) or manual value
+                let elPayment = (getComponentMode('el')==='auto') ? Math.round(monthlyGross * 0.5) : (parseFloat(manualEL.value)||0);
+
                 const annualGross = monthlyGross * 12 + 2 * adjustedBasic;
                 const annualBonus = bonusMultiplier * adjustedBasic;
 
-                // Tax on regular salary only (no EL, no bonus)
                 const taxOnRegular = calculateAnnualTax(annualGross).tax;
-                // Tax on regular + EL
                 const taxOnRegularAndEL = calculateAnnualTax(annualGross + elPayment).tax;
-                // Tax on total income
                 const totalTax = calculateAnnualTax(annualGross + elPayment + annualBonus).tax;
 
                 const taxOnEL = taxOnRegularAndEL - taxOnRegular;
@@ -564,7 +503,6 @@
                 const annualNetSalary = annualTaxableIncome - annualTax - annualDeductions;
                 const effectiveTaxRate = annualTaxableIncome > 0 ? (annualTax / annualTaxableIncome) * 100 : 0;
 
-                // Effective tax rate for regular salary (applied to each month's gross)
                 const effectiveRateForRegular = annualGross > 0 ? taxOnRegular / annualGross : 0;
 
                 // Update displays
@@ -598,7 +536,7 @@
                 if (getComponentMode('pf')==='auto') manualPF.value = pfContribution;
                 if (getComponentMode('el')==='auto') manualEL.value = elPayment;
 
-                // Monthly projection table (tax = gross * effective rate from regular salary)
+                // Monthly projection table
                 const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
                 const tbody = document.getElementById('monthlyTableBody');
                 tbody.innerHTML = '';
