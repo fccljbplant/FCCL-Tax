@@ -1,648 +1,809 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FCCL Salary Tax Calculator | FY 2026–27</title>
-    <style>
-        :root {
-            --bg: #f0f4f8;
-            --surface: #ffffff;
-            --primary: #1a365d;
-            --primary-light: #2c5282;
-            --accent: #3182ce;
-            --accent-light: #ebf4ff;
-            --text: #1a202c;
-            --text-secondary: #4a5568;
-            --text-muted: #718096;
-            --border: #e2e8f0;
-            --border-light: #edf2f7;
-            --success: #38a169;
-            --success-bg: #f0fff4;
-            --warning: #d69e2e;
-            --warning-bg: #fffff0;
-            --danger: #e53e3e;
-            --info: #5a67d8;
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.06),0 1px 2px rgba(0,0,0,0.04);
-            --shadow: 0 4px 6px rgba(0,0,0,0.05),0 2px 4px rgba(0,0,0,0.04);
-            --shadow-lg: 0 10px 25px rgba(0,0,0,0.08),0 4px 10px rgba(0,0,0,0.04);
-            --radius-sm: 8px;
-            --radius: 12px;
-            --radius-lg: 16px;
-            --transition: 0.2s ease;
-            --font: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-        }
-        * { margin:0; padding:0; box-sizing:border-box; }
-        body {
-            font-family: var(--font);
-            background: var(--bg);
-            color: var(--text);
-            line-height: 1.6;
-            min-height: 100vh;
-            -webkit-font-smoothing: antialiased;
-        }
-        .header {
-            background: linear-gradient(135deg, #0f2340 0%, #1a365d 30%, #1e4d7b 60%, #1a365d 100%);
-            padding: 20px 32px; color: #fff; position: sticky; top: 0; z-index: 100;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.2); display: flex; align-items: center;
-            justify-content: space-between; flex-wrap: wrap; gap: 12px;
-        }
-        .header-left { display: flex; align-items: center; gap: 14px; }
-        .header-icon {
-            width: 44px; height: 44px; background: rgba(255,255,255,0.12);
-            border-radius: var(--radius-sm); display: flex; align-items: center;
-            justify-content: center; font-size: 22px; backdrop-filter: blur(4px);
-        }
-        .header h1 { font-size:1.45rem; font-weight:700; letter-spacing:-0.3px; line-height:1.2; margin:0; }
-        .header .subtitle { font-size:0.82rem; font-weight:400; opacity:0.8; letter-spacing:0.2px; }
-        .header-badge {
-            background: rgba(255,255,255,0.1); border:1px solid rgba(255,255,255,0.2);
-            padding: 8px 16px; border-radius:20px; font-size:0.78rem; font-weight:500;
-            letter-spacing:0.3px; backdrop-filter: blur(4px);
-        }
-        .container { max-width:1400px; margin:0 auto; padding:24px 20px 40px; }
-        .panel {
-            background: var(--surface); border-radius: var(--radius-lg); padding: 24px;
-            box-shadow: var(--shadow); margin-bottom: 24px; transition: box-shadow var(--transition);
-        }
-        .panel:hover { box-shadow: var(--shadow-lg); }
-        .panel-title {
-            font-size:1rem; font-weight:700; color:var(--primary); margin-bottom:18px;
-            padding-bottom:12px; border-bottom:2px solid var(--border-light);
-            letter-spacing:-0.2px; display:flex; align-items:center; gap:8px;
-        }
-        .panel-title .dot { width:8px; height:8px; border-radius:50%; background:var(--accent); }
-        .form-group { margin-bottom:14px; }
-        .form-group label {
-            display:block; font-size:0.8rem; font-weight:600; color:var(--text-secondary);
-            margin-bottom:4px; letter-spacing:0.2px;
-        }
-        input[type="number"], select {
-            font-family: var(--font); font-size:0.9rem; padding:9px 12px;
-            border:1.5px solid var(--border); border-radius:var(--radius-sm);
-            background:#fafbfc; color:var(--text); transition:all var(--transition);
-            width:100%; max-width:200px; outline:none;
-        }
-        input[type="number"]:focus, select:focus {
-            border-color:var(--accent); box-shadow:0 0 0 3px rgba(49,130,206,0.1); background:#fff;
-        }
-        input[type="number"]:disabled { background:#f1f5f9; color:#a0aec0; cursor:not-allowed; border-color:#e2e8f0; }
-        select {
-            cursor:pointer; appearance:none; -webkit-appearance:none;
-            background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%234a5568' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-            background-repeat:no-repeat; background-position:right 12px center; padding-right:36px;
-        }
-        .radio-group { display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
-        .radio-group label {
-            display:flex; align-items:center; gap:5px; font-size:0.78rem; font-weight:500;
-            cursor:pointer; padding:6px 12px; border-radius:20px; border:1.5px solid var(--border);
-            transition:all var(--transition); user-select:none; background:#fafbfc; color:var(--text-secondary);
-        }
-        .radio-group label:hover { border-color:var(--accent); background:var(--accent-light); }
-        .radio-group label.active-radio {
-            border-color:var(--accent); background:#ebf4ff; color:var(--primary); font-weight:600;
-        }
-        .radio-group input[type="radio"] { display:none; }
-        .manual-input {
-            width:130px; font-size:0.85rem; padding:7px 10px; border:1.5px solid var(--border);
-            border-radius:var(--radius-sm); background:#fafbfc; transition:all var(--transition); outline:none;
-        }
-        .manual-input:focus { border-color:var(--accent); box-shadow:0 0 0 3px rgba(49,130,206,0.1); }
-        .manual-input:disabled { background:#f1f5f9; color:#a0aec0; cursor:not-allowed; }
-        .checkbox-group { display:flex; align-items:center; gap:8px; margin:8px 0; }
-        .checkbox-group input[type="checkbox"] { width:18px; height:18px; accent-color:var(--accent); cursor:pointer; }
-        .checkbox-group label { font-size:0.85rem; font-weight:500; cursor:pointer; }
-        .component-row {
-            background:#f8fafc; border-radius:var(--radius-sm); padding:12px 14px;
-            margin-bottom:10px; border:1px solid var(--border-light); transition:all var(--transition);
-        }
-        .component-row:hover { border-color:#d0d7e2; background:#f4f7fb; }
-        .component-name { font-weight:600; font-size:0.82rem; color:var(--text); margin-bottom:6px; }
-        .component-detail { font-size:0.7rem; color:var(--text-muted); margin-bottom:4px; }
-        .el-tax-display {
-            margin-top: 8px; font-size: 0.82rem; display: flex; gap: 20px; align-items: center;
-            background: #fef9e7; padding: 8px 12px; border-radius: var(--radius-sm);
-            border: 1px solid #fef3cd;
-        }
-        .el-tax-display span { color: #856404; font-weight: 500; }
-        .el-tax-display strong { color: #b45309; }
-        .adjusted-basic-display {
-            background:linear-gradient(135deg,#ebf4ff,#f0f8ff); border:1.5px solid #bee3f8;
-            border-radius:var(--radius); padding:14px 18px; margin:14px 0; text-align:center;
-        }
-        .adjusted-basic-display .label { font-size:0.7rem; text-transform:uppercase; letter-spacing:0.5px; color:var(--text-muted); font-weight:600; }
-        .adjusted-basic-display .value { font-size:1.3rem; font-weight:700; color:var(--primary); }
-        .tax-summary-item {
-            display:flex; justify-content:space-between; align-items:center;
-            padding:10px 0; border-bottom:1px solid var(--border-light); font-size:0.85rem;
-        }
-        .tax-summary-item:last-child { border-bottom:none; }
-        .tax-summary-item .ts-label { color:var(--text-secondary); font-weight:500; }
-        .tax-summary-item .ts-value { font-weight:700; color:var(--text); text-align:right; }
-        .tax-summary-item .ts-value.highlight { color:var(--danger); }
-        .tax-summary-item .ts-value.highlight-green { color:var(--success); }
-        .tax-slab-info {
-            background:#fffbf0; border:1px solid #fef3cd; border-radius:var(--radius-sm);
-            padding:10px 14px; font-size:0.75rem; color:#856404; margin-top:8px; line-height:1.5;
-        }
-        .bonus-breakdown-card {
-            background: linear-gradient(135deg, #fef9e7, #fffbf0); border-left: 5px solid #d69e2e;
-            border-radius: var(--radius); padding: 20px 24px; margin-bottom: 24px; box-shadow: var(--shadow-sm);
-        }
-        .bonus-breakdown-card .bonus-title {
-            font-weight: 700; font-size: 1rem; color: #856404; margin-bottom: 12px;
-            display: flex; align-items: center; gap: 8px;
-        }
-        .bonus-breakdown-item {
-            display: flex; justify-content: space-between; align-items: center;
-            padding: 8px 0; font-size: 0.9rem; border-bottom: 1px dashed rgba(133, 100, 4, 0.2);
-        }
-        .bonus-breakdown-item:last-child {
-            border-bottom: none; font-weight: 700; font-size: 1rem; padding-top: 12px;
-            margin-top: 4px; border-top: 2px solid rgba(214, 158, 46, 0.3);
-        }
-        .table-wrapper {
-            overflow-x:auto; border-radius:var(--radius-lg); box-shadow:var(--shadow); background:var(--surface);
-        }
-        .monthly-table { width:100%; border-collapse:collapse; font-size:0.82rem; min-width:850px; }
-        .monthly-table thead th {
-            background:#1a365d; color:#fff; padding:12px 8px; text-align:right;
-            font-weight:600; font-size:0.75rem; letter-spacing:0.3px; white-space:nowrap;
-        }
-        .monthly-table thead th:first-child { text-align:left; padding-left:16px; }
-        .monthly-table tbody td {
-            padding:10px 8px; text-align:right; border-bottom:1px solid var(--border-light); white-space:nowrap;
-        }
-        .monthly-table tbody td:first-child { text-align:left; font-weight:600; padding-left:16px; }
-        .monthly-table tbody tr:hover td { background:#f8fafc; }
-        .monthly-table tbody tr.highlight-row td { background:#fffdf5; }
-        .monthly-table tbody tr.highlight-row td:first-child { color:#d69e2e; font-weight:700; }
-        .monthly-table .extra-badge {
-            display:inline-block; background:#fef3cd; color:#856404; padding:2px 8px;
-            border-radius:10px; font-size:0.7rem; font-weight:600;
-        }
-        .info-tip { font-size:0.68rem; color:var(--text-muted); font-style:italic; margin-top:2px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FCCL Salary Tax Calculator | FY 2026–27</title>
+<style>
+:root {
+  --navy-950:#071524;--navy-900:#0f2340;--navy-800:#1a365d;--navy-700:#1e4d7b;
+  --navy-600:#1d5fa3;--navy-500:#2563eb;--navy-200:#bfdbfe;--navy-100:#dbeafe;--navy-50:#eff6ff;
+  --green-700:#15803d;--green-600:#16a34a;--green-100:#dcfce7;--green-50:#f0fdf4;
+  --red-700:#b91c1c;--red-600:#dc2626;--red-100:#fee2e2;--red-50:#fef2f2;
+  --amber-700:#b45309;--amber-600:#d97706;--amber-100:#fef3c7;--amber-50:#fffbeb;
+  --slate-900:#0f172a;--slate-800:#1e293b;--slate-700:#334155;--slate-600:#475569;
+  --slate-500:#64748b;--slate-400:#94a3b8;--slate-300:#cbd5e1;--slate-200:#e2e8f0;
+  --slate-150:#edf2f7;--slate-100:#f1f5f9;--slate-50:#f8fafc;--white:#fff;
+  --font:'Segoe UI',system-ui,-apple-system,BlinkMacSystemFont,sans-serif;
+  --r-xs:6px;--r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:20px;--r-full:9999px;
+  --sh-xs:0 1px 2px rgba(0,0,0,.04);
+  --sh-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --sh-md:0 4px 8px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.04);
+  --sh-lg:0 10px 20px rgba(0,0,0,.09),0 4px 8px rgba(0,0,0,.04);
+  --t:.18s ease;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-height:1.5;min-height:100vh;-webkit-font-smoothing:antialiased}
 
-        /* Slabs table styling */
-        .slab-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 0.85rem;
-        }
-        .slab-table th {
-            background: #eef2f7;
-            padding: 10px 12px;
-            text-align: left;
-            font-weight: 600;
-            color: var(--primary);
-            border-bottom: 2px solid var(--border);
-        }
-        .slab-table td {
-            padding: 10px 12px;
-            border-bottom: 1px solid var(--border-light);
-        }
-        .slab-table tr:last-child td {
-            border-bottom: none;
-        }
-        .slab-table .slab-range {
-            font-weight: 600;
-        }
-        @media (max-width:600px) {
-            .slab-table { font-size:0.72rem; }
-        }
-        @media (max-width:1100px) {
-            .card-value { font-size:1.1rem; }
-        }
-        @media (max-width:600px) {
-            .header { padding:14px 16px; }
-            .header h1 { font-size:1.2rem; }
-            .container { padding:12px 8px 24px; }
-            .monthly-table { font-size:0.72rem; }
-            .monthly-table thead th, .monthly-table tbody td { padding:7px 6px; }
-        }
-        @media print {
-            body { background:#fff; font-size:11px; }
-            .header { position:static; background:#1a365d !important; -webkit-print-color-adjust:exact; }
-            .panel, .bonus-breakdown-card { box-shadow:none; border:1px solid #e2e8f0; }
-            .table-wrapper { box-shadow:none; overflow:visible; }
-        }
-        ::-webkit-scrollbar { height:6px; width:6px; }
-        ::-webkit-scrollbar-track { background:transparent; border-radius:3px; }
-        ::-webkit-scrollbar-thumb { background:#cbd5e0; border-radius:3px; }
-    </style>
+/* ─── HEADER ─── */
+.hdr{
+  background:linear-gradient(160deg,var(--navy-950) 0%,var(--navy-900) 45%,var(--navy-800) 100%);
+  padding:0 28px;height:60px;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:300;box-shadow:0 2px 16px rgba(0,0,0,.28);
+  border-bottom:1px solid rgba(255,255,255,.06);
+}
+.hdr-left{display:flex;align-items:center;gap:12px}
+.hdr-mark{
+  width:36px;height:36px;border-radius:var(--r-sm);
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.14);
+  display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;
+}
+.hdr-title{font-size:1rem;font-weight:700;color:#fff;letter-spacing:-.2px;line-height:1.2}
+.hdr-sub{font-size:.7rem;color:rgba(255,255,255,.55);font-weight:400;margin-top:1px}
+.hdr-badge{
+  background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);
+  color:rgba(255,255,255,.8);padding:5px 14px;border-radius:var(--r-full);
+  font-size:.68rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;flex-shrink:0;
+}
+
+/* ─── CONTAINER ─── */
+.wrap{max-width:1360px;margin:0 auto;padding:22px 18px 48px}
+
+/* ─── METRIC CARDS ─── */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:18px}
+.mc{
+  background:var(--white);border-radius:var(--r-md);padding:14px 16px;
+  box-shadow:var(--sh-sm);border-left:3px solid var(--navy-500);
+  transition:box-shadow var(--t),transform var(--t);cursor:default;
+}
+.mc:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.mc.g{border-left-color:var(--green-600)}
+.mc.r{border-left-color:var(--red-600)}
+.mc.a{border-left-color:var(--amber-600)}
+.mc-lbl{font-size:.63rem;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--slate-500);margin-bottom:5px}
+.mc-val{font-size:1.1rem;font-weight:700;color:var(--slate-900);letter-spacing:-.3px;line-height:1.1}
+.mc.g .mc-val{color:var(--green-700)}
+.mc.r .mc-val{color:var(--red-700)}
+.mc.a .mc-val{color:var(--amber-700)}
+.mc-note{font-size:.62rem;color:var(--slate-400);margin-top:3px;font-weight:400}
+
+/* ─── TWO-COLUMN LAYOUT ─── */
+.grid2{display:grid;grid-template-columns:410px 1fr;gap:18px;align-items:start;margin-bottom:18px}
+
+/* ─── CARD ─── */
+.card{background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);overflow:hidden}
+.card+.card{margin-top:14px}
+.card-hd{
+  padding:13px 18px;border-bottom:1px solid var(--slate-100);
+  display:flex;align-items:center;gap:9px;background:var(--white);
+}
+.card-hd-ico{
+  width:26px;height:26px;border-radius:var(--r-xs);background:var(--navy-50);
+  display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;
+}
+.card-hd-txt{font-size:.85rem;font-weight:700;color:var(--navy-800);letter-spacing:-.15px}
+.card-body{padding:16px 18px}
+
+/* ─── SECTION DIVIDER ─── */
+.sec-div{
+  font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.65px;
+  color:var(--slate-400);padding-bottom:7px;margin:14px 0 9px;
+  border-bottom:1px solid var(--slate-100);
+}
+.sec-div:first-child{margin-top:0}
+
+/* ─── FORM ROWS ─── */
+.fr{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:8px 0;border-bottom:1px solid var(--slate-100);gap:10px;
+}
+.fr:last-of-type{border-bottom:none}
+.fr label{font-size:.8rem;font-weight:500;color:var(--slate-700);flex:1;min-width:0}
+.fi,.fs{
+  font-family:var(--font);font-size:.82rem;padding:6px 9px;
+  border:1.5px solid var(--slate-200);border-radius:var(--r-sm);
+  background:var(--slate-50);color:var(--slate-900);width:128px;flex-shrink:0;
+  outline:none;transition:border-color var(--t),box-shadow var(--t),background var(--t);
+}
+.fi:focus,.fs:focus{border-color:var(--navy-500);background:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.fi:disabled{background:var(--slate-100);color:var(--slate-400);cursor:not-allowed}
+.fs{
+  appearance:none;-webkit-appearance:none;cursor:pointer;padding-right:28px;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat:no-repeat;background-position:right 9px center;
+}
+.fs:focus{border-color:var(--navy-500);background-color:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.fi-sm{width:78px !important}
+
+/* ─── ADJUSTED BASIC BOX ─── */
+.ab-box{
+  background:linear-gradient(135deg,var(--navy-50),#e0edff);
+  border:1.5px solid var(--navy-200);border-radius:var(--r-md);
+  padding:13px 16px;text-align:center;margin:12px 0;
+}
+.ab-box .lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:var(--navy-600);margin-bottom:3px}
+.ab-box .val{font-size:1.28rem;font-weight:700;color:var(--navy-800);letter-spacing:-.4px}
+.ab-box .hint{font-size:.62rem;color:var(--navy-500);margin-top:2px}
+
+/* ─── COMPONENT ROWS ─── */
+.comp{
+  border:1px solid var(--slate-200);border-radius:var(--r-sm);
+  padding:9px 11px;margin-bottom:6px;background:var(--slate-50);
+  transition:border-color var(--t),background var(--t);
+}
+.comp:hover{border-color:var(--slate-300);background:var(--white)}
+.comp-top{display:flex;align-items:center;gap:5px;margin-bottom:7px}
+.comp-ico{font-size:12px;flex-shrink:0}
+.comp-name{font-size:.78rem;font-weight:600;color:var(--slate-800)}
+.comp-pct{font-size:.63rem;color:var(--slate-400);font-weight:500;margin-left:auto}
+
+/* ─── RADIO TOGGLE (auto/manual pill) ─── */
+.radio-group{display:flex;align-items:center;gap:5px;flex-wrap:wrap}
+.radio-group label{
+  display:inline-flex;align-items:center;padding:4px 11px;
+  border:1.5px solid var(--slate-200);border-radius:var(--r-full);
+  font-size:.7rem;font-weight:500;color:var(--slate-500);cursor:pointer;
+  user-select:none;transition:all var(--t);background:var(--white);line-height:1.3;
+}
+.radio-group label:hover{border-color:var(--navy-300,#93c5fd);color:var(--navy-600)}
+.radio-group label.active-radio{
+  border-color:var(--navy-500);background:var(--navy-50);color:var(--navy-700);font-weight:600;
+}
+.radio-group input[type="radio"]{display:none}
+.manual-input{
+  width:105px;font-size:.78rem;padding:4px 8px;
+  border:1.5px solid var(--slate-200);border-radius:var(--r-sm);
+  background:var(--white);color:var(--slate-900);outline:none;
+  transition:all var(--t);font-family:var(--font);
+}
+.manual-input:focus{border-color:var(--navy-500);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.manual-input:disabled{background:var(--slate-100);color:var(--slate-400);cursor:not-allowed}
+
+/* ─── CHECKBOX ─── */
+.cbrow{display:flex;align-items:center;gap:8px;padding:7px 0}
+.cbrow input[type="checkbox"]{width:15px;height:15px;accent-color:var(--navy-500);cursor:pointer;flex-shrink:0}
+.cbrow label{font-size:.8rem;font-weight:500;color:var(--slate-700);cursor:pointer}
+
+/* ─── EL TAX PILL ─── */
+.el-info{
+  display:flex;gap:14px;margin-top:7px;padding:7px 11px;
+  background:var(--amber-50);border:1px solid var(--amber-100);border-radius:var(--r-sm);
+  font-size:.72rem;font-weight:500;color:var(--amber-700);flex-wrap:wrap;
+}
+.el-info strong{color:var(--amber-700);font-weight:700}
+
+/* ─── SUMMARY ROWS ─── */
+.sr{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  padding:8px 0;border-bottom:1px solid var(--slate-100);gap:8px;
+}
+.sr:last-child{border-bottom:none}
+.sr.divider{border-top:2px solid var(--slate-200);padding-top:11px;margin-top:3px;border-bottom:none}
+.sr-lbl{font-size:.78rem;color:var(--slate-600);font-weight:500;flex:1;line-height:1.4}
+.sr-lbl.bold{font-weight:700;color:var(--slate-800);font-size:.82rem}
+.sr-val{font-size:.8rem;font-weight:700;color:var(--slate-900);text-align:right;white-space:nowrap}
+.sr-val.r{color:var(--red-600)}
+.sr-val.g{color:var(--green-600)}
+.sr-val.lg{font-size:.88rem}
+.sr-val.lr{font-size:.88rem;color:var(--red-600)}
+.slab-bar{
+  background:var(--amber-50);border:1px solid var(--amber-100);
+  border-radius:var(--r-sm);padding:9px 12px;font-size:.7rem;
+  color:var(--amber-700);margin-top:10px;line-height:1.55;font-weight:500;
+}
+
+/* ─── BONUS CARD ─── */
+.bonus-card{
+  background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);
+  border-left:3px solid var(--amber-500);overflow:hidden;margin-top:14px;
+}
+.bc-hd{
+  padding:12px 18px;background:linear-gradient(135deg,var(--amber-50),#fffef7);
+  border-bottom:1px solid var(--amber-100);display:flex;align-items:center;gap:7px;
+}
+.bc-hd-txt{font-size:.83rem;font-weight:700;color:#92400e}
+.bc-note{font-size:.62rem;color:var(--amber-600);margin-left:auto;font-weight:400;text-align:right}
+.bc-body{padding:13px 18px}
+.bi{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:7px 0;border-bottom:1px dashed rgba(217,119,6,.18);font-size:.82rem;
+}
+.bi:last-child{
+  border-bottom:none;border-top:2px solid rgba(217,119,6,.22);
+  padding-top:11px;margin-top:3px;font-weight:700;font-size:.88rem;
+}
+.bi .bl{color:var(--slate-700)}
+.bi .bv{font-weight:600}
+.bi .bv.r{color:var(--red-600)}
+.bi .bv.g{color:var(--green-600);font-weight:700}
+
+/* ─── MONTHLY TABLE ─── */
+.tbl-card{
+  background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);
+  overflow:hidden;margin-bottom:18px;
+}
+.tbl-hd{
+  padding:13px 18px;border-bottom:1px solid var(--slate-100);
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+}
+.tbl-title{font-size:.85rem;font-weight:700;color:var(--navy-800)}
+.tbl-sub{font-size:.67rem;color:var(--slate-400)}
+.tbl-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+.mt{width:100%;border-collapse:collapse;font-size:.76rem;min-width:780px}
+.mt thead th{
+  background:var(--navy-800);color:#fff;padding:9px 11px;
+  text-align:right;font-weight:600;font-size:.68rem;letter-spacing:.3px;white-space:nowrap;
+}
+.mt thead th:first-child{text-align:left;padding-left:18px}
+.mt tbody td{
+  padding:8px 11px;text-align:right;border-bottom:1px solid var(--slate-100);white-space:nowrap;
+}
+.mt tbody td:first-child{text-align:left;padding-left:18px;font-weight:600;color:var(--slate-700)}
+.mt tbody tr:hover td{background:var(--slate-50)}
+.mt tbody tr.highlight-row td{background:#fffdf7}
+.mt tbody tr.highlight-row td:first-child{color:var(--amber-600);font-weight:700}
+.mt tfoot td{
+  padding:9px 11px;text-align:right;font-weight:700;
+  background:var(--slate-100);font-size:.75rem;
+  border-top:2px solid var(--slate-300);color:var(--slate-800);
+}
+.mt tfoot td:first-child{text-align:left;padding-left:18px;color:var(--navy-800)}
+.extra-badge{
+  display:inline-block;background:var(--amber-100);color:var(--amber-700);
+  padding:2px 7px;border-radius:10px;font-size:.65rem;font-weight:600;
+}
+.tbl-foot-note{
+  padding:7px 18px;font-size:.64rem;color:var(--slate-400);
+  border-top:1px solid var(--slate-100);
+}
+
+/* ─── SLAB TABLE ─── */
+.slab-tbl{width:100%;border-collapse:collapse;font-size:.78rem}
+.slab-tbl th{
+  background:var(--slate-100);padding:8px 13px;text-align:left;
+  font-weight:700;color:var(--navy-800);font-size:.68rem;
+  text-transform:uppercase;letter-spacing:.3px;
+}
+.slab-tbl td{padding:8px 13px;border-bottom:1px solid var(--slate-100);color:var(--slate-700)}
+.slab-tbl tr:last-child td{border-bottom:none}
+.slab-tbl tr:hover td{background:var(--slate-50)}
+.slab-range{font-weight:600;color:var(--slate-900);white-space:nowrap}
+
+/* ─── RESPONSIVE ─── */
+@media(max-width:1100px){
+  .grid2{grid-template-columns:1fr}
+}
+@media(max-width:768px){
+  .hdr{padding:0 14px;height:54px}
+  .hdr-title{font-size:.92rem}
+  .hdr-sub{display:none}
+  .hdr-badge{padding:4px 10px;font-size:.62rem}
+  .wrap{padding:12px 10px 32px}
+  .metrics{grid-template-columns:1fr 1fr;gap:9px;margin-bottom:12px}
+  .mc{padding:11px 13px}
+  .mc-val{font-size:1rem}
+  .card-body{padding:13px 13px}
+  .fi,.fs{width:112px}
+  .manual-input{width:90px}
+  .fi-sm{width:70px !important}
+}
+@media(max-width:480px){
+  .hdr-badge{display:none}
+  .metrics{gap:8px}
+  .mc{border-left-width:2px;padding:10px 11px}
+  .mc-val{font-size:.92rem}
+  .mc-note{display:none}
+}
+@media print{
+  body{background:#fff}
+  .hdr{position:static;-webkit-print-color-adjust:exact}
+  .card,.bonus-card,.tbl-card{box-shadow:none;border:1px solid var(--slate-200)}
+}
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:transparent}
+::-webkit-scrollbar-thumb{background:var(--slate-300);border-radius:3px}
+</style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-left">
-            <div class="header-icon">💰</div>
-            <div>
-                <h1>FCCL Salary Tax Calculator</h1>
-                <div class="subtitle">Salary planner with annual bonus and new tax slabs</div>
-            </div>
+
+<header class="hdr">
+  <div class="hdr-left">
+    <div class="hdr-mark">💰</div>
+    <div>
+      <div class="hdr-title">FCCL Salary Tax Calculator</div>
+      <div class="hdr-sub">Salary planner with annual bonus and progressive tax slabs</div>
+    </div>
+  </div>
+  <div class="hdr-badge">FY 2026–27</div>
+</header>
+
+<div class="wrap">
+
+  <!-- METRIC CARDS -->
+  <div class="metrics">
+    <div class="mc">
+      <div class="mc-lbl">Monthly Take Home</div>
+      <div class="mc-val" id="metricMonthly">Rs. 0</div>
+      <div class="mc-note">Typical month (excl. extras)</div>
+    </div>
+    <div class="mc g">
+      <div class="mc-lbl">Annual Net Salary</div>
+      <div class="mc-val" id="metricAnnualNet">Rs. 0</div>
+      <div class="mc-note">After all deductions &amp; tax</div>
+    </div>
+    <div class="mc r">
+      <div class="mc-lbl">Annual Tax Liability</div>
+      <div class="mc-val" id="metricAnnualTax">Rs. 0</div>
+      <div class="mc-note">Total tax for the year</div>
+    </div>
+    <div class="mc a">
+      <div class="mc-lbl">Net Bonus (After Tax)</div>
+      <div class="mc-val" id="metricNetBonus">Rs. 0</div>
+      <div class="mc-note">Bonus received in hand</div>
+    </div>
+  </div>
+
+  <!-- TWO-COLUMN GRID -->
+  <div class="grid2">
+
+    <!-- LEFT: CONFIGURATION -->
+    <div>
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-hd-ico">⚙️</div>
+          <div class="card-hd-txt">Salary Configuration</div>
         </div>
-        <div class="header-badge">📋 FY 2026–27</div>
-    </header>
+        <div class="card-body">
 
-    <div class="container">
-        <!-- INPUT PANEL -->
-        <div class="panel">
-            <div class="panel-title"><span class="dot"></span> Salary Configuration</div>
-            <div class="form-group">
-                <label for="basicSalary">Basic Salary (Rs.)</label>
-                <input type="number" id="basicSalary" value="80000" min="1" step="1">
-            </div>
-            <div class="form-group">
-                <label for="incrementPct">Annual Increment</label>
-                <select id="incrementPct">
-                    <option value="0" selected>0%</option>
-                    <option value="6">6%</option>
-                    <option value="8">8%</option>
-                    <option value="10">10%</option>
-                    <option value="12">12%</option>
-                    <option value="14">14%</option>
-                </select>
-            </div>
-            <div class="adjusted-basic-display">
-                <div class="label">Adjusted Basic Salary</div>
-                <div class="value" id="adjustedBasicDisplay">Rs. 80,000</div>
-                <div class="info-tip">Basic Salary × (1 + Increment%)</div>
-            </div>
+          <div class="sec-div">Basic information</div>
+          <div class="fr">
+            <label for="basicSalary">Basic Salary (Rs.)</label>
+            <input type="number" id="basicSalary" class="fi" value="80000" min="1" step="1">
+          </div>
+          <div class="fr">
+            <label for="incrementPct">Annual Increment</label>
+            <select id="incrementPct" class="fs">
+              <option value="0" selected>0%</option>
+              <option value="6">6%</option>
+              <option value="8">8%</option>
+              <option value="10">10%</option>
+              <option value="12">12%</option>
+              <option value="14">14%</option>
+            </select>
+          </div>
+          <div class="ab-box">
+            <div class="lbl">Adjusted Basic Salary</div>
+            <div class="val" id="adjustedBasicDisplay">Rs. 80,000</div>
+            <div class="hint">Basic × (1 + increment %)</div>
+          </div>
 
-            <div style="margin-top:16px;">
-                <div style="font-weight:700; font-size:0.9rem; color:var(--primary); margin-bottom:10px;">🧩 Salary Components</div>
-                <div class="component-row">
-                    <div class="component-name">🏠 House Rent Allowance (HRA)</div>
-                    <div class="component-detail">Auto: 45% of Adjusted Basic</div>
-                    <div class="radio-group" data-component="hra">
-                        <label class="active-radio"><input type="radio" name="mode_hra" value="auto" checked> Auto</label>
-                        <label><input type="radio" name="mode_hra" value="manual"> Manual</label>
-                        <input type="number" class="manual-input" id="manualHRA" value="36000" disabled placeholder="Manual amount">
-                    </div>
-                </div>
-                <div class="component-row">
-                    <div class="component-name">🔧 Utility Allowance</div>
-                    <div class="component-detail">Auto: 20% of Adjusted Basic</div>
-                    <div class="radio-group" data-component="utility">
-                        <label class="active-radio"><input type="radio" name="mode_utility" value="auto" checked> Auto</label>
-                        <label><input type="radio" name="mode_utility" value="manual"> Manual</label>
-                        <input type="number" class="manual-input" id="manualUtility" value="16000" disabled placeholder="Manual amount">
-                    </div>
-                </div>
-                <div class="component-row">
-                    <div class="component-name">🚗 Conveyance Allowance</div>
-                    <div class="component-detail">Auto: 15% of Adjusted Basic</div>
-                    <div class="radio-group" data-component="conveyance">
-                        <label class="active-radio"><input type="radio" name="mode_conveyance" value="auto" checked> Auto</label>
-                        <label><input type="radio" name="mode_conveyance" value="manual"> Manual</label>
-                        <input type="number" class="manual-input" id="manualConveyance" value="12000" disabled placeholder="Manual amount">
-                    </div>
-                </div>
-                <div class="component-row">
-                    <div class="component-name">🎖️ Ex-Gratia 1</div>
-                    <div class="component-detail">Auto: 7.38% of Adjusted Basic</div>
-                    <div class="radio-group" data-component="exgratia1">
-                        <label class="active-radio"><input type="radio" name="mode_exgratia1" value="auto" checked> Auto</label>
-                        <label><input type="radio" name="mode_exgratia1" value="manual"> Manual</label>
-                        <input type="number" class="manual-input" id="manualExGratia1" value="5904" disabled placeholder="Manual amount">
-                    </div>
-                </div>
-                <div class="component-row">
-                    <div class="component-name">🏅 Ex-Gratia 2</div>
-                    <div class="component-detail">Auto: 12.18% of Adjusted Basic</div>
-                    <div class="radio-group" data-component="exgratia2">
-                        <label class="active-radio"><input type="radio" name="mode_exgratia2" value="auto" checked> Auto</label>
-                        <label><input type="radio" name="mode_exgratia2" value="manual"> Manual</label>
-                        <input type="number" class="manual-input" id="manualExGratia2" value="9744" disabled placeholder="Manual amount">
-                    </div>
-                </div>
-                <div class="component-row">
-                    <div class="component-name">🔐 Provident Fund Contribution</div>
-                    <div class="component-detail">Auto: 10% of Adjusted Basic</div>
-                    <div class="radio-group" data-component="pf">
-                        <label class="active-radio"><input type="radio" name="mode_pf" value="auto" checked> Auto</label>
-                        <label><input type="radio" name="mode_pf" value="manual"> Manual</label>
-                        <input type="number" class="manual-input" id="manualPF" value="8000" disabled placeholder="Manual amount">
-                    </div>
-                </div>
-            </div>
+          <div class="sec-div">Allowances</div>
 
-            <div style="margin-top:16px;">
-                <div style="font-weight:700; font-size:0.9rem; color:var(--primary); margin-bottom:10px;">📉 Monthly Deductions</div>
-                <div class="form-group">
-                    <label for="eobi">EOBI (Rs.)</label>
-                    <input type="number" id="eobi" value="370" min="0" step="1">
-                </div>
-                <div class="form-group">
-                    <label for="professionalTax">Professional Tax (Rs.)</label>
-                    <input type="number" id="professionalTax" value="200" min="0" step="1">
-                </div>
-                <div class="checkbox-group">
-                    <input type="checkbox" id="pfLoanCheckbox">
-                    <label for="pfLoanCheckbox">I have Provident Fund Loan</label>
-                </div>
-                <div class="form-group" id="pfLoanContainer" style="display:none;">
-                    <label for="pfLoanAmount">PF Loan Deduction (Rs./month)</label>
-                    <input type="number" id="pfLoanAmount" value="0" min="0" step="1">
-                </div>
+          <div class="comp">
+            <div class="comp-top">
+              <span class="comp-ico">🏠</span>
+              <span class="comp-name">House Rent Allowance</span>
+              <span class="comp-pct">45% of basic</span>
             </div>
+            <div class="radio-group" data-component="hra">
+              <label class="active-radio"><input type="radio" name="mode_hra" value="auto" checked>Auto</label>
+              <label><input type="radio" name="mode_hra" value="manual">Manual</label>
+              <input type="number" class="manual-input" id="manualHRA" disabled placeholder="Amount">
+            </div>
+          </div>
 
-            <div style="margin-top:16px;">
-                <div style="font-weight:700; font-size:0.9rem; color:var(--primary); margin-bottom:10px;">🎁 Annual Bonus & Leave</div>
-                <div class="form-group">
-                    <label for="bonusMultiplier">Annual Bonus (multiple of Basic)</label>
-                    <select id="bonusMultiplier">
-                        <option value="6">6× Basic</option>
-                        <option value="8">8× Basic</option>
-                        <option value="10" selected>10× Basic</option>
-                        <option value="12">12× Basic</option>
-                        <option value="14">14× Basic</option>
-                    </select>
-                </div>
-                <div class="component-row">
-                    <div class="component-name">🏖️ Earned Leave (EL) Payment</div>
-                    <div class="component-detail">Auto: 15 days (0.5 × Monthly Gross Salary)</div>
-                    <div class="radio-group" data-component="el">
-                        <label class="active-radio"><input type="radio" name="mode_el" value="auto" checked> Auto</label>
-                        <label><input type="radio" name="mode_el" value="manual"> Manual</label>
-                        <input type="number" class="manual-input" id="manualEL" value="40000" disabled placeholder="Manual amount">
-                    </div>
-                    <div class="el-tax-display" id="elTaxInfo">
-                        <span>🧾 Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span>
-                        <span>💵 Net EL: <strong id="elNetOutput">Rs. 0</strong></span>
-                    </div>
-                </div>
+          <div class="comp">
+            <div class="comp-top">
+              <span class="comp-ico">🔧</span>
+              <span class="comp-name">Utility Allowance</span>
+              <span class="comp-pct">20% of basic</span>
             </div>
+            <div class="radio-group" data-component="utility">
+              <label class="active-radio"><input type="radio" name="mode_utility" value="auto" checked>Auto</label>
+              <label><input type="radio" name="mode_utility" value="manual">Manual</label>
+              <input type="number" class="manual-input" id="manualUtility" disabled placeholder="Amount">
+            </div>
+          </div>
+
+          <div class="comp">
+            <div class="comp-top">
+              <span class="comp-ico">🚗</span>
+              <span class="comp-name">Conveyance Allowance</span>
+              <span class="comp-pct">15% of basic</span>
+            </div>
+            <div class="radio-group" data-component="conveyance">
+              <label class="active-radio"><input type="radio" name="mode_conveyance" value="auto" checked>Auto</label>
+              <label><input type="radio" name="mode_conveyance" value="manual">Manual</label>
+              <input type="number" class="manual-input" id="manualConveyance" disabled placeholder="Amount">
+            </div>
+          </div>
+
+          <div class="comp">
+            <div class="comp-top">
+              <span class="comp-ico">🎖️</span>
+              <span class="comp-name">Ex-Gratia 1</span>
+              <span class="comp-pct">7.38% of basic</span>
+            </div>
+            <div class="radio-group" data-component="exgratia1">
+              <label class="active-radio"><input type="radio" name="mode_exgratia1" value="auto" checked>Auto</label>
+              <label><input type="radio" name="mode_exgratia1" value="manual">Manual</label>
+              <input type="number" class="manual-input" id="manualExGratia1" disabled placeholder="Amount">
+            </div>
+          </div>
+
+          <div class="comp">
+            <div class="comp-top">
+              <span class="comp-ico">🏅</span>
+              <span class="comp-name">Ex-Gratia 2</span>
+              <span class="comp-pct">12.18% of basic</span>
+            </div>
+            <div class="radio-group" data-component="exgratia2">
+              <label class="active-radio"><input type="radio" name="mode_exgratia2" value="auto" checked>Auto</label>
+              <label><input type="radio" name="mode_exgratia2" value="manual">Manual</label>
+              <input type="number" class="manual-input" id="manualExGratia2" disabled placeholder="Amount">
+            </div>
+          </div>
+
+          <div class="comp">
+            <div class="comp-top">
+              <span class="comp-ico">🔐</span>
+              <span class="comp-name">Provident Fund Contribution</span>
+              <span class="comp-pct">10% of basic</span>
+            </div>
+            <div class="radio-group" data-component="pf">
+              <label class="active-radio"><input type="radio" name="mode_pf" value="auto" checked>Auto</label>
+              <label><input type="radio" name="mode_pf" value="manual">Manual</label>
+              <input type="number" class="manual-input" id="manualPF" disabled placeholder="Amount">
+            </div>
+          </div>
+
+          <div class="sec-div">Monthly deductions</div>
+          <div class="fr">
+            <label for="eobi">EOBI (Rs.)</label>
+            <input type="number" id="eobi" class="fi" value="370" min="0" step="1">
+          </div>
+          <div class="fr">
+            <label for="professionalTax">Professional Tax (Rs.)</label>
+            <input type="number" id="professionalTax" class="fi" value="200" min="0" step="1">
+          </div>
+          <div class="cbrow">
+            <input type="checkbox" id="pfLoanCheckbox">
+            <label for="pfLoanCheckbox">Provident Fund Loan deduction</label>
+          </div>
+          <div id="pfLoanContainer" style="display:none">
+            <div class="fr">
+              <label for="pfLoanAmount">PF Loan (Rs./month)</label>
+              <input type="number" id="pfLoanAmount" class="fi" value="0" min="0" step="1">
+            </div>
+          </div>
+
+          <div class="sec-div">Annual bonus &amp; earned leave</div>
+          <div class="fr">
+            <label for="bonusMultiplier">Annual Bonus</label>
+            <select id="bonusMultiplier" class="fs">
+              <option value="6">6× Basic</option>
+              <option value="8">8× Basic</option>
+              <option value="10" selected>10× Basic</option>
+              <option value="12">12× Basic</option>
+              <option value="14">14× Basic</option>
+            </select>
+          </div>
+
+          <div class="comp">
+            <div class="comp-top">
+              <span class="comp-ico">🏖️</span>
+              <span class="comp-name">Earned Leave Payment</span>
+              <span class="comp-pct">Daily gross × days</span>
+            </div>
+            <div class="fr" style="border-bottom:none;padding:5px 0 7px">
+              <label for="elDays" style="font-size:.72rem;color:var(--slate-500)">Leave days (max 15)</label>
+              <input type="number" id="elDays" class="fi fi-sm" value="15" min="0" max="15" step="1">
+            </div>
+            <div class="radio-group" data-component="el">
+              <label class="active-radio"><input type="radio" name="mode_el" value="auto" checked>Auto</label>
+              <label><input type="radio" name="mode_el" value="manual">Manual</label>
+              <input type="number" class="manual-input" id="manualEL" disabled placeholder="Amount">
+            </div>
+            <div class="el-info" id="elTaxInfo">
+              <span>Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span>
+              <span>Net EL: <strong id="elNetOutput">Rs. 0</strong></span>
+            </div>
+          </div>
+
         </div>
-
-        <!-- TAX & ANNUAL SUMMARY -->
-        <div class="panel">
-            <div class="panel-title"><span class="dot"></span> Annual Tax & Summary</div>
-            <div class="tax-summary-item"><span class="ts-label">Annual Gross Salary (12 months + extra basic)</span><span class="ts-value" id="sumAnnualGross">Rs. 0</span></div>
-            <div class="tax-summary-item"><span class="ts-label">Annual Bonus (<span id="sumBonusMult">10</span> × Basic)</span><span class="ts-value" id="sumAnnualBonus">Rs. 0</span></div>
-            <div class="tax-summary-item"><span class="ts-label">Earned Leave Payment</span><span class="ts-value" id="sumELPayment">Rs. 0</span></div>
-            <div class="tax-summary-item"><span class="ts-label">Tax on EL Payment</span><span class="ts-value highlight" id="sumELTax">Rs. 0</span></div>
-            <div class="tax-summary-item"><span class="ts-label">Net EL Payment</span><span class="ts-value highlight-green" id="sumELNet">Rs. 0</span></div>
-            <div class="tax-summary-item" style="border-top:2px solid #e2e8f0; padding-top:12px;"><span class="ts-label" style="font-weight:700;">Annual Taxable Income</span><span class="ts-value" style="font-size:1rem;" id="sumAnnualTaxable">Rs. 0</span></div>
-            <div class="tax-summary-item"><span class="ts-label">Annual Tax Liability</span><span class="ts-value highlight" id="sumAnnualTax">Rs. 0</span></div>
-            <div class="tax-summary-item"><span class="ts-label">Annual Deductions (12 × monthly)</span><span class="ts-value" id="sumAnnualDeductions">Rs. 0</span></div>
-            <div class="tax-summary-item" style="border-top:2px solid #e2e8f0; padding-top:12px;"><span class="ts-label" style="font-weight:700;">Annual Net Salary</span><span class="ts-value highlight-green" style="font-size:1.05rem;" id="sumAnnualNet">Rs. 0</span></div>
-            <div class="tax-summary-item"><span class="ts-label">Effective Tax Rate</span><span class="ts-value" id="sumEffectiveRate" style="color:#e53e3e;">0.00%</span></div>
-            <div class="tax-slab-info" id="taxSlabInfo">Tax calculated using progressive slab rates for FY 2026–27.</div>
-        </div>
-
-        <!-- BONUS TAX BREAKDOWN CARD -->
-        <div class="bonus-breakdown-card">
-            <div class="bonus-title">
-                <span>🎯 Bonus Tax Impact</span>
-                <span style="font-size:0.75rem; font-weight:400; margin-left:auto;">(Tax on bonus is not included in monthly deductions)</span>
-            </div>
-            <div class="bonus-breakdown-item">
-                <span>Annual Bonus (Gross)</span>
-                <span style="font-weight:600;" id="bonusGrossDisplay">Rs. 0</span>
-            </div>
-            <div class="bonus-breakdown-item">
-                <span>Tax on Bonus</span>
-                <span style="color:#e53e3e; font-weight:600;" id="bonusTaxDisplay">Rs. 0</span>
-            </div>
-            <div class="bonus-breakdown-item">
-                <span>Net Bonus (Actual Received)</span>
-                <span style="color:#38a169; font-weight:700; font-size:1.1rem;" id="bonusNetDisplay">Rs. 0</span>
-            </div>
-        </div>
-
-        <!-- MONTHLY PROJECTION TABLE -->
-        <div class="table-wrapper">
-            <div style="padding:16px 20px; background:#fff; border-bottom:1px solid var(--border-light);">
-                <span style="font-weight:700; font-size:1rem; color:var(--primary);">📅 Monthly Projection Table</span>
-                <span style="font-size:0.72rem; color:var(--text-muted); margin-left:8px;">(Tax on salary only – EL & bonus taxes excluded)</span>
-            </div>
-            <table class="monthly-table" id="monthlyProjectionTable">
-                <thead>
-                    <tr>
-                        <th>Month</th>
-                        <th>Gross Salary</th>
-                        <th>Extra Basic</th>
-                        <th>Deductions*</th>
-                        <th>PF Loan</th>
-                        <th>Tax</th>
-                        <th>Take Home</th>
-                    </tr>
-                </thead>
-                <tbody id="monthlyTableBody"></tbody>
-                <tfoot id="monthlyTableFoot" style="font-weight:700; background:#f8fafc;"></tfoot>
-            </table>
-            <div style="padding:8px 20px; font-size:0.7rem; color:var(--text-muted);">* Deductions column excludes PF Loan (shown separately).</div>
-        </div>
-
-        <!-- TAX SLABS TABLE -->
-        <div class="panel">
-            <div class="panel-title"><span class="dot"></span> 📊 Tax Slabs FY 2026–27</div>
-            <div class="table-wrapper" style="box-shadow:none;">
-                <table class="slab-table">
-                    <thead>
-                        <tr>
-                            <th>Taxable Income Range</th>
-                            <th>Tax Calculation</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td class="slab-range">Up to 600,000</td><td>0% (No tax)</td></tr>
-                        <tr><td class="slab-range">600,001 – 1,200,000</td><td>1% of the amount exceeding 600,000</td></tr>
-                        <tr><td class="slab-range">1,200,001 – 2,200,000</td><td>Rs. 6,000 + 7% of the amount exceeding 1,200,000</td></tr>
-                        <tr><td class="slab-range">2,200,001 – 3,200,000</td><td>Rs. 76,000 + 20% of the amount exceeding 2,200,000</td></tr>
-                        <tr><td class="slab-range">3,200,001 – 4,100,000</td><td>Rs. 276,000 + 25% of the amount exceeding 3,200,000</td></tr>
-                        <tr><td class="slab-range">4,100,001 – 5,600,000</td><td>Rs. 501,000 + 29% of the amount exceeding 4,100,000</td></tr>
-                        <tr><td class="slab-range">5,600,001 – 7,000,000</td><td>Rs. 936,000 + 32% of the amount exceeding 5,600,000</td></tr>
-                        <tr><td class="slab-range">Above 7,000,000</td><td>Rs. 1,384,000 + 35% of the amount exceeding 7,000,000</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <script>
-        (function() {
-            const basicSalaryInput = document.getElementById('basicSalary');
-            const incrementPctSelect = document.getElementById('incrementPct');
-            const adjustedBasicDisplay = document.getElementById('adjustedBasicDisplay');
-            const bonusMultiplierSelect = document.getElementById('bonusMultiplier');
-            const eobiInput = document.getElementById('eobi');
-            const professionalTaxInput = document.getElementById('professionalTax');
-            const pfLoanCheckbox = document.getElementById('pfLoanCheckbox');
-            const pfLoanContainer = document.getElementById('pfLoanContainer');
-            const pfLoanAmountInput = document.getElementById('pfLoanAmount');
-            const manualEL = document.getElementById('manualEL');
-            const manualHRA = document.getElementById('manualHRA');
-            const manualUtility = document.getElementById('manualUtility');
-            const manualConveyance = document.getElementById('manualConveyance');
-            const manualExGratia1 = document.getElementById('manualExGratia1');
-            const manualExGratia2 = document.getElementById('manualExGratia2');
-            const manualPF = document.getElementById('manualPF');
-            const radioGroups = document.querySelectorAll('.radio-group[data-component]');
+    <!-- RIGHT: SUMMARY + BONUS -->
+    <div>
+      <div class="card">
+        <div class="card-hd">
+          <div class="card-hd-ico">📊</div>
+          <div class="card-hd-txt">Annual Tax &amp; Summary</div>
+        </div>
+        <div class="card-body">
+          <div class="sr">
+            <span class="sr-lbl">Annual Gross Salary <small style="color:var(--slate-400);font-weight:400">(12 months + 2× extra basic)</small></span>
+            <span class="sr-val" id="sumAnnualGross">Rs. 0</span>
+          </div>
+          <div class="sr">
+            <span class="sr-lbl">Annual Bonus (<span id="sumBonusMult">10</span>× Basic)</span>
+            <span class="sr-val" id="sumAnnualBonus">Rs. 0</span>
+          </div>
+          <div class="sr">
+            <span class="sr-lbl">Earned Leave Payment (<span id="sumELDays">15</span> days)</span>
+            <span class="sr-val" id="sumELPayment">Rs. 0</span>
+          </div>
+          <div class="sr">
+            <span class="sr-lbl">Tax on EL Payment</span>
+            <span class="sr-val r" id="sumELTax">Rs. 0</span>
+          </div>
+          <div class="sr">
+            <span class="sr-lbl">Net EL Payment</span>
+            <span class="sr-val g" id="sumELNet">Rs. 0</span>
+          </div>
+          <div class="sr divider">
+            <span class="sr-lbl bold">Annual Taxable Income</span>
+            <span class="sr-val" id="sumAnnualTaxable">Rs. 0</span>
+          </div>
+          <div class="sr">
+            <span class="sr-lbl">Annual Tax Liability</span>
+            <span class="sr-val lr" id="sumAnnualTax">Rs. 0</span>
+          </div>
+          <div class="sr">
+            <span class="sr-lbl">Annual Deductions <small style="color:var(--slate-400);font-weight:400">(12 × monthly)</small></span>
+            <span class="sr-val" id="sumAnnualDeductions">Rs. 0</span>
+          </div>
+          <div class="sr divider">
+            <span class="sr-lbl bold">Annual Net Salary</span>
+            <span class="sr-val g lg" id="sumAnnualNet">Rs. 0</span>
+          </div>
+          <div class="sr">
+            <span class="sr-lbl">Effective Tax Rate</span>
+            <span class="sr-val r" id="sumEffectiveRate">0.00%</span>
+          </div>
+          <div class="slab-bar" id="taxSlabInfo">Tax calculated using progressive slab rates for FY 2026–27.</div>
+        </div>
+      </div>
 
-            const PCT_HRA = 0.45;
-            const PCT_UTILITY = 0.20;
-            const PCT_CONVEYANCE = 0.15;
-            const PCT_EXGRATIA1 = 0.0738;
-            const PCT_EXGRATIA2 = 0.1218;
-            const PCT_PF = 0.10;
+      <!-- BONUS BREAKDOWN -->
+      <div class="bonus-card">
+        <div class="bc-hd">
+          <span>🎯</span>
+          <span class="bc-hd-txt">Bonus Tax Impact</span>
+          <span class="bc-note">Not included in monthly deductions</span>
+        </div>
+        <div class="bc-body">
+          <div class="bi">
+            <span class="bl">Annual Bonus (gross)</span>
+            <span class="bv" id="bonusGrossDisplay">Rs. 0</span>
+          </div>
+          <div class="bi">
+            <span class="bl">Tax on Bonus</span>
+            <span class="bv r" id="bonusTaxDisplay">Rs. 0</span>
+          </div>
+          <div class="bi">
+            <span class="bl">Net Bonus (received)</span>
+            <span class="bv g" id="bonusNetDisplay">Rs. 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-            function formatCurrency(value) {
-                const rounded = Math.round(value);
-                return 'Rs. ' + rounded.toLocaleString('en-PK', { minimumFractionDigits:0, maximumFractionDigits:0 });
-            }
-            function formatPct(value) {
-                const num = parseFloat(value);
-                return isNaN(num) ? '0.00%' : num.toFixed(2) + '%';
-            }
-            function getComponentMode(componentName) {
-                const radio = document.querySelector(`input[name="mode_${componentName}"]:checked`);
-                return radio ? radio.value : 'auto';
-            }
-            function calculateAnnualTax(taxableIncome) {
-                const income = taxableIncome;
-                let tax = 0, slabDescription = '';
-                if (income <= 600000) { tax = 0; slabDescription = 'Slab: Up to 600,000 → Tax = 0'; }
-                else if (income <= 1200000) { tax = (income - 600000) * 0.01; slabDescription = 'Slab: 600,001–1,200,000 → (Income − 600,000) × 1%'; }
-                else if (income <= 2200000) { tax = 6000 + (income - 1200000) * 0.07; slabDescription = 'Slab: 1,200,001–2,200,000 → 6,000 + (Income − 1,200,000) × 7%'; }
-                else if (income <= 3200000) { tax = 76000 + (income - 2200000) * 0.20; slabDescription = 'Slab: 2,200,001–3,200,000 → 76,000 + (Income − 2,200,000) × 20%'; }
-                else if (income <= 4100000) { tax = 276000 + (income - 3200000) * 0.25; slabDescription = 'Slab: 3,200,001–4,100,000 → 276,000 + (Income − 3,200,000) × 25%'; }
-                else if (income <= 5600000) { tax = 501000 + (income - 4100000) * 0.29; slabDescription = 'Slab: 4,100,001–5,600,000 → 501,000 + (Income − 4,100,000) × 29%'; }
-                else if (income <= 7000000) { tax = 936000 + (income - 5600000) * 0.32; slabDescription = 'Slab: 5,600,001–7,000,000 → 936,000 + (Income − 5,600,000) × 32%'; }
-                else { tax = 1384000 + (income - 7000000) * 0.35; slabDescription = 'Slab: Above 7,000,000 → 1,384,000 + (Income − 7,000,000) × 35%'; }
-                return { tax: Math.round(tax), slabDescription };
-            }
+  </div><!-- /grid2 -->
 
-            function calculateAll() {
-                const basicSalary = parseFloat(basicSalaryInput.value) || 0;
-                const incrementPct = parseFloat(incrementPctSelect.value) || 0;
-                const adjustedBasic = Math.round(basicSalary * (1 + incrementPct / 100));
-                const bonusMultiplier = parseInt(bonusMultiplierSelect.value, 10) || 0;
-                const eobi = parseFloat(eobiInput.value) || 0;
-                const professionalTax = parseFloat(professionalTaxInput.value) || 0;
-                const pfLoanEnabled = pfLoanCheckbox.checked;
-                const pfLoanAmount = pfLoanEnabled ? (parseFloat(pfLoanAmountInput.value) || 0) : 0;
+  <!-- MONTHLY PROJECTION TABLE -->
+  <div class="tbl-card">
+    <div class="tbl-hd">
+      <span class="tbl-title">📅 Monthly Projection</span>
+      <span class="tbl-sub">July 2026 – June 2027 · Salary tax only — EL &amp; bonus taxes shown separately above</span>
+    </div>
+    <div class="tbl-scroll">
+      <table class="mt" id="monthlyProjectionTable">
+        <thead>
+          <tr>
+            <th>Month</th>
+            <th>Gross Salary</th>
+            <th>Extra Basic</th>
+            <th>Deductions*</th>
+            <th>PF Loan</th>
+            <th>Tax</th>
+            <th>Take Home</th>
+          </tr>
+        </thead>
+        <tbody id="monthlyTableBody"></tbody>
+        <tfoot id="monthlyTableFoot"></tfoot>
+      </table>
+    </div>
+    <div class="tbl-foot-note">* Deductions exclude PF Loan (shown separately). ⭐ Months with extra basic salary (July &amp; January).</div>
+  </div>
 
-                let hra = (getComponentMode('hra')==='auto') ? Math.round(adjustedBasic * PCT_HRA) : (parseFloat(manualHRA.value)||0);
-                let utility = (getComponentMode('utility')==='auto') ? Math.round(adjustedBasic * PCT_UTILITY) : (parseFloat(manualUtility.value)||0);
-                let conveyance = (getComponentMode('conveyance')==='auto') ? Math.round(adjustedBasic * PCT_CONVEYANCE) : (parseFloat(manualConveyance.value)||0);
-                let exGratia1 = (getComponentMode('exgratia1')==='auto') ? Math.round(adjustedBasic * PCT_EXGRATIA1) : (parseFloat(manualExGratia1.value)||0);
-                let exGratia2 = (getComponentMode('exgratia2')==='auto') ? Math.round(adjustedBasic * PCT_EXGRATIA2) : (parseFloat(manualExGratia2.value)||0);
-                let pfContribution = (getComponentMode('pf')==='auto') ? Math.round(adjustedBasic * PCT_PF) : (parseFloat(manualPF.value)||0);
+  <!-- TAX SLABS -->
+  <div class="card">
+    <div class="card-hd">
+      <div class="card-hd-ico">📋</div>
+      <div class="card-hd-txt">Income Tax Slabs — FY 2026–27</div>
+    </div>
+    <div style="overflow-x:auto">
+      <table class="slab-tbl">
+        <thead>
+          <tr>
+            <th>Taxable Income Range</th>
+            <th>Tax Calculation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td class="slab-range">Up to 600,000</td><td>0% — No tax</td></tr>
+          <tr><td class="slab-range">600,001 – 1,200,000</td><td>1% of amount exceeding Rs. 600,000</td></tr>
+          <tr><td class="slab-range">1,200,001 – 2,200,000</td><td>Rs. 6,000 + 7% of amount exceeding Rs. 1,200,000</td></tr>
+          <tr><td class="slab-range">2,200,001 – 3,200,000</td><td>Rs. 76,000 + 20% of amount exceeding Rs. 2,200,000</td></tr>
+          <tr><td class="slab-range">3,200,001 – 4,100,000</td><td>Rs. 276,000 + 25% of amount exceeding Rs. 3,200,000</td></tr>
+          <tr><td class="slab-range">4,100,001 – 5,600,000</td><td>Rs. 501,000 + 29% of amount exceeding Rs. 4,100,000</td></tr>
+          <tr><td class="slab-range">5,600,001 – 7,000,000</td><td>Rs. 936,000 + 32% of amount exceeding Rs. 5,600,000</td></tr>
+          <tr><td class="slab-range">Above 7,000,000</td><td>Rs. 1,384,000 + 35% of amount exceeding Rs. 7,000,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-                const monthlyGross = adjustedBasic + hra + utility + conveyance + exGratia1 + exGratia2;
-                const monthlyDeductions = pfContribution + pfLoanAmount + eobi + professionalTax;
-                const monthlyDeductionsExLoan = pfContribution + eobi + professionalTax;
+</div><!-- /wrap -->
 
-                let elPayment = (getComponentMode('el')==='auto') ? Math.round(monthlyGross * 0.5) : (parseFloat(manualEL.value)||0);
+<script>
+(function(){
+  const $=id=>document.getElementById(id);
+  const bs=$('basicSalary'),inc=$('incrementPct'),adj=$('adjustedBasicDisplay');
+  const bm=$('bonusMultiplier'),eobi=$('eobi'),pt=$('professionalTax');
+  const pfc=$('pfLoanCheckbox'),pfl=$('pfLoanContainer'),pfa=$('pfLoanAmount');
+  const eld=$('elDays'),mEL=$('manualEL'),mHRA=$('manualHRA'),mU=$('manualUtility');
+  const mC=$('manualConveyance'),mE1=$('manualExGratia1'),mE2=$('manualExGratia2'),mPF=$('manualPF');
+  const rgs=document.querySelectorAll('.radio-group[data-component]');
+  const PCT={hra:.45,utility:.20,conveyance:.15,exgratia1:.0738,exgratia2:.1218,pf:.10};
 
-                const annualGross = monthlyGross * 12 + 2 * adjustedBasic;
-                const annualBonus = bonusMultiplier * adjustedBasic;
+  function fmt(v){return'Rs. '+Math.round(v).toLocaleString('en-PK',{minimumFractionDigits:0,maximumFractionDigits:0})}
+  function fmtP(v){const n=parseFloat(v);return isNaN(n)?'0.00%':n.toFixed(2)+'%'}
+  function mode(name){const r=document.querySelector(`input[name="mode_${name}"]:checked`);return r?r.value:'auto'}
+  function set(id,v){const e=$(id);if(e)e.textContent=v}
 
-                const taxOnRegular = calculateAnnualTax(annualGross).tax;
-                const taxOnRegularAndEL = calculateAnnualTax(annualGross + elPayment).tax;
-                const totalTax = calculateAnnualTax(annualGross + elPayment + annualBonus).tax;
+  function tax(income){
+    let t=0,s='';
+    if(income<=600000){t=0;s='Slab: Up to 600,000 → No tax'}
+    else if(income<=1200000){t=(income-600000)*.01;s='Slab: 600,001–1,200,000 → (Income − 600,000) × 1%'}
+    else if(income<=2200000){t=6000+(income-1200000)*.07;s='Slab: 1,200,001–2,200,000 → 6,000 + (Income − 1,200,000) × 7%'}
+    else if(income<=3200000){t=76000+(income-2200000)*.20;s='Slab: 2,200,001–3,200,000 → 76,000 + (Income − 2,200,000) × 20%'}
+    else if(income<=4100000){t=276000+(income-3200000)*.25;s='Slab: 3,200,001–4,100,000 → 276,000 + (Income − 3,200,000) × 25%'}
+    else if(income<=5600000){t=501000+(income-4100000)*.29;s='Slab: 4,100,001–5,600,000 → 501,000 + (Income − 4,100,000) × 29%'}
+    else if(income<=7000000){t=936000+(income-5600000)*.32;s='Slab: 5,600,001–7,000,000 → 936,000 + (Income − 5,600,000) × 32%'}
+    else{t=1384000+(income-7000000)*.35;s='Slab: Above 7,000,000 → 1,384,000 + (Income − 7,000,000) × 35%'}
+    return{tax:Math.round(t),slab:s}
+  }
 
-                const taxOnEL = taxOnRegularAndEL - taxOnRegular;
-                const taxOnBonus = totalTax - taxOnRegularAndEL;
+  function calc(){
+    const basic=parseFloat(bs.value)||0;
+    const ipct=parseFloat(inc.value)||0;
+    const ab=Math.round(basic*(1+ipct/100));
+    const bmul=parseInt(bm.value,10)||0;
+    const eobiV=parseFloat(eobi.value)||0;
+    const ptV=parseFloat(pt.value)||0;
+    const pfEnabled=pfc.checked;
+    const pfLoan=pfEnabled?(parseFloat(pfa.value)||0):0;
+    const elDays=Math.min(15,Math.max(0,parseInt(eld.value,10)||0));
 
-                const netBonus = annualBonus - taxOnBonus;
-                const netEL = elPayment - taxOnEL;
+    let hra=mode('hra')==='auto'?Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
+    let util=mode('utility')==='auto'?Math.round(ab*PCT.utility):(parseFloat(mU.value)||0);
+    let conv=mode('conveyance')==='auto'?Math.round(ab*PCT.conveyance):(parseFloat(mC.value)||0);
+    let eg1=mode('exgratia1')==='auto'?Math.round(ab*PCT.exgratia1):(parseFloat(mE1.value)||0);
+    let eg2=mode('exgratia2')==='auto'?Math.round(ab*PCT.exgratia2):(parseFloat(mE2.value)||0);
+    let pfc_=mode('pf')==='auto'?Math.round(ab*PCT.pf):(parseFloat(mPF.value)||0);
 
-                const annualTaxableIncome = annualGross + elPayment + annualBonus;
-                const annualTax = totalTax;
-                const annualDeductions = monthlyDeductions * 12;
-                const annualNetSalary = annualTaxableIncome - annualTax - annualDeductions;
-                const effectiveTaxRate = annualTaxableIncome > 0 ? (annualTax / annualTaxableIncome) * 100 : 0;
+    const mGross=ab+hra+util+conv+eg1+eg2;
+    const mDedXL=pfc_+eobiV+ptV;
+    const mDed=mDedXL+pfLoan;
 
-                const effectiveRateForRegular = annualGross > 0 ? taxOnRegular / annualGross : 0;
+    let elPay=mode('el')==='auto'?Math.round((mGross/30)*elDays):(parseFloat(mEL.value)||0);
 
-                adjustedBasicDisplay.textContent = formatCurrency(adjustedBasic);
-                document.getElementById('sumAnnualGross').textContent = formatCurrency(annualGross);
-                document.getElementById('sumBonusMult').textContent = bonusMultiplier;
-                document.getElementById('sumAnnualBonus').textContent = formatCurrency(annualBonus);
-                document.getElementById('sumELPayment').textContent = formatCurrency(elPayment);
-                document.getElementById('sumELTax').textContent = formatCurrency(taxOnEL);
-                document.getElementById('sumELNet').textContent = formatCurrency(netEL);
-                document.getElementById('sumAnnualTaxable').textContent = formatCurrency(annualTaxableIncome);
-                document.getElementById('sumAnnualTax').textContent = formatCurrency(annualTax);
-                document.getElementById('sumAnnualDeductions').textContent = formatCurrency(annualDeductions);
-                document.getElementById('sumAnnualNet').textContent = formatCurrency(annualNetSalary);
-                document.getElementById('sumEffectiveRate').textContent = formatPct(effectiveTaxRate);
-                document.getElementById('taxSlabInfo').textContent = calculateAnnualTax(annualTaxableIncome).slabDescription + ' | Annual Tax = ' + formatCurrency(annualTax);
+    const aGross=mGross*12+2*ab;
+    const aBonus=bmul*ab;
+    const tReg=tax(aGross).tax;
+    const tRegEL=tax(aGross+elPay).tax;
+    const tTotal=tax(aGross+elPay+aBonus).tax;
+    const tEL=tRegEL-tReg;
+    const tBonus=tTotal-tRegEL;
+    const netBonus=aBonus-tBonus;
+    const netEL=elPay-tEL;
+    const aTaxable=aGross+elPay+aBonus;
+    const aDed=mDed*12;
+    const aNet=aTaxable-tTotal-aDed;
+    const effRate=aTaxable>0?(tTotal/aTaxable)*100:0;
+    const effReg=aGross>0?tReg/aGross:0;
+    const regMonthTax=Math.round(mGross*effReg);
+    const regMonthNet=mGross-mDedXL-pfLoan-regMonthTax;
 
-                document.getElementById('bonusGrossDisplay').textContent = formatCurrency(annualBonus);
-                document.getElementById('bonusTaxDisplay').textContent = formatCurrency(taxOnBonus);
-                document.getElementById('bonusNetDisplay').textContent = formatCurrency(netBonus);
+    // Metric cards
+    set('metricMonthly',fmt(regMonthNet));
+    set('metricAnnualNet',fmt(aNet));
+    set('metricAnnualTax',fmt(tTotal));
+    set('metricNetBonus',fmt(netBonus));
 
-                document.getElementById('elTaxOutput').textContent = formatCurrency(taxOnEL);
-                document.getElementById('elNetOutput').textContent = formatCurrency(netEL);
+    // Adjusted basic
+    adj.textContent=fmt(ab);
 
-                if (getComponentMode('hra')==='auto') manualHRA.value = hra;
-                if (getComponentMode('utility')==='auto') manualUtility.value = utility;
-                if (getComponentMode('conveyance')==='auto') manualConveyance.value = conveyance;
-                if (getComponentMode('exgratia1')==='auto') manualExGratia1.value = exGratia1;
-                if (getComponentMode('exgratia2')==='auto') manualExGratia2.value = exGratia2;
-                if (getComponentMode('pf')==='auto') manualPF.value = pfContribution;
-                if (getComponentMode('el')==='auto') manualEL.value = elPayment;
+    // Summary
+    set('sumAnnualGross',fmt(aGross));
+    set('sumBonusMult',bmul);
+    set('sumAnnualBonus',fmt(aBonus));
+    set('sumELDays',elDays);
+    set('sumELPayment',fmt(elPay));
+    set('sumELTax',fmt(tEL));
+    set('sumELNet',fmt(netEL));
+    set('sumAnnualTaxable',fmt(aTaxable));
+    set('sumAnnualTax',fmt(tTotal));
+    set('sumAnnualDeductions',fmt(aDed));
+    set('sumAnnualNet',fmt(aNet));
+    set('sumEffectiveRate',fmtP(effRate));
+    set('taxSlabInfo',tax(aTaxable).slab+' — Annual Tax = '+fmt(tTotal));
 
-                const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-                const tbody = document.getElementById('monthlyTableBody');
-                tbody.innerHTML = '';
-                let totalG=0, totalE=0, totalD=0, totalPF=0, totalT=0, totalTH=0;
-                for(let i=0;i<12;i++){
-                    let extraBasic=0, grossForMonth=monthlyGross;
-                    if(i===0||i===6){ extraBasic=adjustedBasic; grossForMonth=monthlyGross+adjustedBasic; }
-                    const dedExLoan = monthlyDeductionsExLoan;
-                    const pfLoan = pfLoanAmount;
-                    const monthTax = Math.round(grossForMonth * effectiveRateForRegular);
-                    const takeHome = grossForMonth - dedExLoan - pfLoan - monthTax;
-                    totalG+=grossForMonth; totalE+=extraBasic; totalD+=dedExLoan; totalPF+=pfLoan; totalT+=monthTax; totalTH+=takeHome;
-                    const tr=document.createElement('tr');
-                    if(i===0||i===6) tr.classList.add('highlight-row');
-                    tr.innerHTML = `<td>${months[i]} ${extraBasic?'⭐':''}</td><td>${formatCurrency(grossForMonth)}</td><td>${extraBasic?`<span class="extra-badge">+${formatCurrency(extraBasic)}</span>`:'<span style="color:#a0aec0;">—</span>'}</td><td>${formatCurrency(dedExLoan)}</td><td>${formatCurrency(pfLoan)}</td><td>${formatCurrency(monthTax)}</td><td><strong>${formatCurrency(takeHome)}</strong></td>`;
-                    tbody.appendChild(tr);
-                }
-                document.getElementById('monthlyTableFoot').innerHTML = `<tr style="background:#eef2f7; font-weight:700; border-top:2px solid #cbd5e0;"><td style="text-align:left; padding-left:16px;">📋 Annual Totals</td><td>${formatCurrency(totalG)}</td><td>${formatCurrency(totalE)}</td><td>${formatCurrency(totalD)}</td><td>${formatCurrency(totalPF)}</td><td>${formatCurrency(totalT)}</td><td><strong>${formatCurrency(totalTH)}</strong></td></tr>`;
-            }
+    // Bonus
+    set('bonusGrossDisplay',fmt(aBonus));
+    set('bonusTaxDisplay',fmt(tBonus));
+    set('bonusNetDisplay',fmt(netBonus));
 
-            function updateRadioGroupUI(group) {
-                const mode = (group.querySelector('input[type="radio"]:checked')||{}).value || 'auto';
-                group.querySelectorAll('label').forEach(l => {
-                    const r = l.querySelector('input[type="radio"]');
-                    if(r && r.value===mode) l.classList.add('active-radio');
-                    else if(r) l.classList.remove('active-radio');
-                });
-                const manualInput = group.querySelector('.manual-input');
-                if(manualInput) {
-                    manualInput.disabled = (mode==='auto');
-                    manualInput.style.background = mode==='auto' ? '#f1f5f9' : '#fafbfc';
-                    manualInput.style.color = mode==='auto' ? '#a0aec0' : '#1a202c';
-                    manualInput.style.cursor = mode==='auto' ? 'not-allowed' : 'text';
-                }
-            }
+    // EL display
+    set('elTaxOutput',fmt(tEL));
+    set('elNetOutput',fmt(netEL));
 
-            radioGroups.forEach(g => {
-                g.querySelectorAll('input[type="radio"]').forEach(r => r.addEventListener('change', ()=>{
-                    updateRadioGroupUI(g);
-                    calculateAll();
-                }));
-                updateRadioGroupUI(g);
-            });
+    // Sync auto inputs
+    if(mode('hra')==='auto')mHRA.value=hra;
+    if(mode('utility')==='auto')mU.value=util;
+    if(mode('conveyance')==='auto')mC.value=conv;
+    if(mode('exgratia1')==='auto')mE1.value=eg1;
+    if(mode('exgratia2')==='auto')mE2.value=eg2;
+    if(mode('pf')==='auto')mPF.value=pfc_;
+    if(mode('el')==='auto')mEL.value=elPay;
 
-            pfLoanCheckbox.addEventListener('change', ()=>{
-                pfLoanContainer.style.display = pfLoanCheckbox.checked ? 'block' : 'none';
-                calculateAll();
-            });
-            [basicSalaryInput, incrementPctSelect, bonusMultiplierSelect, eobiInput, professionalTaxInput, pfLoanAmountInput].forEach(el => el.addEventListener('input', calculateAll));
-            [manualHRA, manualUtility, manualConveyance, manualExGratia1, manualExGratia2, manualPF, manualEL].forEach(inp => inp.addEventListener('input', function(){
-                const comp = this.closest('.radio-group')?.getAttribute('data-component');
-                if(comp && getComponentMode(comp)==='manual') calculateAll();
-            }));
+    // Monthly table
+    const months=['July 2026','August 2026','September 2026','October 2026','November 2026','December 2026','January 2027','February 2027','March 2027','April 2027','May 2027','June 2027'];
+    const tbody=$('monthlyTableBody');
+    tbody.innerHTML='';
+    let tG=0,tE=0,tD=0,tP=0,tT=0,tH=0;
+    for(let i=0;i<12;i++){
+      let xb=0,gm=mGross;
+      if(i===0||i===6){xb=ab;gm=mGross+ab}
+      const mt_=Math.round(gm*effReg);
+      const th=gm-mDedXL-pfLoan-mt_;
+      tG+=gm;tE+=xb;tD+=mDedXL;tP+=pfLoan;tT+=mt_;tH+=th;
+      const tr=document.createElement('tr');
+      if(i===0||i===6)tr.classList.add('highlight-row');
+      tr.innerHTML=`<td>${months[i]}${xb?' ⭐':''}</td><td>${fmt(gm)}</td><td>${xb?`<span class="extra-badge">+${fmt(xb)}</span>`:'<span style="color:var(--slate-300)">—</span>'}</td><td>${fmt(mDedXL)}</td><td>${fmt(pfLoan)}</td><td>${fmt(mt_)}</td><td><strong>${fmt(th)}</strong></td>`;
+      tbody.appendChild(tr);
+    }
+    $('monthlyTableFoot').innerHTML=`<tr><td>Annual totals</td><td>${fmt(tG)}</td><td>${fmt(tE)}</td><td>${fmt(tD)}</td><td>${fmt(tP)}</td><td>${fmt(tT)}</td><td><strong>${fmt(tH)}</strong></td></tr>`;
+  }
 
-            pfLoanContainer.style.display = 'none';
-            calculateAll();
-        })();
-    </script>
+  function updateUI(g){
+    const m=(g.querySelector('input[type="radio"]:checked')||{}).value||'auto';
+    g.querySelectorAll('label').forEach(l=>{
+      const r=l.querySelector('input[type="radio"]');
+      if(r)l.classList.toggle('active-radio',r.value===m);
+    });
+    const mi=g.querySelector('.manual-input');
+    if(mi){mi.disabled=m==='auto'}
+  }
+
+  rgs.forEach(g=>{
+    g.querySelectorAll('input[type="radio"]').forEach(r=>r.addEventListener('change',()=>{updateUI(g);calc()}));
+    updateUI(g);
+  });
+
+  pfc.addEventListener('change',()=>{pfl.style.display=pfc.checked?'block':'none';calc()});
+  [bs,inc,bm,eobi,pt,pfa,eld].forEach(e=>e.addEventListener('input',calc));
+  [mHRA,mU,mC,mE1,mE2,mPF,mEL].forEach(inp=>inp.addEventListener('input',function(){
+    const comp=this.closest('.radio-group')?.getAttribute('data-component');
+    if(comp&&mode(comp)==='manual')calc();
+  }));
+
+  calc();
+})();
+</script>
 </body>
 </html>
