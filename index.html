@@ -1243,7 +1243,7 @@
           <tfoot id="monthlyTableFoot"></tfoot>
         </table>
       </div>
-      <div class="table-foot-note">* Deductions exclude PF Loan (shown separately). ⭐ Months with extra basic salary (July &amp; January).</div>
+      <div class="table-foot-note">* Deductions exclude PF Loan (shown separately). ⭐ July extra basic = existing basic (not adjusted). ⭐ August includes EL Payment.</div>
     </div>
 
     <!-- TAX SLABS -->
@@ -1345,8 +1345,8 @@
 
         let elPay = mode('el') === 'auto' ? Math.round((mGross / 30) * elDays) : (parseFloat(mEL.value) || 0);
 
-        const aGross = mGross * 12 + 2 * ab;
-        // BONUS CALCULATED ON EXISTING BASIC (not adjusted)
+        // Annual gross: 12 × monthlyGross + basic (July existing basic) + adjustedBasic (January)
+        const aGross = mGross * 12 + basic + ab;
         const aBonus = bmul * basic;
         const tReg = tax(aGross).tax;
         const tRegEL = tax(aGross + elPay).tax;
@@ -1414,8 +1414,14 @@
         for (let i = 0; i < 12; i++) {
           let xb = 0,
             gm = mGross;
-          if (i === 0 || i === 6) { xb = ab;
+          // July (i=0): extra = existing basic (not adjusted)
+          if (i === 0) { xb = basic;
+            gm = mGross + basic }
+          // January (i=6): extra = adjusted basic
+          if (i === 6) { xb = ab;
             gm = mGross + ab }
+          // August (i=1): include EL payment in gross
+          if (i === 1) { gm = mGross + elPay }
           const mt_ = Math.round(gm * effReg);
           const th = gm - mDedXL - pfLoan - mt_;
           tG += gm;
@@ -1425,9 +1431,13 @@
           tT += mt_;
           tH += th;
           const tr = document.createElement('tr');
-          if (i === 0 || i === 6) tr.classList.add('highlight-row');
+          if (i === 0 || i === 1 || i === 6) tr.classList.add('highlight-row');
+          let extraHtml = '<span style="color:var(--slate-300)">—</span>';
+          if (i === 0) extraHtml = `<span class="extra-badge">+${fmt(basic)} (existing)</span>`;
+          if (i === 6) extraHtml = `<span class="extra-badge">+${fmt(ab)} (adjusted)</span>`;
+          if (i === 1) extraHtml = `<span class="extra-badge">+${fmt(elPay)} (EL)</span>`;
           tr.innerHTML =
-            `<td>${months[i]}${xb ? ' ⭐' : ''}</td><td>${fmt(gm)}</td><td>${xb ? `<span class="extra-badge">+${fmt(xb)}</span>` : '<span style="color:var(--slate-300)">—</span>'}</td><td>${fmt(mDedXL)}</td><td>${fmt(pfLoan)}</td><td>${fmt(mt_)}</td><td><strong>${fmt(th)}</strong></td>`;
+            `<td>${months[i]}${(i===0||i===1||i===6) ? ' ⭐' : ''}</td><td>${fmt(gm)}</td><td>${extraHtml}</td><td>${fmt(mDedXL)}</td><td>${fmt(pfLoan)}</td><td>${fmt(mt_)}</td><td><strong>${fmt(th)}</strong></td>`;
           tbody.appendChild(tr);
         }
         $('monthlyTableFoot').innerHTML =
