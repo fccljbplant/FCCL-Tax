@@ -50,6 +50,26 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 /* ─── CONTAINER ─── */
 .wrap{max-width:1400px;margin:0 auto;padding:18px 16px 40px}
 
+/* ─── METRIC CARDS (ON TOP) ─── */
+.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
+.mc{
+  background:var(--white);border-radius:var(--r-md);padding:12px 14px;
+  box-shadow:var(--sh-sm);border-left:3px solid var(--navy-500);
+  transition:box-shadow var(--t),transform var(--t);cursor:default;
+}
+.mc:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.mc.g{border-left-color:var(--green-600)}
+.mc.r{border-left-color:var(--red-600)}
+.mc.a{border-left-color:var(--amber-500)}
+.mc.b{border-left-color:var(--navy-600)}
+.mc-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--slate-500);margin-bottom:4px}
+.mc-val{font-size:1rem;font-weight:700;color:var(--slate-900);letter-spacing:-.3px;line-height:1.1}
+.mc.g .mc-val{color:var(--green-700)}
+.mc.r .mc-val{color:var(--red-700)}
+.mc.a .mc-val{color:var(--amber-700)}
+.mc.b .mc-val{color:var(--navy-700)}
+.mc-note{font-size:.6rem;color:var(--slate-400);margin-top:2px;font-weight:400}
+
 /* ─── CONFIG CARD ─── */
 .config-card{
   background:var(--white);border-radius:var(--r-lg);box-shadow:var(--sh-sm);
@@ -161,25 +181,15 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 }
 .el-info strong{color:var(--amber-700);font-weight:700}
 
-/* ─── METRIC CARDS ─── */
-.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px}
-.mc{
-  background:var(--white);border-radius:var(--r-md);padding:12px 14px;
-  box-shadow:var(--sh-sm);border-left:3px solid var(--navy-500);
-  transition:box-shadow var(--t),transform var(--t);cursor:default;
+/* ─── TAX INFO BAR ─── */
+.tax-info-bar{
+  margin-top:8px;padding:8px 12px;
+  background:var(--amber-50);border:1px solid var(--amber-100);
+  border-radius:var(--r-sm);font-size:.7rem;
+  color:var(--amber-700);line-height:1.5;font-weight:500;
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;
 }
-.mc:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
-.mc.g{border-left-color:var(--green-600)}
-.mc.r{border-left-color:var(--red-600)}
-.mc.a{border-left-color:var(--amber-500)}
-.mc.b{border-left-color:var(--navy-600)}
-.mc-lbl{font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--slate-500);margin-bottom:4px}
-.mc-val{font-size:1rem;font-weight:700;color:var(--slate-900);letter-spacing:-.3px;line-height:1.1}
-.mc.g .mc-val{color:var(--green-700)}
-.mc.r .mc-val{color:var(--red-700)}
-.mc.a .mc-val{color:var(--amber-700)}
-.mc.b .mc-val{color:var(--navy-700)}
-.mc-note{font-size:.6rem;color:var(--slate-400);margin-top:2px;font-weight:400}
+.tax-info-bar strong{color:var(--amber-700);font-weight:700}
 
 /* ─── TWO-COLUMN LAYOUT (Summary + Bonus) ─── */
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start;margin-bottom:16px}
@@ -212,11 +222,6 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 .sr-val.g{color:var(--green-600)}
 .sr-val.lg{font-size:.85rem}
 .sr-val.lr{font-size:.85rem;color:var(--red-600)}
-.slab-bar{
-  background:var(--amber-50);border:1px solid var(--amber-100);
-  border-radius:var(--r-sm);padding:7px 10px;font-size:.68rem;
-  color:var(--amber-700);margin-top:8px;line-height:1.55;font-weight:500;
-}
 
 /* ─── BONUS CARD ─── */
 .bonus-card{
@@ -348,6 +353,30 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
 
 <div class="wrap">
 
+  <!-- METRIC CARDS (MOVED TO TOP) -->
+  <div class="metrics">
+    <div class="mc g">
+      <div class="mc-lbl">Monthly Take Home</div>
+      <div class="mc-val" id="metricMonthly">Rs. 0</div>
+      <div class="mc-note">Typical month after deductions</div>
+    </div>
+    <div class="mc a">
+      <div class="mc-lbl">Yearly Bonus Take Home</div>
+      <div class="mc-val" id="metricYearlyBonusTakeHome">Rs. 0</div>
+      <div class="mc-note">Bonus after tax deduction</div>
+    </div>
+    <div class="mc b">
+      <div class="mc-lbl">Taxable Income</div>
+      <div class="mc-val" id="metricTaxableIncome">Rs. 0</div>
+      <div class="mc-note">Total income subject to tax</div>
+    </div>
+    <div class="mc r">
+      <div class="mc-lbl">This Year Tax</div>
+      <div class="mc-val" id="metricThisYearTax">Rs. 0</div>
+      <div class="mc-note">Total annual tax liability</div>
+    </div>
+  </div>
+
   <!-- CONFIG: Left = Basic + Deductions + EL, Right = Allowances -->
   <div class="config-card">
     <div class="config-hd">
@@ -436,108 +465,92 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
           </div>
         </div>
 
-        <!-- RIGHT COLUMN: ALLOWANCES -->
-        <div class="config-section">
-          <div class="config-section-title">Allowances</div>
-          <div class="comp">
-            <div class="comp-top">
-              <span class="comp-ico">🏠</span>
-              <span class="comp-name">House Rent Allowance</span>
-              <span class="comp-pct">45%</span>
+        <!-- RIGHT COLUMN: ALLOWANCES + TAX INFO -->
+        <div>
+          <div class="config-section">
+            <div class="config-section-title">Allowances</div>
+            <div class="comp">
+              <div class="comp-top">
+                <span class="comp-ico">🏠</span>
+                <span class="comp-name">House Rent Allowance</span>
+                <span class="comp-pct">45%</span>
+              </div>
+              <div class="radio-group" data-component="hra">
+                <label class="active-radio"><input type="radio" name="mode_hra" value="auto" checked>Auto</label>
+                <label><input type="radio" name="mode_hra" value="manual">Manual</label>
+                <input type="number" class="manual-input" id="manualHRA" disabled placeholder="Amount">
+              </div>
             </div>
-            <div class="radio-group" data-component="hra">
-              <label class="active-radio"><input type="radio" name="mode_hra" value="auto" checked>Auto</label>
-              <label><input type="radio" name="mode_hra" value="manual">Manual</label>
-              <input type="number" class="manual-input" id="manualHRA" disabled placeholder="Amount">
+            <div class="comp">
+              <div class="comp-top">
+                <span class="comp-ico">🔧</span>
+                <span class="comp-name">Utility Allowance</span>
+                <span class="comp-pct">20%</span>
+              </div>
+              <div class="radio-group" data-component="utility">
+                <label class="active-radio"><input type="radio" name="mode_utility" value="auto" checked>Auto</label>
+                <label><input type="radio" name="mode_utility" value="manual">Manual</label>
+                <input type="number" class="manual-input" id="manualUtility" disabled placeholder="Amount">
+              </div>
+            </div>
+            <div class="comp">
+              <div class="comp-top">
+                <span class="comp-ico">🚗</span>
+                <span class="comp-name">Conveyance Allowance</span>
+                <span class="comp-pct">15%</span>
+              </div>
+              <div class="radio-group" data-component="conveyance">
+                <label class="active-radio"><input type="radio" name="mode_conveyance" value="auto" checked>Auto</label>
+                <label><input type="radio" name="mode_conveyance" value="manual">Manual</label>
+                <input type="number" class="manual-input" id="manualConveyance" disabled placeholder="Amount">
+              </div>
+            </div>
+            <div class="comp">
+              <div class="comp-top">
+                <span class="comp-ico">🎖️</span>
+                <span class="comp-name">Ex-Gratia 1</span>
+                <span class="comp-pct">7.38%</span>
+              </div>
+              <div class="radio-group" data-component="exgratia1">
+                <label class="active-radio"><input type="radio" name="mode_exgratia1" value="auto" checked>Auto</label>
+                <label><input type="radio" name="mode_exgratia1" value="manual">Manual</label>
+                <input type="number" class="manual-input" id="manualExGratia1" disabled placeholder="Amount">
+              </div>
+            </div>
+            <div class="comp">
+              <div class="comp-top">
+                <span class="comp-ico">🏅</span>
+                <span class="comp-name">Ex-Gratia 2</span>
+                <span class="comp-pct">12.18%</span>
+              </div>
+              <div class="radio-group" data-component="exgratia2">
+                <label class="active-radio"><input type="radio" name="mode_exgratia2" value="auto" checked>Auto</label>
+                <label><input type="radio" name="mode_exgratia2" value="manual">Manual</label>
+                <input type="number" class="manual-input" id="manualExGratia2" disabled placeholder="Amount">
+              </div>
+            </div>
+            <div class="comp">
+              <div class="comp-top">
+                <span class="comp-ico">🔐</span>
+                <span class="comp-name">PF Contribution</span>
+                <span class="comp-pct">10%</span>
+              </div>
+              <div class="radio-group" data-component="pf">
+                <label class="active-radio"><input type="radio" name="mode_pf" value="auto" checked>Auto</label>
+                <label><input type="radio" name="mode_pf" value="manual">Manual</label>
+                <input type="number" class="manual-input" id="manualPF" disabled placeholder="Amount">
+              </div>
             </div>
           </div>
-          <div class="comp">
-            <div class="comp-top">
-              <span class="comp-ico">🔧</span>
-              <span class="comp-name">Utility Allowance</span>
-              <span class="comp-pct">20%</span>
-            </div>
-            <div class="radio-group" data-component="utility">
-              <label class="active-radio"><input type="radio" name="mode_utility" value="auto" checked>Auto</label>
-              <label><input type="radio" name="mode_utility" value="manual">Manual</label>
-              <input type="number" class="manual-input" id="manualUtility" disabled placeholder="Amount">
-            </div>
-          </div>
-          <div class="comp">
-            <div class="comp-top">
-              <span class="comp-ico">🚗</span>
-              <span class="comp-name">Conveyance Allowance</span>
-              <span class="comp-pct">15%</span>
-            </div>
-            <div class="radio-group" data-component="conveyance">
-              <label class="active-radio"><input type="radio" name="mode_conveyance" value="auto" checked>Auto</label>
-              <label><input type="radio" name="mode_conveyance" value="manual">Manual</label>
-              <input type="number" class="manual-input" id="manualConveyance" disabled placeholder="Amount">
-            </div>
-          </div>
-          <div class="comp">
-            <div class="comp-top">
-              <span class="comp-ico">🎖️</span>
-              <span class="comp-name">Ex-Gratia 1</span>
-              <span class="comp-pct">7.38%</span>
-            </div>
-            <div class="radio-group" data-component="exgratia1">
-              <label class="active-radio"><input type="radio" name="mode_exgratia1" value="auto" checked>Auto</label>
-              <label><input type="radio" name="mode_exgratia1" value="manual">Manual</label>
-              <input type="number" class="manual-input" id="manualExGratia1" disabled placeholder="Amount">
-            </div>
-          </div>
-          <div class="comp">
-            <div class="comp-top">
-              <span class="comp-ico">🏅</span>
-              <span class="comp-name">Ex-Gratia 2</span>
-              <span class="comp-pct">12.18%</span>
-            </div>
-            <div class="radio-group" data-component="exgratia2">
-              <label class="active-radio"><input type="radio" name="mode_exgratia2" value="auto" checked>Auto</label>
-              <label><input type="radio" name="mode_exgratia2" value="manual">Manual</label>
-              <input type="number" class="manual-input" id="manualExGratia2" disabled placeholder="Amount">
-            </div>
-          </div>
-          <div class="comp">
-            <div class="comp-top">
-              <span class="comp-ico">🔐</span>
-              <span class="comp-name">PF Contribution</span>
-              <span class="comp-pct">10%</span>
-            </div>
-            <div class="radio-group" data-component="pf">
-              <label class="active-radio"><input type="radio" name="mode_pf" value="auto" checked>Auto</label>
-              <label><input type="radio" name="mode_pf" value="manual">Manual</label>
-              <input type="number" class="manual-input" id="manualPF" disabled placeholder="Amount">
-            </div>
+
+          <!-- TAX INFO BAR (under allowances) -->
+          <div class="tax-info-bar" id="taxInfoBar">
+            <span id="taxSlabInfo">Tax calculated using progressive slab rates for FY 2026–27.</span>
+            <span style="font-weight:700;white-space:nowrap">Effective Tax Rate: <strong id="configEffectiveRate">0.00%</strong></span>
           </div>
         </div>
 
       </div>
-    </div>
-  </div>
-
-  <!-- METRIC CARDS -->
-  <div class="metrics">
-    <div class="mc g">
-      <div class="mc-lbl">Monthly Take Home</div>
-      <div class="mc-val" id="metricMonthly">Rs. 0</div>
-      <div class="mc-note">Typical month after deductions</div>
-    </div>
-    <div class="mc a">
-      <div class="mc-lbl">Yearly Bonus Take Home</div>
-      <div class="mc-val" id="metricYearlyBonusTakeHome">Rs. 0</div>
-      <div class="mc-note">Bonus after tax deduction</div>
-    </div>
-    <div class="mc b">
-      <div class="mc-lbl">Taxable Income</div>
-      <div class="mc-val" id="metricTaxableIncome">Rs. 0</div>
-      <div class="mc-note">Total income subject to tax</div>
-    </div>
-    <div class="mc r">
-      <div class="mc-lbl">This Year Tax</div>
-      <div class="mc-val" id="metricThisYearTax">Rs. 0</div>
-      <div class="mc-note">Total annual tax liability</div>
     </div>
   </div>
 
@@ -587,11 +600,6 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
           <span class="sr-lbl bold">Annual Net Salary</span>
           <span class="sr-val g lg" id="sumAnnualNet">Rs. 0</span>
         </div>
-        <div class="sr">
-          <span class="sr-lbl">Effective Tax Rate</span>
-          <span class="sr-val r" id="sumEffectiveRate">0.00%</span>
-        </div>
-        <div class="slab-bar" id="taxSlabInfo">Tax calculated using progressive slab rates for FY 2026–27.</div>
       </div>
     </div>
 
@@ -746,9 +754,9 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
     const regMonthTax=Math.round(mGross*effReg);
     const regMonthNet=mGross-mDedXL-pfLoan-regMonthTax;
 
-    // METRIC CARDS
+    // METRIC CARDS (ON TOP)
     set('metricMonthly',fmt(regMonthNet));
-    set('metricYearlyBonusTakeHome',fmt(netBonus));  // FIXED: bonus after tax
+    set('metricYearlyBonusTakeHome',fmt(netBonus));
     set('metricTaxableIncome',fmt(aTaxable));
     set('metricThisYearTax',fmt(tTotal));
 
@@ -767,8 +775,10 @@ body{font-family:var(--font);background:#e8edf4;color:var(--slate-900);line-heig
     set('sumAnnualTax',fmt(tTotal));
     set('sumAnnualDeductions',fmt(aDed));
     set('sumAnnualNet',fmt(aNet));
-    set('sumEffectiveRate',fmtP(effRate));
+
+    // Tax info bar (under allowances)
     set('taxSlabInfo',tax(aTaxable).slab+' — Annual Tax = '+fmt(tTotal));
+    set('configEffectiveRate',fmtP(effRate));
 
     // Bonus
     set('bonusGrossDisplay',fmt(aBonus));
