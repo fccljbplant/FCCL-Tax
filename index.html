@@ -1346,7 +1346,8 @@
         let elPay = mode('el') === 'auto' ? Math.round((mGross / 30) * elDays) : (parseFloat(mEL.value) || 0);
 
         const aGross = mGross * 12 + 2 * ab;
-        const aBonus = bmul * ab;
+        // BONUS CALCULATED ON EXISTING BASIC (not adjusted)
+        const aBonus = bmul * basic;
         const tReg = tax(aGross).tax;
         const tRegEL = tax(aGross + elPay).tax;
         const tTotal = tax(aGross + elPay + aBonus).tax;
@@ -1462,4 +1463,3 @@
   </script>
 </body>
 </html>
-```
