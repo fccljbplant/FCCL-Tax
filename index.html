@@ -1033,7 +1033,7 @@
                 </div>
               </div>
               <div class="form-row" style="margin-top:4px">
-                <span class="form-label">Annual Bonus</span>
+                <span class="form-label">Annual Bonus (× Basic)</span>
                 <select id="bonusMultiplier" class="select-field">
                   <option value="6">6× Basic</option>
                   <option value="8">8× Basic</option>
@@ -1052,7 +1052,7 @@
               <div class="allowance-item" style="margin-top:8px">
                 <div class="allowance-item-header">
                   <span class="allowance-name">🏖️ EL Payment</span>
-                  <span class="allowance-pct">Daily gross × days</span>
+                  <span class="allowance-pct">Daily basic × days</span>
                 </div>
                 <div class="radio-group" data-component="el">
                   <label class="active-radio"><input type="radio" name="mode_el" value="auto" checked>Auto</label>
@@ -1158,7 +1158,7 @@
         </div>
         <div class="card-body">
           <div class="summary-row">
-            <span class="summary-label">Annual Gross Salary <small style="color:var(--slate-400);font-weight:400">(12 months + 2× extra basic)</small></span>
+            <span class="summary-label">Annual Gross Salary <small style="color:var(--slate-400);font-weight:400">(12 months + extra basic)</small></span>
             <span class="summary-value" id="sumAnnualGross">Rs. 0</span>
           </div>
           <div class="summary-row">
@@ -1243,7 +1243,7 @@
           <tfoot id="monthlyTableFoot"></tfoot>
         </table>
       </div>
-      <div class="table-foot-note">* Deductions exclude PF Loan (shown separately). ⭐ July extra basic = existing basic (not adjusted). ⭐ August includes EL Payment.</div>
+      <div class="table-foot-note">* Deductions exclude PF Loan (shown separately). ⭐ July extra basic = existing basic. ⭐ January extra basic = adjusted basic. ⭐ August includes EL Payment.</div>
     </div>
 
     <!-- TAX SLABS -->
@@ -1343,10 +1343,19 @@
         const mDedXL = pfc_ + eobiV + ptV;
         const mDed = mDedXL + pfLoan;
 
-        let elPay = mode('el') === 'auto' ? Math.round((mGross / 30) * elDays) : (parseFloat(mEL.value) || 0);
+        // EL calculated on BASIC salary only (not adjusted salary and not gross salary)
+        const basicHRA=Math.round(basic*0.45);
+        const basicUtil=Math.round(basic*0.20);
+        const basicConv=Math.round(basic*0.15);
+        const basicEg1=Math.round(basic*0.0738);
+        const basicEg2=Math.round(basic*0.1218);
+        const elGross=basic+basicHRA+basicUtil+basicConv+basicEg1+basicEg2;
 
-        // Annual gross: 12 × monthlyGross + basic (July existing basic) + adjustedBasic (January)
+        let elPay = mode('el') === 'auto' ? Math.round((elGross / 30) * elDays) : (parseFloat(mEL.value) || 0);
+
+        // Annual gross: 12 × monthlyGross + existing basic (July) + adjusted basic (January)
         const aGross = mGross * 12 + basic + ab;
+        // Bonus calculated on existing basic (not adjusted)
         const aBonus = bmul * basic;
         const tReg = tax(aGross).tax;
         const tRegEL = tax(aGross + elPay).tax;
@@ -1414,7 +1423,7 @@
         for (let i = 0; i < 12; i++) {
           let xb = 0,
             gm = mGross;
-          // July (i=0): extra = existing basic (not adjusted)
+          // July (i=0): extra = existing basic
           if (i === 0) { xb = basic;
             gm = mGross + basic }
           // January (i=6): extra = adjusted basic
