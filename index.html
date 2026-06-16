@@ -421,7 +421,7 @@
         <div class="table-wrapper">
             <div style="padding:16px 20px; background:#fff; border-bottom:1px solid var(--border-light);">
                 <span style="font-weight:700; font-size:1rem; color:var(--primary);">📅 Monthly Projection Table</span>
-                <span style="font-size:0.72rem; color:var(--text-muted); margin-left:8px;">(Bonus tax added to Jan & Jul)</span>
+                <span style="font-size:0.72rem; color:var(--text-muted); margin-left:8px;">(Tax on extra basic & bonus allocated to Jan & Jul)</span>
             </div>
             <table class="monthly-table" id="monthlyProjectionTable">
                 <thead>
@@ -522,30 +522,39 @@
                 const monthlyDeductions = pfContribution + pfLoanAmount + eobi + professionalTax;
                 const monthlyDeductionsExLoan = pfContribution + eobi + professionalTax;
 
-                const annualGross = monthlyGross * 12 + 2 * adjustedBasic;
+                // Income breakdown for precise tax allocation
+                const baseAnnualIncome = monthlyGross * 12 + elPayment; // regular salary + EL, no extra basic, no bonus
+                const incomeWithExtra = baseAnnualIncome + 2 * adjustedBasic; // includes extra basic but no bonus
                 const annualBonus = bonusMultiplier * adjustedBasic;
-                const annualTaxableIncome = annualGross + annualBonus + elPayment;
+                const annualTaxableIncome = incomeWithExtra + annualBonus;
 
-                const taxResult = calculateAnnualTax(annualTaxableIncome);
-                const annualTax = taxResult.tax;
+                // Tax calculations at each level
+                const baseTaxResult = calculateAnnualTax(baseAnnualIncome);
+                const baseAnnualTax = baseTaxResult.tax;
+                const extraTaxResult = calculateAnnualTax(incomeWithExtra);
+                const taxWithExtra = extraTaxResult.tax;
+                const fullTaxResult = calculateAnnualTax(annualTaxableIncome);
+                const fullTax = fullTaxResult.tax;
 
-                const incomeWithoutBonus = annualGross + elPayment;
-                const taxWithoutBonus = calculateAnnualTax(incomeWithoutBonus).tax;
-                const taxOnBonus = annualTax - taxWithoutBonus;
-                const netBonus = annualBonus - taxOnBonus;
+                const taxOnExtraBasic = taxWithExtra - baseAnnualTax;   // incremental tax due to 2 extra basic months
+                const taxOnBonus = fullTax - taxWithExtra;             // incremental tax due to bonus
 
-                // Distribute bonus tax: half to January, half to July
-                const bonusTaxJan = Math.round(taxOnBonus / 2);
-                const bonusTaxJul = taxOnBonus - bonusTaxJan; // remainder to July
-                const baseMonthlyTax = Math.round((annualTax - taxOnBonus) / 12);
-
+                const annualTax = fullTax;
                 const annualDeductions = monthlyDeductions * 12;
-                const annualNetSalary = annualGross + annualBonus + elPayment - annualTax - annualDeductions;
+                const annualNetSalary = annualTaxableIncome - annualTax - annualDeductions;
                 const effectiveTaxRate = annualTaxableIncome > 0 ? (annualTax / annualTaxableIncome) * 100 : 0;
 
-                adjustedBasicDisplay.textContent = formatCurrency(adjustedBasic);
+                // Monthly tax allocation:
+                // Base monthly tax covers regular income (no extra basic, no bonus)
+                const baseMonthlyTax = Math.round(baseAnnualTax / 12);
+                // Extra basic tax split equally between January and July
+                const extraBasicTaxPerMonth = Math.round(taxOnExtraBasic / 2);
+                // Bonus tax split equally between January and July (as requested)
+                const bonusTaxPerMonth = Math.round(taxOnBonus / 2);
 
-                document.getElementById('sumAnnualGross').textContent = formatCurrency(annualGross);
+                // Update displays
+                adjustedBasicDisplay.textContent = formatCurrency(adjustedBasic);
+                document.getElementById('sumAnnualGross').textContent = formatCurrency(incomeWithExtra);
                 document.getElementById('sumBonusMult').textContent = bonusMultiplier;
                 document.getElementById('sumAnnualBonus').textContent = formatCurrency(annualBonus);
                 document.getElementById('sumELPayment').textContent = formatCurrency(elPayment);
@@ -554,12 +563,13 @@
                 document.getElementById('sumAnnualDeductions').textContent = formatCurrency(annualDeductions);
                 document.getElementById('sumAnnualNet').textContent = formatCurrency(annualNetSalary);
                 document.getElementById('sumEffectiveRate').textContent = formatPct(effectiveTaxRate);
-                document.getElementById('taxSlabInfo').textContent = taxResult.slabDescription + ' | Annual Tax = ' + formatCurrency(annualTax);
+                document.getElementById('taxSlabInfo').textContent = fullTaxResult.slabDescription + ' | Annual Tax = ' + formatCurrency(annualTax);
 
                 document.getElementById('bonusGrossDisplay').textContent = formatCurrency(annualBonus);
                 document.getElementById('bonusTaxDisplay').textContent = formatCurrency(taxOnBonus);
-                document.getElementById('bonusNetDisplay').textContent = formatCurrency(netBonus);
+                document.getElementById('bonusNetDisplay').textContent = formatCurrency(annualBonus - taxOnBonus);
 
+                // Sync manual fields
                 if (getComponentMode('hra')==='auto') manualHRA.value = hra;
                 if (getComponentMode('utility')==='auto') manualUtility.value = utility;
                 if (getComponentMode('conveyance')==='auto') manualConveyance.value = conveyance;
@@ -568,7 +578,7 @@
                 if (getComponentMode('pf')==='auto') manualPF.value = pfContribution;
                 if (getComponentMode('el')==='auto') manualEL.value = elPayment;
 
-                // Monthly projection table with bonus tax added to Jan & Jul
+                // Monthly projection table
                 const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
                 const tbody = document.getElementById('monthlyTableBody');
                 tbody.innerHTML = '';
@@ -579,8 +589,8 @@
                     const dedExLoan = monthlyDeductionsExLoan;
                     const pfLoan = pfLoanAmount;
                     let monthTax = baseMonthlyTax;
-                    if (i === 0) monthTax += bonusTaxJan;      // January
-                    else if (i === 6) monthTax += bonusTaxJul; // July
+                    if (i === 0) monthTax += extraBasicTaxPerMonth + bonusTaxPerMonth;      // January
+                    else if (i === 6) monthTax += extraBasicTaxPerMonth + bonusTaxPerMonth; // July
                     const takeHome = grossForMonth - dedExLoan - pfLoan - monthTax;
                     totalG+=grossForMonth; totalE+=extraBasic; totalD+=dedExLoan; totalPF+=pfLoan; totalT+=monthTax; totalTH+=takeHome;
                     const tr=document.createElement('tr');
@@ -631,4 +641,3 @@
     </script>
 </body>
 </html>
-```
