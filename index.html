@@ -4,21 +4,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
   <title>FCCL Salary Planner | FY26 vs FY27 Tax</title>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
     :root {
-      --font: 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-      --bg: #f2f5f9;
+      --font: 'Plus Jakarta Sans', 'Segoe UI', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      --bg: #f8fafc;
       --surface: #ffffff;
-      --primary-950: #071524;
-      --primary-900: #0f2340;
-      --primary-800: #1a365d;
-      --primary-500: #2563eb;
+      --primary-950: #020617;
+      --primary-900: #0f172a;
+      --primary-800: #1e293b;
+      --primary-700: #334155;
+      --primary-500: #3b82f6;
       --primary-200: #bfdbfe;
       --primary-50: #eff6ff;
       --green-700: #15803d;
       --green-600: #16a34a;
+      --green-50: #f0fdf4;
       --red-700: #b91c1c;
       --red-600: #dc2626;
+      --red-50: #fef2f2;
       --amber-700: #b45309;
       --amber-500: #f59e0b;
       --amber-100: #fef3c7;
@@ -37,112 +41,258 @@
       --radius-sm: 8px;
       --radius-md: 12px;
       --radius-lg: 16px;
+      --radius-xl: 20px;
       --radius-full: 9999px;
-      --shadow-sm: 0 2px 8px rgba(0,0,0,.04),0 1px 2px rgba(0,0,0,.06);
-      --shadow-md: 0 6px 16px rgba(0,0,0,.06),0 2px 4px rgba(0,0,0,.04);
-      --transition: 0.2s cubic-bezier(0.2,0,0.2,1);
+      --shadow-sm: 0 1px 3px rgba(15,23,42,.06), 0 1px 2px rgba(15,23,42,.04);
+      --shadow-md: 0 10px 25px -5px rgba(15,23,42,.08), 0 8px 10px -6px rgba(15,23,42,.04);
+      --shadow-lg: 0 20px 40px -10px rgba(15,23,42,.1);
+      --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     }
-    *{margin:0;padding:0;box-sizing:border-box}
-    body{font-family:var(--font);background:var(--bg);color:var(--slate-900);line-height:1.5;min-height:100vh;display:flex;flex-direction:column}
-    .header{background:linear-gradient(165deg,var(--primary-950),var(--primary-900),var(--primary-800));padding:0 32px;height:64px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(0,0,0,.25);border-bottom:1px solid rgba(255,255,255,.08)}
-    .header-left{display:flex;align-items:center;gap:14px}
-    .header-icon{width:38px;height:38px;border-radius:var(--radius-sm);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:18px}
-    .header-title{font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:-0.3px;line-height:1.2}
-    .header-subtitle{font-size:.7rem;color:rgba(255,255,255,.6);font-weight:400;margin-top:2px}
-    .header-badge{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.85);padding:6px 16px;border-radius:var(--radius-full);font-size:.7rem;font-weight:600;letter-spacing:.6px;text-transform:uppercase;backdrop-filter:blur(4px)}
-    .container{max-width:1440px;margin:0 auto;padding:24px 24px 48px;width:100%}
-    .metrics-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
-    .metric-card{background:var(--surface);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow-sm);border-left:4px solid var(--primary-500);transition:transform var(--transition),box-shadow var(--transition);display:flex;flex-direction:column;justify-content:center}
-    .metric-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
-    .metric-card.green{border-left-color:var(--green-600)}
-    .metric-card.red{border-left-color:var(--red-600)}
-    .metric-card.amber{border-left-color:var(--amber-500)}
-    .metric-card.blue{border-left-color:var(--primary-500)}
-    .metric-label{font-size:.65rem;font-weight:700;text-transform:uppercase;letter-spacing:.55px;color:var(--slate-500);margin-bottom:6px}
-    .metric-value{font-size:1.2rem;font-weight:700;color:var(--slate-900);letter-spacing:-.4px;line-height:1.2;font-feature-settings:"tnum"}
-    .metric-card.green .metric-value{color:var(--green-700)}
-    .metric-card.red .metric-value{color:var(--red-700)}
-    .metric-card.amber .metric-value{color:var(--amber-700)}
-    .metric-card.blue .metric-value{color:var(--primary-700)}
-    .metric-note{font-size:.62rem;color:var(--slate-400);margin-top:4px;font-weight:400}
-    .card{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px}
-    .card-header{padding:14px 20px;border-bottom:1px solid var(--slate-100);display:flex;align-items:center;gap:10px;background:var(--white)}
-    .card-header-icon{width:28px;height:28px;border-radius:6px;background:var(--primary-50);display:flex;align-items:center;justify-content:center;font-size:14px}
-    .card-header-title{font-size:.85rem;font-weight:700;color:var(--primary-800);letter-spacing:-.2px}
-    .card-body{padding:20px}
-    .config-grid{display:grid;grid-template-columns:420px 1fr;gap:20px}
-    .config-section{background:var(--slate-50);border:1px solid var(--slate-150);border-radius:var(--radius-md);padding:18px}
-    .config-section+.config-section{margin-top:16px}
-    .config-section-title{font-size:.75rem;font-weight:700;color:var(--primary-800);margin-bottom:12px;padding-bottom:8px;border-bottom:1px solid var(--slate-150);display:flex;align-items:center;gap:6px}
-    .form-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--slate-100);gap:10px}
-    .form-row:last-child{border-bottom:none}
-    .form-label{font-size:.78rem;font-weight:500;color:var(--slate-700);flex:1}
-    .input-field,.select-field{font-family:var(--font);font-size:.8rem;padding:7px 10px;border:1.5px solid var(--slate-200);border-radius:var(--radius-sm);background:var(--white);color:var(--slate-900);width:110px;flex-shrink:0;outline:none;height:36px;font-feature-settings:"tnum";transition:border-color var(--transition),box-shadow var(--transition)}
-    .input-field:focus,.select-field:focus{border-color:var(--primary-500);box-shadow:0 0 0 3px rgba(37,99,235,.1);background:var(--white)}
-    .select-field{appearance:none;padding-right:28px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;cursor:pointer}
-    .input-sm{width:70px!important}
-    .adjusted-basic-display{font-size:1.2rem;font-weight:700;color:var(--primary-800);padding:8px 0;text-align:center;margin-top:6px;background:linear-gradient(135deg,var(--primary-50),#e0edff);border-radius:var(--radius-sm);border:1px solid var(--primary-200)}
-    .allowance-item{border:1px solid var(--slate-200);border-radius:var(--radius-sm);padding:8px 12px;margin-bottom:6px;background:var(--white);display:flex;flex-direction:column;gap:6px}
-    .allowance-item-header{display:flex;align-items:center;gap:6px;justify-content:space-between}
-    .allowance-name{font-size:.78rem;font-weight:600;color:var(--slate-800);display:flex;align-items:center;gap:4px}
-    .allowance-pct{font-size:.62rem;color:var(--slate-400);font-weight:500;margin-left:auto}
-    .radio-group{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-    .radio-group label{display:inline-flex;align-items:center;padding:4px 10px;border:1.5px solid var(--slate-200);border-radius:var(--radius-full);font-size:.68rem;font-weight:500;color:var(--slate-500);cursor:pointer;background:var(--white);transition:all var(--transition)}
-    .radio-group label:hover{border-color:var(--primary-200);color:var(--primary-600)}
-    .radio-group label.active-radio{border-color:var(--primary-500);background:var(--primary-50);color:var(--primary-700);font-weight:600}
-    .radio-group input[type="radio"]{display:none}
-    .manual-input{width:90px;font-size:.75rem;padding:4px 8px;border:1.5px solid var(--slate-200);border-radius:var(--radius-sm);background:var(--white);color:var(--slate-900);outline:none;height:30px;font-feature-settings:"tnum"}
-    .manual-input:focus{border-color:var(--primary-500);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
-    .manual-input:disabled{background:var(--slate-100);color:var(--slate-400);cursor:not-allowed}
-    .checkbox-row{display:flex;align-items:center;gap:8px;padding:8px 0}
-    .checkbox-row input[type="checkbox"]{width:16px;height:16px;accent-color:var(--primary-500);cursor:pointer}
-    .checkbox-row label{font-size:.78rem;font-weight:500;color:var(--slate-700);cursor:pointer}
-    .el-info-pill{display:flex;gap:16px;margin-top:8px;padding:8px 12px;background:var(--amber-50);border:1px solid var(--amber-100);border-radius:var(--radius-sm);font-size:.7rem;font-weight:500;color:var(--amber-700);flex-wrap:wrap}
-    .el-info-pill strong{color:var(--amber-700);font-weight:700}
-    .tax-info-bar{margin-top:12px;padding:10px 14px;background:var(--amber-50);border:1px solid var(--amber-100);border-radius:var(--radius-sm);font-size:.72rem;color:var(--amber-700);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;font-weight:500}
-    .two-col-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px}
-    .summary-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--slate-100);gap:12px}
-    .summary-row:last-child{border-bottom:none}
-    .summary-row.divider{border-top:2px solid var(--slate-200);padding-top:12px;margin-top:4px;border-bottom:none}
-    .summary-label{font-size:.78rem;color:var(--slate-600);font-weight:500;flex:1;line-height:1.4}
-    .summary-label.bold{font-weight:700;color:var(--slate-800);font-size:.82rem}
-    .summary-value{font-size:.82rem;font-weight:700;color:var(--slate-900);text-align:right;white-space:nowrap;font-feature-settings:"tnum"}
-    .summary-value.red{color:var(--red-600)}
-    .summary-value.green{color:var(--green-600)}
-    .summary-value.lg{font-size:.9rem}
-    .bonus-card{background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);border-left:4px solid var(--amber-500);overflow:hidden;margin-bottom:20px}
-    .bonus-card-header{padding:14px 20px;background:linear-gradient(135deg,var(--amber-50),#fffef7);border-bottom:1px solid var(--amber-100);display:flex;align-items:center;gap:8px}
-    .bonus-card-title{font-size:.85rem;font-weight:700;color:#92400e}
-    .bonus-card-body{padding:16px 20px}
-    .bonus-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(217,119,6,.2);font-size:.82rem}
-    .bonus-item:last-child{border-bottom:none;border-top:2px solid rgba(217,119,6,.25);padding-top:12px;margin-top:4px;font-weight:700;font-size:.88rem}
-    .bonus-item-label{color:var(--slate-700)}
-    .bonus-item-value{font-weight:600}
-    .bonus-item-value.red{color:var(--red-600)}
-    .bonus-item-value.green{color:var(--green-600);font-weight:700}
-    .table-wrapper{background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px}
-    .table-header{padding:14px 20px;border-bottom:1px solid var(--slate-100);display:flex;align-items:baseline;gap:12px}
-    .table-title{font-size:.85rem;font-weight:700;color:var(--primary-800)}
-    .table-subtitle{font-size:.65rem;color:var(--slate-400)}
-    .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
-    .monthly-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:820px;font-feature-settings:"tnum"}
-    .monthly-table thead th{background:var(--primary-800);color:#fff;padding:10px 12px;text-align:right;font-weight:600;font-size:.68rem;letter-spacing:.3px;white-space:nowrap}
-    .monthly-table thead th:first-child{text-align:left;padding-left:20px}
-    .monthly-table tbody td{padding:9px 12px;text-align:right;border-bottom:1px solid var(--slate-100);white-space:nowrap;color:var(--slate-700)}
-    .monthly-table tbody td:first-child{text-align:left;padding-left:20px;font-weight:600;color:var(--slate-800)}
-    .monthly-table tbody tr:hover td{background:var(--slate-50)}
-    .monthly-table tbody tr.highlight-row td{background:#fffdf7}
-    .monthly-table tfoot td{padding:10px 12px;text-align:right;font-weight:700;background:var(--slate-100);font-size:.76rem;border-top:2px solid var(--slate-300);color:var(--slate-800)}
-    .monthly-table tfoot td:first-child{text-align:left;padding-left:20px;color:var(--primary-800)}
-    .extra-badge{display:inline-block;background:var(--amber-100);color:var(--amber-700);padding:2px 8px;border-radius:12px;font-size:.64rem;font-weight:600}
-    .slab-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:750px}
-    .slab-table th{background:var(--slate-100);padding:10px 14px;text-align:left;font-weight:700;color:var(--primary-800);font-size:.7rem;text-transform:uppercase;letter-spacing:.3px}
-    .slab-table td{padding:10px 14px;border-bottom:1px solid var(--slate-100);color:var(--slate-700)}
-    .slab-table tr:hover td{background:var(--slate-50)}
-    .slab-range{font-weight:600;color:var(--slate-900);white-space:nowrap}
-    @media(max-width:1200px){.config-grid{grid-template-columns:1fr}.two-col-grid{grid-template-columns:1fr}}
-    @media(max-width:768px){.header{padding:0 16px;height:56px}.header-subtitle{display:none}.container{padding:16px 12px 32px}.metrics-grid{grid-template-columns:1fr 1fr;gap:10px}.metric-value{font-size:1rem}}
-    @media print{body{background:#fff}.card,.bonus-card,.table-wrapper{box-shadow:none;border:1px solid var(--slate-200)}}
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--slate-800);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Header */
+    .header {
+      background: linear-gradient(120deg, var(--primary-950) 0%, var(--primary-900) 60%, var(--primary-800) 100%);
+      padding: 0 40px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 20px rgba(2, 6, 23, .15);
+      border-bottom: 1px solid rgba(255,255,255,.05);
+    }
+    .header-left { display: flex; align-items: center; gap: 16px; }
+    .header-icon {
+      width: 42px; height: 42px;
+      border-radius: var(--radius-md);
+      background: linear-gradient(135deg, rgba(255,255,255,.15), rgba(255,255,255,.05));
+      border: 1px solid rgba(255,255,255,.1);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.1);
+    }
+    .header-title { font-size: 1.15rem; font-weight: 700; color: #fff; letter-spacing: -0.5px; line-height: 1.2; }
+    .header-subtitle { font-size: .75rem; color: rgba(255,255,255,.5); font-weight: 400; margin-top: 3px; }
+    .header-badge {
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.15);
+      color: #fff;
+      padding: 8px 18px;
+      border-radius: var(--radius-full);
+      font-size: .75rem; font-weight: 600;
+      letter-spacing: .5px;
+      text-transform: uppercase;
+      backdrop-filter: blur(8px);
+    }
+
+    /* Layout */
+    .container { max-width: 1440px; margin: 0 auto; padding: 32px 32px 64px; width: 100%; }
+
+    /* Metrics */
+    .metrics-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 28px; }
+    .metric-card {
+      background: var(--surface);
+      border-radius: var(--radius-lg);
+      padding: 22px 24px;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--slate-100);
+      border-top: 4px solid var(--primary-500);
+      transition: all var(--transition);
+      display: flex; flex-direction: column;
+    }
+    .metric-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-md); border-color: var(--slate-200); }
+    .metric-card.green { border-top-color: var(--green-600); }
+    .metric-card.red { border-top-color: var(--red-600); }
+    .metric-card.amber { border-top-color: var(--amber-500); }
+    .metric-card.blue { border-top-color: var(--primary-500); }
+    .metric-label { font-size: .7rem; font-weight: 700; text-transform: uppercase; letter-spacing: .8px; color: var(--slate-500); margin-bottom: 8px; }
+    .metric-value { font-size: 1.5rem; font-weight: 800; color: var(--slate-900); letter-spacing: -0.8px; line-height: 1.1; font-feature-settings: "tnum"; }
+    .metric-card.green .metric-value { color: var(--green-600); }
+    .metric-card.red .metric-value { color: var(--red-600); }
+    .metric-card.amber .metric-value { color: var(--amber-500); }
+    .metric-card.blue .metric-value { color: var(--primary-500); }
+    .metric-note { font-size: .65rem; color: var(--slate-400); margin-top: 6px; font-weight: 500; }
+
+    /* Main Columns Layout */
+    .main-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; align-items: start; }
+    .col-left, .col-right { display: flex; flex-direction: column; gap: 24px; }
+    
+    /* Standard Cards */
+    .card { background: var(--surface); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--slate-100); overflow: hidden; }
+    .card-header { padding: 18px 24px; border-bottom: 1px solid var(--slate-100); display: flex; align-items: center; gap: 12px; background: var(--white); }
+    .card-header-icon { width: 32px; height: 32px; border-radius: var(--radius-sm); background: var(--slate-50); display: flex; align-items: center; justify-content: center; font-size: 16px; }
+    .card-header-title { font-size: .95rem; font-weight: 700; color: var(--primary-900); letter-spacing: -0.3px; }
+    .card-body { padding: 24px; }
+
+    /* Forms */
+    .form-row { display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--slate-100); gap: 16px; }
+    .form-row:last-child { border-bottom: none; }
+    .form-label { font-size: .85rem; font-weight: 500; color: var(--slate-700); flex: 1; }
+    
+    .input-field, .select-field {
+      font-family: var(--font);
+      font-size: .85rem;
+      padding: 10px 14px;
+      border: 1px solid var(--slate-200);
+      border-radius: var(--radius-sm);
+      background: var(--white);
+      color: var(--slate-900);
+      width: 130px;
+      flex-shrink: 0;
+      outline: none;
+      height: 40px;
+      font-feature-settings: "tnum";
+      font-weight: 600;
+      transition: all var(--transition);
+    }
+    .input-field:focus, .select-field:focus { border-color: var(--primary-500); box-shadow: 0 0 0 4px rgba(59, 130, 246, .1); }
+    .select-field { appearance: none; padding-right: 32px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2.5'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 10px center; cursor: pointer; }
+    .input-sm { width: 80px !important; }
+    
+    .adjusted-basic-display {
+      font-size: 1.1rem; font-weight: 700; color: var(--primary-700);
+      padding: 12px; text-align: center; margin-top: 12px;
+      background: linear-gradient(135deg, var(--primary-50), #e0edff);
+      border-radius: var(--radius-sm); border: 1px solid var(--primary-200);
+    }
+
+    /* Allowances */
+    .allowance-item { border: 1px solid var(--slate-200); border-radius: var(--radius-sm); padding: 12px 14px; margin-bottom: 10px; background: var(--white); display: flex; flex-direction: column; gap: 8px; transition: border-color var(--transition); }
+    .allowance-item:last-child { margin-bottom: 0; }
+    .allowance-item:hover { border-color: var(--primary-200); }
+    .allowance-item-header { display: flex; align-items: center; gap: 8px; justify-content: space-between; }
+    .allowance-name { font-size: .85rem; font-weight: 600; color: var(--slate-800); display: flex; align-items: center; gap: 6px; }
+    .allowance-pct { font-size: .7rem; color: var(--slate-400); font-weight: 600; margin-left: auto; background: var(--slate-50); padding: 2px 8px; border-radius: 12px; }
+    
+    .radio-group { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .radio-group label { display: inline-flex; align-items: center; padding: 6px 14px; border: 1px solid var(--slate-200); border-radius: var(--radius-full); font-size: .75rem; font-weight: 600; color: var(--slate-500); cursor: pointer; background: var(--white); transition: all var(--transition); }
+    .radio-group label:hover { border-color: var(--primary-200); color: var(--primary-500); background: var(--primary-50); }
+    .radio-group label.active-radio { border-color: var(--primary-500); background: var(--primary-50); color: var(--primary-700); }
+    .radio-group input[type="radio"] { display: none; }
+    
+    .manual-input { width: 110px; font-size: .8rem; padding: 8px 12px; border: 1px solid var(--slate-200); border-radius: var(--radius-sm); background: var(--white); color: var(--slate-900); outline: none; height: 34px; font-feature-settings: "tnum"; font-weight: 600; transition: all var(--transition); }
+    .manual-input:focus { border-color: var(--primary-500); box-shadow: 0 0 0 3px rgba(59,99,235,.1); }
+    .manual-input:disabled { background: var(--slate-50); color: var(--slate-300); cursor: not-allowed; }
+
+    .checkbox-row { display: flex; align-items: center; gap: 10px; padding: 10px 0; }
+    .checkbox-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--primary-500); cursor: pointer; }
+    .checkbox-row label { font-size: .85rem; font-weight: 500; color: var(--slate-700); cursor: pointer; }
+
+    .el-info-pill { display: flex; gap: 20px; margin-top: 4px; padding: 10px 14px; background: var(--amber-50); border: 1px solid var(--amber-100); border-radius: var(--radius-sm); font-size: .75rem; font-weight: 500; color: var(--amber-700); flex-wrap: wrap; }
+    .el-info-pill strong { color: var(--amber-700); font-weight: 800; }
+
+    .tax-info-bar { margin-top: 20px; padding: 14px 16px; background: var(--primary-900); border-radius: var(--radius-sm); font-size: .75rem; color: rgba(255,255,255,.8); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; font-weight: 500; }
+    .tax-info-bar strong { color: var(--white); font-weight: 700; }
+
+    /* Summary Rows */
+    .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--slate-100); gap: 16px; }
+    .summary-row:last-child { border-bottom: none; }
+    .summary-row.divider { border-top: 2px solid var(--slate-200); padding-top: 16px; margin-top: 8px; border-bottom: none; }
+    .summary-label { font-size: .9rem; color: var(--slate-600); font-weight: 500; flex: 1; line-height: 1.4; }
+    .summary-label.bold { font-weight: 700; color: var(--slate-900); font-size: .95rem; }
+    .summary-value { font-size: .9rem; font-weight: 700; color: var(--slate-900); text-align: right; white-space: nowrap; font-feature-settings: "tnum"; }
+    .summary-value.red { color: var(--red-600); }
+    .summary-value.green { color: var(--green-600); }
+    .summary-value.lg { font-size: 1.1rem; }
+
+    /* Bonus Card */
+    .bonus-card { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--slate-100); border-top: 4px solid var(--amber-500); overflow: hidden; }
+    .bonus-card-header { padding: 18px 24px; background: linear-gradient(135deg, var(--amber-50), #fffef7); border-bottom: 1px solid var(--amber-100); display: flex; align-items: center; gap: 10px; }
+    .bonus-card-title { font-size: .95rem; font-weight: 700; color: #92400e; }
+    .bonus-card-body { padding: 20px 24px; }
+    .bonus-item { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px dashed var(--slate-200); font-size: .9rem; }
+    .bonus-item:last-child { border-bottom: none; border-top: 2px solid var(--slate-200); padding-top: 16px; margin-top: 8px; font-weight: 800; font-size: 1rem; }
+    .bonus-item-label { color: var(--slate-600); font-weight: 500; }
+    .bonus-item-value { font-weight: 700; color: var(--slate-900); }
+    .bonus-item-value.red { color: var(--red-600); }
+    .bonus-item-value.green { color: var(--green-600); font-weight: 800; }
+
+    /* Tables */
+    .table-wrapper { background: var(--white); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--slate-100); overflow: hidden; margin-bottom: 24px; }
+    .table-header { padding: 18px 24px; border-bottom: 1px solid var(--slate-100); display: flex; align-items: baseline; gap: 12px; background: var(--white); }
+    .table-title { font-size: .95rem; font-weight: 700; color: var(--primary-900); }
+    .table-subtitle { font-size: .75rem; color: var(--slate-400); font-weight: 500; }
+    .table-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .table-foot-note { padding: 12px 24px; font-size: .75rem; color: var(--slate-400); background: var(--slate-50); border-top: 1px solid var(--slate-100); }
+
+    .monthly-table { width: 100%; border-collapse: collapse; font-size: .85rem; min-width: 820px; font-feature-settings: "tnum"; }
+    .monthly-table thead th { background: var(--primary-900); color: #fff; padding: 14px 16px; text-align: right; font-weight: 600; font-size: .75rem; letter-spacing: .5px; white-space: nowrap; text-transform: uppercase; }
+    .monthly-table thead th:first-child { text-align: left; padding-left: 24px; border-top-left-radius: 0; }
+    .monthly-table tbody td { padding: 14px 16px; text-align: right; border-bottom: 1px solid var(--slate-100); white-space: nowrap; color: var(--slate-700); font-weight: 500; }
+    .monthly-table tbody td:first-child { text-align: left; padding-left: 24px; font-weight: 700; color: var(--slate-900); }
+    .monthly-table tbody tr:hover td { background: var(--slate-50); }
+    .monthly-table tbody tr.highlight-row td { background: #fffbeb; color: var(--amber-700); font-weight: 700; }
+    .monthly-table tfoot td { padding: 14px 16px; text-align: right; font-weight: 800; background: var(--slate-100); font-size: .85rem; border-top: 2px solid var(--slate-300); color: var(--slate-900); }
+    .monthly-table tfoot td:first-child { text-align: left; padding-left: 24px; color: var(--primary-900); }
+    
+    .extra-badge { display: inline-block; background: var(--amber-100); color: var(--amber-700); padding: 4px 10px; border-radius: 12px; font-size: .7rem; font-weight: 700; }
+
+    .slab-table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 750px; }
+    .slab-table th { background: var(--slate-50); padding: 14px 18px; text-align: left; font-weight: 700; color: var(--primary-900); font-size: .75rem; text-transform: uppercase; letter-spacing: .5px; border-bottom: 2px solid var(--slate-200); }
+    .slab-table td { padding: 14px 18px; border-bottom: 1px solid var(--slate-100); color: var(--slate-700); }
+    .slab-table tr:last-child td { border-bottom: none; }
+    .slab-table tr:hover td { background: var(--slate-50); }
+    .slab-range { font-weight: 700; color: var(--slate-900); white-space: nowrap; }
+
+    /* Responsive / Mobile Optimizations */
+    @media(max-width: 1024px) {
+      .main-columns { grid-template-columns: 1fr; }
+    }
+    
+    @media(max-width: 768px) {
+      .header { padding: 0 20px; height: 64px; }
+      .header-subtitle { display: none; }
+      .header-title { font-size: 1rem; }
+      .header-badge { padding: 6px 12px; font-size: .65rem; }
+      .container { padding: 20px 16px 40px; }
+      
+      .metrics-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .metric-card { padding: 16px; }
+      .metric-value { font-size: 1.15rem; }
+      .metric-label { font-size: .65rem; }
+      
+      .card-body { padding: 16px; }
+      
+      /* Stack forms vertically on mobile for better space usage */
+      .form-row { flex-direction: column; align-items: stretch; gap: 6px; }
+      .form-label { margin-bottom: 2px; font-size: .8rem; }
+      .input-field, .select-field { width: 100%; height: 42px; font-size: .9rem; }
+      .input-sm { width: 100% !important; }
+      
+      .radio-group { width: 100%; }
+      .radio-group label { flex: 1; justify-content: center; }
+      .manual-input { width: 100%; flex: 1; }
+      
+      .summary-label { font-size: .85rem; }
+      .summary-value { font-size: .85rem; }
+      .summary-value.lg { font-size: 1rem; }
+      
+      .table-header { flex-direction: column; gap: 4px; }
+      .monthly-table { font-size: .8rem; }
+      .monthly-table thead th { padding: 10px 12px; font-size: .65rem; }
+      .monthly-table tbody td { padding: 10px 12px; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .card, .bonus-card, .table-wrapper { box-shadow: none; border: 1px solid var(--slate-200); }
+      .header { position: static; box-shadow: none; }
+    }
   </style>
 </head>
 <body>
@@ -166,59 +316,48 @@
     <div class="metric-card red"><div class="metric-label">FY27 Tax</div><div class="metric-value" id="metricThisYearTax">Rs. 0</div><div class="metric-note">New regime</div></div>
   </div>
 
-  <!-- CONFIGURATION PANEL -->
-  <div class="card">
-    <div class="card-header"><div class="card-header-icon">⚙️</div><div class="card-header-title">Salary Configuration</div></div>
-    <div class="card-body">
-      <div class="config-grid">
-        <div>
-          <div class="config-section">
-            <div class="config-section-title">📋 Basic Information</div>
-            <div class="form-row"><span class="form-label">Basic Salary (Rs.)</span><input type="number" id="basicSalary" class="input-field" value="80000" min="1" step="1"></div>
-            <div class="form-row"><span class="form-label">Annual Increment</span><select id="incrementPct" class="select-field"><option value="0" selected>0%</option><option value="6">6%</option><option value="8">8%</option><option value="10">10%</option><option value="12">12%</option><option value="14">14%</option></select></div>
-            <div class="adjusted-basic-display" id="adjustedBasicDisplay">Adjusted Basic: Rs. 80,000</div>
-          </div>
-          <div class="config-section">
-            <div class="config-section-title">📉 Deductions & Extras</div>
-            <div class="form-row"><span class="form-label">EOBI</span><input type="number" id="eobi" class="input-field" value="370" min="0" step="1"></div>
-            <div class="form-row"><span class="form-label">Professional Tax</span><input type="number" id="professionalTax" class="input-field" value="200" min="0" step="1"></div>
-            <div class="checkbox-row"><input type="checkbox" id="pfLoanCheckbox"><label for="pfLoanCheckbox">Provident Fund Loan</label></div>
-            <div id="pfLoanContainer" style="display:none"><div class="form-row"><span class="form-label">PF Loan Installment</span><input type="number" id="pfLoanAmount" class="input-field" value="0" min="0" step="1"></div></div>
-            <div class="form-row" style="margin-top:4px"><span class="form-label">Annual Bonus (× Basic)</span><select id="bonusMultiplier" class="select-field"><option value="6">6× Basic</option><option value="8">8× Basic</option><option value="10" selected>10× Basic</option><option value="12">12× Basic</option><option value="14">14× Basic</option></select></div>
-          </div>
-          <div class="config-section">
-            <div class="config-section-title">🏖️ Earned Leave (on Basic)</div>
-            <div class="form-row"><span class="form-label">Leave Days (max 15)</span><input type="number" id="elDays" class="input-field input-sm" value="15" min="0" max="15" step="1"></div>
-            <div class="allowance-item" style="margin-top:8px">
-              <div class="allowance-item-header"><span class="allowance-name">🏖️ EL Payment</span><span class="allowance-pct">Basic/30 × days</span></div>
-              <div class="radio-group" data-component="el"><label class="active-radio"><input type="radio" name="mode_el" value="auto" checked>Auto</label><label><input type="radio" name="mode_el" value="manual">Manual</label><input type="number" class="manual-input" id="manualEL" disabled placeholder="Amount"></div>
-              <div class="el-info-pill" id="elTaxInfo"><span>Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span><span>Net EL: <strong id="elNetOutput">Rs. 0</strong></span></div>
-            </div>
-          </div>
+  <!-- MAIN SYMMETRICAL COLUMNS -->
+  <div class="main-columns">
+    
+    <!-- LEFT COLUMN: Basic Info, Deductions, Earned Leaves, Annual Summary -->
+    <div class="col-left">
+      
+      <div class="card">
+        <div class="card-header"><div class="card-header-icon">📋</div><div class="card-header-title">Basic Information</div></div>
+        <div class="card-body">
+          <div class="form-row"><span class="form-label">Basic Salary (Rs.)</span><input type="number" id="basicSalary" class="input-field" value="80000" min="1" step="1"></div>
+          <div class="form-row"><span class="form-label">Annual Increment</span><select id="incrementPct" class="select-field"><option value="0" selected>0%</option><option value="6">6%</option><option value="8">8%</option><option value="10">10%</option><option value="12">12%</option><option value="14">14%</option></select></div>
+          <div class="adjusted-basic-display" id="adjustedBasicDisplay">Adjusted Basic: Rs. 80,000</div>
         </div>
-        <div>
-          <div class="config-section">
-            <div class="config-section-title">🧩 Allowances</div>
-            <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🏠 HRA</span><span class="allowance-pct">45%</span></div><div class="radio-group" data-component="hra"><label class="active-radio"><input type="radio" name="mode_hra" value="auto" checked>Auto</label><label><input type="radio" name="mode_hra" value="manual">Manual</label><input type="number" class="manual-input" id="manualHRA" disabled></div></div>
-            <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🔧 Utility</span><span class="allowance-pct">20%</span></div><div class="radio-group" data-component="utility"><label class="active-radio"><input type="radio" name="mode_utility" value="auto" checked>Auto</label><label><input type="radio" name="mode_utility" value="manual">Manual</label><input type="number" class="manual-input" id="manualUtility" disabled></div></div>
-            <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🚗 Conveyance</span><span class="allowance-pct">15%</span></div><div class="radio-group" data-component="conveyance"><label class="active-radio"><input type="radio" name="mode_conveyance" value="auto" checked>Auto</label><label><input type="radio" name="mode_conveyance" value="manual">Manual</label><input type="number" class="manual-input" id="manualConveyance" disabled></div></div>
-            <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🎖️ Ex-Gratia 1</span><span class="allowance-pct">7.38%</span></div><div class="radio-group" data-component="exgratia1"><label class="active-radio"><input type="radio" name="mode_exgratia1" value="auto" checked>Auto</label><label><input type="radio" name="mode_exgratia1" value="manual">Manual</label><input type="number" class="manual-input" id="manualExGratia1" disabled></div></div>
-            <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🏅 Ex-Gratia 2</span><span class="allowance-pct">12.18%</span></div><div class="radio-group" data-component="exgratia2"><label class="active-radio"><input type="radio" name="mode_exgratia2" value="auto" checked>Auto</label><label><input type="radio" name="mode_exgratia2" value="manual">Manual</label><input type="number" class="manual-input" id="manualExGratia2" disabled></div></div>
-            <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🔐 PF Contribution</span><span class="allowance-pct">10%</span></div><div class="radio-group" data-component="pf"><label class="active-radio"><input type="radio" name="mode_pf" value="auto" checked>Auto</label><label><input type="radio" name="mode_pf" value="manual">Manual</label><input type="number" class="manual-input" id="manualPF" disabled></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-header-icon">📉</div><div class="card-header-title">Deductions & Extras</div></div>
+        <div class="card-body">
+          <div class="form-row"><span class="form-label">EOBI</span><input type="number" id="eobi" class="input-field" value="370" min="0" step="1"></div>
+          <div class="form-row"><span class="form-label">Professional Tax</span><input type="number" id="professionalTax" class="input-field" value="200" min="0" step="1"></div>
+          <div class="checkbox-row"><input type="checkbox" id="pfLoanCheckbox"><label for="pfLoanCheckbox">Provident Fund Loan</label></div>
+          <div id="pfLoanContainer" style="display:none">
+            <div class="form-row"><span class="form-label">PF Loan Installment</span><input type="number" id="pfLoanAmount" class="input-field" value="0" min="0" step="1"></div>
+            <div class="form-row"><span class="form-label">Installments Left (After July)</span><input type="number" id="pfLoanMonths" class="input-field input-sm" value="12" min="0" max="12" step="1"></div>
           </div>
-          <div class="tax-info-bar" id="taxInfoBar">
-            <span id="taxSlabInfo">FY27 Slab: Calculated progressively.</span>
-            <span>Effective Rate: <strong id="configEffectiveRate">0.00%</strong></span>
+          <div class="form-row" style="margin-top:4px"><span class="form-label">Annual Bonus (× Basic)</span><select id="bonusMultiplier" class="select-field"><option value="6">6× Basic</option><option value="8">8× Basic</option><option value="10" selected>10× Basic</option><option value="12">12× Basic</option><option value="14">14× Basic</option></select></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-header-icon">🏖️</div><div class="card-header-title">Earned Leave (on Basic)</div></div>
+        <div class="card-body">
+          <div class="form-row"><span class="form-label">Leave Days (max 15)</span><input type="number" id="elDays" class="input-field input-sm" value="15" min="0" max="15" step="1"></div>
+          <div class="allowance-item" style="margin-top:16px">
+            <div class="allowance-item-header"><span class="allowance-name">🏖️ EL Payment</span><span class="allowance-pct">Basic/30 × days</span></div>
+            <div class="radio-group" data-component="el"><label class="active-radio"><input type="radio" name="mode_el" value="auto" checked>Auto</label><label><input type="radio" name="mode_el" value="manual">Manual</label><input type="number" class="manual-input" id="manualEL" disabled placeholder="Amount"></div>
+            <div class="el-info-pill" id="elTaxInfo"><span>Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span><span>Net EL: <strong id="elNetOutput">Rs. 0</strong></span></div>
           </div>
         </div>
       </div>
-    </div>
-  </div>
 
-  <!-- SUMMARY + BONUS + TAX COMPARISON -->
-  <div class="two-col-grid">
-    <div>
-      <div class="card" style="margin-bottom:0">
+      <div class="card">
         <div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Annual Summary (FY27)</div></div>
         <div class="card-body">
           <div class="summary-row"><span class="summary-label">Annual Gross Salary</span><span class="summary-value" id="sumAnnualGross">Rs. 0</span></div>
@@ -229,8 +368,28 @@
           <div class="summary-row divider"><span class="summary-label bold">Annual Net Salary</span><span class="summary-value green lg" id="sumAnnualNet">Rs. 0</span></div>
         </div>
       </div>
+
     </div>
-    <div>
+
+    <!-- RIGHT COLUMN: Allowances, Bonus Tax, Tax Comparison -->
+    <div class="col-right">
+
+      <div class="card">
+        <div class="card-header"><div class="card-header-icon">🧩</div><div class="card-header-title">Allowances</div></div>
+        <div class="card-body">
+          <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🏠 HRA</span><span class="allowance-pct">45%</span></div><div class="radio-group" data-component="hra"><label class="active-radio"><input type="radio" name="mode_hra" value="auto" checked>Auto</label><label><input type="radio" name="mode_hra" value="manual">Manual</label><input type="number" class="manual-input" id="manualHRA" disabled></div></div>
+          <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🔧 Utility</span><span class="allowance-pct">20%</span></div><div class="radio-group" data-component="utility"><label class="active-radio"><input type="radio" name="mode_utility" value="auto" checked>Auto</label><label><input type="radio" name="mode_utility" value="manual">Manual</label><input type="number" class="manual-input" id="manualUtility" disabled></div></div>
+          <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🚗 Conveyance</span><span class="allowance-pct">15%</span></div><div class="radio-group" data-component="conveyance"><label class="active-radio"><input type="radio" name="mode_conveyance" value="auto" checked>Auto</label><label><input type="radio" name="mode_conveyance" value="manual">Manual</label><input type="number" class="manual-input" id="manualConveyance" disabled></div></div>
+          <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🎖️ Ex-Gratia 1</span><span class="allowance-pct">7.38%</span></div><div class="radio-group" data-component="exgratia1"><label class="active-radio"><input type="radio" name="mode_exgratia1" value="auto" checked>Auto</label><label><input type="radio" name="mode_exgratia1" value="manual">Manual</label><input type="number" class="manual-input" id="manualExGratia1" disabled></div></div>
+          <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🏅 Ex-Gratia 2</span><span class="allowance-pct">12.18%</span></div><div class="radio-group" data-component="exgratia2"><label class="active-radio"><input type="radio" name="mode_exgratia2" value="auto" checked>Auto</label><label><input type="radio" name="mode_exgratia2" value="manual">Manual</label><input type="number" class="manual-input" id="manualExGratia2" disabled></div></div>
+          <div class="allowance-item"><div class="allowance-item-header"><span class="allowance-name">🔐 PF Contribution</span><span class="allowance-pct">10%</span></div><div class="radio-group" data-component="pf"><label class="active-radio"><input type="radio" name="mode_pf" value="auto" checked>Auto</label><label><input type="radio" name="mode_pf" value="manual">Manual</label><input type="number" class="manual-input" id="manualPF" disabled></div></div>
+          <div class="tax-info-bar" id="taxInfoBar">
+            <span id="taxSlabInfo">FY27 Slab: Calculated progressively.</span>
+            <span>Effective Rate: <strong id="configEffectiveRate">0.00%</strong></span>
+          </div>
+        </div>
+      </div>
+
       <div class="bonus-card">
         <div class="bonus-card-header"><span>🎯</span><span class="bonus-card-title">Bonus Tax Impact</span></div>
         <div class="bonus-card-body">
@@ -239,6 +398,7 @@
           <div class="bonus-item"><span class="bonus-item-label">Net Bonus</span><span class="bonus-item-value green" id="bonusNetDisplay">Rs. 0</span></div>
         </div>
       </div>
+
       <div class="card">
         <div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Tax Comparison (same income)</div></div>
         <div class="card-body">
@@ -247,6 +407,7 @@
           <div class="summary-row divider"><span class="summary-label bold">Your Saving</span><span class="summary-value green lg" id="compareSaving">Rs. 0</span></div>
         </div>
       </div>
+
     </div>
   </div>
 
@@ -309,7 +470,7 @@
   const $=id=>document.getElementById(id);
   const bs=$('basicSalary'),inc=$('incrementPct'),adj=$('adjustedBasicDisplay');
   const bm=$('bonusMultiplier'),eobi=$('eobi'),pt=$('professionalTax');
-  const pfc=$('pfLoanCheckbox'),pfl=$('pfLoanContainer'),pfa=$('pfLoanAmount');
+  const pfc=$('pfLoanCheckbox'),pfl=$('pfLoanContainer'),pfa=$('pfLoanAmount'),pfm=$('pfLoanMonths');
   const eld=$('elDays'),mEL=$('manualEL'),mHRA=$('manualHRA'),mU=$('manualUtility');
   const mC=$('manualConveyance'),mE1=$('manualExGratia1'),mE2=$('manualExGratia2'),mPF=$('manualPF');
   const rgs=document.querySelectorAll('.radio-group[data-component]');
@@ -354,7 +515,13 @@
     const eobiV = parseFloat(eobi.value)||0;
     const ptV = parseFloat(pt.value)||0;
     const pfEnabled = pfc.checked;
-    const pfLoan = pfEnabled?(parseFloat(pfa.value)||0):0;
+    
+    // Parse PF Loan Amount and Months (capped at 12)
+    const pfLoanAmt = pfEnabled ? (parseFloat(pfa.value) || 0) : 0;
+    let pfLoanM = pfEnabled ? Math.min(12, Math.max(0, parseInt(pfm.value, 10) || 12)) : 0;
+    // Total annual PF loan deduction based on active months
+    const pfLoanAnnual = pfLoanAmt * pfLoanM;
+    
     const elDays = Math.min(15, Math.max(0, parseInt(eld.value,10)||0));
 
     let hra=mode('hra')==='auto'?Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
@@ -366,7 +533,6 @@
 
     const mGross = ab + hra + util + conv + eg1 + eg2;
     const mDedXL = pfc_ + eobiV + ptV;
-    const mDed = mDedXL + pfLoan;
 
     let elPay = mode('el')==='auto'? Math.round((basic/30)*elDays) : (parseFloat(mEL.value)||0);
     const aBonus = bmul * basic;
@@ -384,12 +550,17 @@
     const tBonusFY27 = tTotalFY27 - tRegELFY27;
     const netBonus = aBonus - tBonusFY27;
     const netEL = elPay - tELFY27;
-    const aDed = mDed*12;
+    
+    // Annual deductions now use the calculated annual PF loan instead of a flat 12 months
+    const aDed = (mDedXL * 12) + pfLoanAnnual;
     const aNetFY27 = aTaxable - tTotalFY27 - aDed;
 
     const effReg = aGross>0 ? taxFY27(aGross)/aGross : 0;
     const regMonthTax = Math.round(mGross*effReg);
-    const regMonthNet = mGross - mDedXL - pfLoan - regMonthTax;
+    
+    // Regular month check: if active months are over, PF loan drops to 0 for the regular month
+    const regMonthPFLoan = pfLoanM > 0 ? pfLoanAmt : 0;
+    const regMonthNet = mGross - mDedXL - regMonthPFLoan - regMonthTax;
 
     set('metricMonthly',fmt(regMonthNet));
     set('metricYearlyBonusTakeHome',fmt(netBonus));
@@ -434,16 +605,21 @@
       if(i===0){ xb=basic; gm=mGross+basic; }
       if(i===6){ xb=ab;    gm=mGross+ab;    }
       if(i===1){ gm=mGross+elPay; }
+      
+      // PF Loan logic: only deduct if current month index is less than active months
+      let currentPFLoan = (i < pfLoanM) ? pfLoanAmt : 0;
+      
       const mt_ = Math.round(gm*effReg);
-      const th = gm - mDedXL - pfLoan - mt_;
-      tG+=gm; tE+=xb; tD+=mDedXL; tP+=pfLoan; tT+=mt_; tH+=th;
+      const th = gm - mDedXL - currentPFLoan - mt_;
+      
+      tG+=gm; tE+=xb; tD+=mDedXL; tP+=currentPFLoan; tT+=mt_; tH+=th;
       const tr=document.createElement('tr');
       if(i===0||i===1||i===6)tr.classList.add('highlight-row');
       let extraHtml='<span style="color:var(--slate-300)">—</span>';
       if(i===0) extraHtml=`<span class="extra-badge">+${fmt(basic)} (existing)</span>`;
       if(i===6) extraHtml=`<span class="extra-badge">+${fmt(ab)} (adjusted)</span>`;
       if(i===1) extraHtml=`<span class="extra-badge">+${fmt(elPay)} (EL)</span>`;
-      tr.innerHTML=`<td>${months[i]}${(i===0||i===1||i===6)?' ⭐':''}</td><td>${fmt(gm)}</td><td>${extraHtml}</td><td>${fmt(mDedXL)}</td><td>${fmt(pfLoan)}</td><td>${fmt(mt_)}</td><td><strong>${fmt(th)}</strong></td>`;
+      tr.innerHTML=`<td>${months[i]}${(i===0||i===1||i===6)?' ⭐':''}</td><td>${fmt(gm)}</td><td>${extraHtml}</td><td>${fmt(mDedXL)}</td><td>${fmt(currentPFLoan)}</td><td>${fmt(mt_)}</td><td><strong>${fmt(th)}</strong></td>`;
       tbody.appendChild(tr);
     }
     $('monthlyTableFoot').innerHTML=`<tr><td>Annual totals</td><td>${fmt(tG)}</td><td>${fmt(tE)}</td><td>${fmt(tD)}</td><td>${fmt(tP)}</td><td>${fmt(tT)}</td><td><strong>${fmt(tH)}</strong></td></tr>`;
@@ -456,7 +632,7 @@
   }
   rgs.forEach(g=>{g.querySelectorAll('input[type="radio"]').forEach(r=>r.addEventListener('change',()=>{updateUI(g);calc()}));updateUI(g)});
   pfc.addEventListener('change',()=>{pfl.style.display=pfc.checked?'block':'none';calc()});
-  [bs,inc,bm,eobi,pt,pfa,eld].forEach(e=>e.addEventListener('input',calc));
+  [bs,inc,bm,eobi,pt,pfa,pfm,eld].forEach(e=>e.addEventListener('input',calc));
   [mHRA,mU,mC,mE1,mE2,mPF,mEL].forEach(inp=>inp.addEventListener('input',function(){const comp=this.closest('.radio-group')?.getAttribute('data-component');if(comp&&mode(comp)==='manual')calc()}));
   calc();
 })();
