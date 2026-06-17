@@ -357,7 +357,6 @@
     const pfLoan = pfEnabled?(parseFloat(pfa.value)||0):0;
     const elDays = Math.min(15, Math.max(0, parseInt(eld.value,10)||0));
 
-    // FY27 allowances on adjusted basic
     let hra=mode('hra')==='auto'?Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
     let util=mode('utility')==='auto'?Math.round(ab*PCT.utility):(parseFloat(mU.value)||0);
     let conv=mode('conveyance')==='auto'?Math.round(ab*PCT.conveyance):(parseFloat(mC.value)||0);
@@ -369,21 +368,16 @@
     const mDedXL = pfc_ + eobiV + ptV;
     const mDed = mDedXL + pfLoan;
 
-    // EL on basic (both FY26 and FY27)
     let elPay = mode('el')==='auto'? Math.round((basic/30)*elDays) : (parseFloat(mEL.value)||0);
-    // Bonus on basic (both FY26 and FY27)
     const aBonus = bmul * basic;
 
-    // IDENTICAL taxable income formula for FY26 and FY27
-    const aGross = mGross*12 + basic + ab;   // July existing basic, Jan adjusted basic
+    const aGross = mGross*12 + basic + ab;
     const aTaxable = aGross + elPay + aBonus;
 
-    // Apply different tax slabs to the same taxable income
     const tTotalFY26 = taxFY26(aTaxable);
     const tTotalFY27 = taxFY27(aTaxable);
     const taxSaving = tTotalFY26 - tTotalFY27;
 
-    // FY27 breakdown for display
     const tRegFY27 = taxFY27(aGross);
     const tRegELFY27 = taxFY27(aGross + elPay);
     const tELFY27 = tRegELFY27 - tRegFY27;
@@ -397,7 +391,6 @@
     const regMonthTax = Math.round(mGross*effReg);
     const regMonthNet = mGross - mDedXL - pfLoan - regMonthTax;
 
-    // Update UI
     set('metricMonthly',fmt(regMonthNet));
     set('metricYearlyBonusTakeHome',fmt(netBonus));
     set('metricTaxableIncome',fmt(aTaxable));
