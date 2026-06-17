@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -119,7 +120,7 @@
       grid-template-columns: 1fr 1fr;
       gap: 24px;
       margin-bottom: 24px;
-      align-items: start; /* Prevents cards from stretching unnaturally */
+      align-items: start;
     }
     .col-left, .col-right { display: flex; flex-direction: column; gap: 24px; }
 
@@ -233,16 +234,20 @@
     
     .extra-badge { display: inline-block; background: var(--amber-100); color: var(--amber-700); padding: 4px 10px; border-radius: 12px; font-size: .7rem; font-weight: 700; }
 
-    .slab-table { width: 100%; border-collapse: collapse; font-size: .9rem; min-width: 750px; }
-    .slab-table th { background: var(--slate-50); padding: 14px 18px; text-align: left; font-weight: 700; color: var(--primary-900); font-size: .75rem; text-transform: uppercase; letter-spacing: .5px; border-bottom: 2px solid var(--slate-200); }
-    .slab-table td { padding: 14px 18px; border-bottom: 1px solid var(--slate-100); color: var(--slate-700); }
+    /* Slabs Layout (2 Columns Side-by-Side) */
+    .slabs-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
+    
+    /* Compact Slab Tables */
+    .slab-table { width: 100%; border-collapse: collapse; font-size: .8rem; }
+    .slab-table th { background: var(--slate-50); padding: 10px 14px; text-align: left; font-weight: 700; color: var(--primary-900); font-size: .7rem; text-transform: uppercase; letter-spacing: .5px; border-bottom: 2px solid var(--slate-200); }
+    .slab-table td { padding: 10px 14px; border-bottom: 1px solid var(--slate-100); color: var(--slate-600); }
     .slab-table tr:last-child td { border-bottom: none; }
     .slab-table tr:hover td { background: var(--slate-50); }
     .slab-range { font-weight: 700; color: var(--slate-900); white-space: nowrap; }
 
     /* Responsive */
     @media(max-width: 1024px) {
-      .main-layout { grid-template-columns: 1fr; }
+      .main-layout, .slabs-layout { grid-template-columns: 1fr; }
     }
     
     @media(max-width: 768px) {
@@ -403,7 +408,7 @@
     </div>
   </div>
 
-  <!-- TABLES -->
+  <!-- MONTHLY TABLE -->
   <div class="table-wrapper">
     <div class="table-header"><span class="table-title">📅 Monthly Projection</span><span class="table-subtitle">July 2026 – June 2027 · EL & Bonus taxes excluded</span></div>
     <div class="table-scroll">
@@ -416,42 +421,47 @@
     <div class="table-foot-note">* Excl. PF Loan. ⭐ July (existing basic), Aug (EL), Jan (adjusted basic).</div>
   </div>
 
-  <div class="card">
-    <div class="card-header"><div class="card-header-icon">📋</div><div class="card-header-title">Income Tax Slabs — FY 2027</div></div>
-    <div class="table-scroll">
-      <table class="slab-table">
-        <thead><tr><th>Annual Income</th><th>Tax Rate</th><th>Tax Formula (FY27)</th></tr></thead>
-        <tbody>
-          <tr><td class="slab-range">Up to 600,000</td><td>0%</td><td>Fully exempt</td></tr>
-          <tr><td class="slab-range">600,001 – 1,200,000</td><td>1%</td><td>1% above 600,000</td></tr>
-          <tr><td class="slab-range">1,200,001 – 2,200,000</td><td>11%</td><td>6,000 + 11% above 1,200,000</td></tr>
-          <tr><td class="slab-range">2,200,001 – 3,200,000</td><td>20%</td><td>116,000 + 20% above 2,200,000</td></tr>
-          <tr><td class="slab-range">3,200,001 – 4,100,000</td><td>25%</td><td>316,000 + 25% above 3,200,000</td></tr>
-          <tr><td class="slab-range">4,100,001 – 5,600,000</td><td>29%</td><td>541,000 + 29% above 4,100,000</td></tr>
-          <tr><td class="slab-range">5,600,001 – 7,000,000</td><td>32%</td><td>976,000 + 32% above 5,600,000</td></tr>
-          <tr><td class="slab-range">Above 7,000,000</td><td>35%</td><td>1,424,000 + 35% above 7,000,000</td></tr>
-        </tbody>
-      </table>
+  <!-- TAX SLABS LAYOUT (2 COLUMNS) -->
+  <div class="slabs-layout">
+    
+    <div class="card">
+      <div class="card-header"><div class="card-header-icon">📋</div><div class="card-header-title">Income Tax Slabs — FY 2027</div></div>
+      <div class="table-scroll">
+        <table class="slab-table">
+          <thead><tr><th>Annual Income</th><th>Tax Rate</th><th>Tax Formula (FY27)</th></tr></thead>
+          <tbody>
+            <tr><td class="slab-range">Up to 600,000</td><td>0%</td><td>Fully exempt</td></tr>
+            <tr><td class="slab-range">600,001 – 1,200,000</td><td>1%</td><td>1% above 600,000</td></tr>
+            <tr><td class="slab-range">1,200,001 – 2,200,000</td><td>11%</td><td>6,000 + 11% above 1,200,000</td></tr>
+            <tr><td class="slab-range">2,200,001 – 3,200,000</td><td>20%</td><td>116,000 + 20% above 2,200,000</td></tr>
+            <tr><td class="slab-range">3,200,001 – 4,100,000</td><td>25%</td><td>316,000 + 25% above 3,200,000</td></tr>
+            <tr><td class="slab-range">4,100,001 – 5,600,000</td><td>29%</td><td>541,000 + 29% above 4,100,000</td></tr>
+            <tr><td class="slab-range">5,600,001 – 7,000,000</td><td>32%</td><td>976,000 + 32% above 5,600,000</td></tr>
+            <tr><td class="slab-range">Above 7,000,000</td><td>35%</td><td>1,424,000 + 35% above 7,000,000</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </div>
 
-  <div class="card">
-    <div class="card-header"><div class="card-header-icon">📋</div><div class="card-header-title">Income Tax Slabs — FY 2026</div></div>
-    <div class="table-scroll">
-      <table class="slab-table">
-        <thead><tr><th>Annual Income</th><th>Tax Rate</th><th>Tax Formula (FY26)</th></tr></thead>
-        <tbody>
-          <tr><td class="slab-range">Up to 600,000</td><td>0%</td><td>Fully exempt</td></tr>
-          <tr><td class="slab-range">600,001 – 1,200,000</td><td>1%</td><td>1% above 600,000</td></tr>
-          <tr><td class="slab-range">1,200,001 – 2,200,000</td><td>11%</td><td>6,000 + 11% above 1,200,000</td></tr>
-          <tr><td class="slab-range">2,200,001 – 3,200,000</td><td>23%</td><td>116,000 + 23% above 2,200,000</td></tr>
-          <tr><td class="slab-range">3,200,001 – 4,100,000</td><td>30%</td><td>346,000 + 30% above 3,200,000</td></tr>
-          <tr><td class="slab-range">4,100,001 – 5,600,000</td><td>35%</td><td>616,000 + 35% above 4,100,000</td></tr>
-          <tr><td class="slab-range">5,600,001 – 7,000,000</td><td>35%</td><td>1,141,000 + 35% above 5,600,000</td></tr>
-          <tr><td class="slab-range">Above 7,000,000</td><td>35%</td><td>1,631,000 + 35% above 7,000,000</td></tr>
-        </tbody>
-      </table>
+    <div class="card">
+      <div class="card-header"><div class="card-header-icon">📋</div><div class="card-header-title">Income Tax Slabs — FY 2026</div></div>
+      <div class="table-scroll">
+        <table class="slab-table">
+          <thead><tr><th>Annual Income</th><th>Tax Rate</th><th>Tax Formula (FY26)</th></tr></thead>
+          <tbody>
+            <tr><td class="slab-range">Up to 600,000</td><td>0%</td><td>Fully exempt</td></tr>
+            <tr><td class="slab-range">600,001 – 1,200,000</td><td>1%</td><td>1% above 600,000</td></tr>
+            <tr><td class="slab-range">1,200,001 – 2,200,000</td><td>11%</td><td>6,000 + 11% above 1,200,000</td></tr>
+            <tr><td class="slab-range">2,200,001 – 3,200,000</td><td>23%</td><td>116,000 + 23% above 2,200,000</td></tr>
+            <tr><td class="slab-range">3,200,001 – 4,100,000</td><td>30%</td><td>346,000 + 30% above 3,200,000</td></tr>
+            <tr><td class="slab-range">4,100,001 – 5,600,000</td><td>35%</td><td>616,000 + 35% above 4,100,000</td></tr>
+            <tr><td class="slab-range">5,600,001 – 7,000,000</td><td>35%</td><td>1,141,000 + 35% above 5,600,000</td></tr>
+            <tr><td class="slab-range">Above 7,000,000</td><td>35%</td><td>1,631,000 + 35% above 7,000,000</td></tr>
+          </tbody>
+        </table>
+      </div>
     </div>
+
   </div>
 
 </main>
