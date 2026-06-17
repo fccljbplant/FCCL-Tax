@@ -12,7 +12,6 @@
       --primary-950: #071524;
       --primary-900: #0f2340;
       --primary-800: #1a365d;
-      --primary-700: #1e4d7b;
       --primary-500: #2563eb;
       --primary-200: #bfdbfe;
       --primary-50: #eff6ff;
@@ -111,10 +110,9 @@
     .summary-value.red{color:var(--red-600)}
     .summary-value.green{color:var(--green-600)}
     .summary-value.lg{font-size:.9rem}
-    .bonus-card{background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);border-left:4px solid var(--amber-500);overflow:hidden}
+    .bonus-card{background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);border-left:4px solid var(--amber-500);overflow:hidden;margin-bottom:20px}
     .bonus-card-header{padding:14px 20px;background:linear-gradient(135deg,var(--amber-50),#fffef7);border-bottom:1px solid var(--amber-100);display:flex;align-items:center;gap:8px}
     .bonus-card-title{font-size:.85rem;font-weight:700;color:#92400e}
-    .bonus-card-note{font-size:.62rem;color:var(--amber-600);margin-left:auto;font-weight:400;text-align:right}
     .bonus-card-body{padding:16px 20px}
     .bonus-item{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px dashed rgba(217,119,6,.2);font-size:.82rem}
     .bonus-item:last-child{border-bottom:none;border-top:2px solid rgba(217,119,6,.25);padding-top:12px;margin-top:4px;font-weight:700;font-size:.88rem}
@@ -122,16 +120,6 @@
     .bonus-item-value{font-weight:600}
     .bonus-item-value.red{color:var(--red-600)}
     .bonus-item-value.green{color:var(--green-600);font-weight:700}
-    .tax-compare-card{background:var(--surface);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px}
-    .tax-compare-header{padding:14px 20px;background:linear-gradient(135deg,var(--primary-50),#e0edff);border-bottom:1px solid var(--primary-200);display:flex;align-items:center;gap:8px}
-    .tax-compare-title{font-size:.85rem;font-weight:700;color:var(--primary-800)}
-    .tax-compare-body{padding:20px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;text-align:center}
-    .tax-compare-item{font-size:.9rem}
-    .tax-compare-item .label{font-size:.7rem;text-transform:uppercase;color:var(--slate-500);margin-bottom:6px}
-    .tax-compare-item .amount{font-size:1.1rem;font-weight:700}
-    .tax-compare-item .amount.old{color:var(--red-600)}
-    .tax-compare-item .amount.new{color:var(--green-600)}
-    .tax-compare-item .amount.savings{color:var(--green-700)}
     .table-wrapper{background:var(--white);border-radius:var(--radius-lg);box-shadow:var(--shadow-sm);overflow:hidden;margin-bottom:24px}
     .table-header{padding:14px 20px;border-bottom:1px solid var(--slate-100);display:flex;align-items:baseline;gap:12px}
     .table-title{font-size:.85rem;font-weight:700;color:var(--primary-800)}
@@ -151,9 +139,9 @@
     .slab-table td{padding:10px 14px;border-bottom:1px solid var(--slate-100);color:var(--slate-700)}
     .slab-table tr:hover td{background:var(--slate-50)}
     .slab-range{font-weight:600;color:var(--slate-900);white-space:nowrap}
-    @media(max-width:1200px){.config-grid{grid-template-columns:1fr}.two-col-grid{grid-template-columns:1fr}.tax-compare-body{grid-template-columns:1fr}}
+    @media(max-width:1200px){.config-grid{grid-template-columns:1fr}.two-col-grid{grid-template-columns:1fr}}
     @media(max-width:768px){.header{padding:0 16px;height:56px}.header-subtitle{display:none}.container{padding:16px 12px 32px}.metrics-grid{grid-template-columns:1fr 1fr;gap:10px}.metric-value{font-size:1rem}}
-    @media print{body{background:#fff}.card,.bonus-card,.tax-compare-card,.table-wrapper{box-shadow:none;border:1px solid var(--slate-200)}}
+    @media print{body{background:#fff}.card,.bonus-card,.table-wrapper{box-shadow:none;border:1px solid var(--slate-200)}}
   </style>
 </head>
 <body>
@@ -173,30 +161,8 @@
   <div class="metrics-grid">
     <div class="metric-card green"><div class="metric-label">Monthly Take Home</div><div class="metric-value" id="metricMonthly">Rs. 0</div><div class="metric-note">Typical month</div></div>
     <div class="metric-card amber"><div class="metric-label">Bonus Take Home</div><div class="metric-value" id="metricYearlyBonusTakeHome">Rs. 0</div><div class="metric-note">After tax</div></div>
-    <div class="metric-card blue"><div class="metric-label">Taxable Income</div><div class="metric-value" id="metricTaxableIncome">Rs. 0</div><div class="metric-note">Annual</div></div>
+    <div class="metric-card blue"><div class="metric-label">Taxable Income</div><div class="metric-value" id="metricTaxableIncome">Rs. 0</div><div class="metric-note">FY27</div></div>
     <div class="metric-card red"><div class="metric-label">FY27 Tax</div><div class="metric-value" id="metricThisYearTax">Rs. 0</div><div class="metric-note">New regime</div></div>
-  </div>
-
-  <!-- FY26 vs FY27 TAX COMPARISON -->
-  <div class="tax-compare-card">
-    <div class="tax-compare-header">
-      <span>📊</span>
-      <span class="tax-compare-title">Tax Comparison FY26 vs FY27</span>
-    </div>
-    <div class="tax-compare-body">
-      <div class="tax-compare-item">
-        <div class="label">FY26 Tax</div>
-        <div class="amount old" id="compareFY26">Rs. 0</div>
-      </div>
-      <div class="tax-compare-item">
-        <div class="label">FY27 Tax</div>
-        <div class="amount new" id="compareFY27">Rs. 0</div>
-      </div>
-      <div class="tax-compare-item">
-        <div class="label">Your Saving</div>
-        <div class="amount savings" id="compareSaving">Rs. 0</div>
-      </div>
-    </div>
   </div>
 
   <!-- CONFIGURATION PANEL -->
@@ -248,26 +214,43 @@
     </div>
   </div>
 
-  <!-- SUMMARY + BONUS -->
+  <!-- SUMMARY + BONUS + TAX COMPARISON -->
   <div class="two-col-grid">
-    <div class="card" style="margin-bottom:0"><div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Annual Summary (FY27)</div></div>
-      <div class="card-body">
-        <div class="summary-row"><span class="summary-label">Annual Gross Salary</span><span class="summary-value" id="sumAnnualGross">Rs. 0</span></div>
-        <div class="summary-row"><span class="summary-label">Annual Bonus (<span id="sumBonusMult">10</span>× Basic)</span><span class="summary-value" id="sumAnnualBonus">Rs. 0</span></div>
-        <div class="summary-row"><span class="summary-label">Earned Leave (<span id="sumELDays">15</span> days)</span><span class="summary-value" id="sumELPayment">Rs. 0</span></div>
-        <div class="summary-row"><span class="summary-label">Tax on EL</span><span class="summary-value red" id="sumELTax">Rs. 0</span></div>
-        <div class="summary-row"><span class="summary-label">Net EL</span><span class="summary-value green" id="sumELNet">Rs. 0</span></div>
-        <div class="summary-row divider"><span class="summary-label bold">Annual Taxable Income</span><span class="summary-value" id="sumAnnualTaxable">Rs. 0</span></div>
-        <div class="summary-row"><span class="summary-label">Annual Tax (FY27)</span><span class="summary-value red lg" id="sumAnnualTax">Rs. 0</span></div>
-        <div class="summary-row"><span class="summary-label">Annual Deductions</span><span class="summary-value" id="sumAnnualDeductions">Rs. 0</span></div>
-        <div class="summary-row divider"><span class="summary-label bold">Annual Net Salary</span><span class="summary-value green lg" id="sumAnnualNet">Rs. 0</span></div>
+    <div>
+      <!-- Annual Summary Card -->
+      <div class="card" style="margin-bottom:0">
+        <div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Annual Summary (FY27)</div></div>
+        <div class="card-body">
+          <div class="summary-row"><span class="summary-label">Annual Gross Salary</span><span class="summary-value" id="sumAnnualGross">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">Annual Bonus (<span id="sumBonusMult">10</span>× Basic)</span><span class="summary-value" id="sumAnnualBonus">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">Earned Leave (<span id="sumELDays">15</span> days)</span><span class="summary-value" id="sumELPayment">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">Tax on EL</span><span class="summary-value red" id="sumELTax">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">Net EL</span><span class="summary-value green" id="sumELNet">Rs. 0</span></div>
+          <div class="summary-row divider"><span class="summary-label bold">Annual Taxable Income</span><span class="summary-value" id="sumAnnualTaxable">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">Annual Tax (FY27)</span><span class="summary-value red lg" id="sumAnnualTax">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">Annual Deductions</span><span class="summary-value" id="sumAnnualDeductions">Rs. 0</span></div>
+          <div class="summary-row divider"><span class="summary-label bold">Annual Net Salary</span><span class="summary-value green lg" id="sumAnnualNet">Rs. 0</span></div>
+        </div>
       </div>
     </div>
-    <div class="bonus-card"><div class="bonus-card-header"><span>🎯</span><span class="bonus-card-title">Bonus Tax Impact</span></div>
-      <div class="bonus-card-body">
-        <div class="bonus-item"><span class="bonus-item-label">Gross Bonus</span><span class="bonus-item-value" id="bonusGrossDisplay">Rs. 0</span></div>
-        <div class="bonus-item"><span class="bonus-item-label">Tax on Bonus</span><span class="bonus-item-value red" id="bonusTaxDisplay">Rs. 0</span></div>
-        <div class="bonus-item"><span class="bonus-item-label">Net Bonus</span><span class="bonus-item-value green" id="bonusNetDisplay">Rs. 0</span></div>
+    <div>
+      <!-- Bonus Tax Impact -->
+      <div class="bonus-card">
+        <div class="bonus-card-header"><span>🎯</span><span class="bonus-card-title">Bonus Tax Impact</span></div>
+        <div class="bonus-card-body">
+          <div class="bonus-item"><span class="bonus-item-label">Gross Bonus</span><span class="bonus-item-value" id="bonusGrossDisplay">Rs. 0</span></div>
+          <div class="bonus-item"><span class="bonus-item-label">Tax on Bonus</span><span class="bonus-item-value red" id="bonusTaxDisplay">Rs. 0</span></div>
+          <div class="bonus-item"><span class="bonus-item-label">Net Bonus</span><span class="bonus-item-value green" id="bonusNetDisplay">Rs. 0</span></div>
+        </div>
+      </div>
+      <!-- Tax Comparison Card -->
+      <div class="card">
+        <div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Tax Comparison FY26 vs FY27</div></div>
+        <div class="card-body">
+          <div class="summary-row"><span class="summary-label">FY26 Tax (on Basic)</span><span class="summary-value red" id="compareFY26">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">FY27 Tax (on Adjusted)</span><span class="summary-value green" id="compareFY27">Rs. 0</span></div>
+          <div class="summary-row divider"><span class="summary-label bold">Your Saving</span><span class="summary-value green lg" id="compareSaving">Rs. 0</span></div>
+        </div>
       </div>
     </div>
   </div>
@@ -322,13 +305,12 @@
   function mode(name){const r=document.querySelector(`input[name="mode_${name}"]:checked`);return r?r.value:'auto'}
   function set(id,v){const e=$(id);if(e)e.textContent=v}
 
-  // FY26 tax (old slabs per provided table)
   function taxFY26(income){
     let t=0;
     if(income<=600000) t=0;
     else if(income<=1200000) t=(income-600000)*0.01;
     else if(income<=2200000) t=6000+(income-1200000)*0.11;
-    else if(income<=3200000) t=116000+(income-2200000)*0.23; // rate 23% per table
+    else if(income<=3200000) t=116000+(income-2200000)*0.23;
     else if(income<=4100000) t=346000+(income-3200000)*0.30;
     else if(income<=5600000) t=616000+(income-4100000)*0.35;
     else if(income<=7000000) t=1141000+(income-5600000)*0.35;
@@ -336,7 +318,6 @@
     return Math.round(t);
   }
 
-  // FY27 tax (new slabs)
   function taxFY27(income){
     let t=0;
     if(income<=600000) t=0;
@@ -361,6 +342,7 @@
     const pfLoan=pfEnabled?(parseFloat(pfa.value)||0):0;
     const elDays=Math.min(15,Math.max(0,parseInt(eld.value,10)||0));
 
+    // FY27 allowances on adjusted basic
     let hra=mode('hra')==='auto'?Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
     let util=mode('utility')==='auto'?Math.round(ab*PCT.utility):(parseFloat(mU.value)||0);
     let conv=mode('conveyance')==='auto'?Math.round(ab*PCT.conveyance):(parseFloat(mC.value)||0);
@@ -368,46 +350,56 @@
     let eg2=mode('exgratia2')==='auto'?Math.round(ab*PCT.exgratia2):(parseFloat(mE2.value)||0);
     let pfc_=mode('pf')==='auto'?Math.round(ab*PCT.pf):(parseFloat(mPF.value)||0);
 
-    const mGross=ab+hra+util+conv+eg1+eg2;
-    const mDedXL=pfc_+eobiV+ptV;
-    const mDed=mDedXL+pfLoan;
-    // EL on basic (not adjusted)
-    let elPay=mode('el')==='auto'?Math.round((basic/30)*elDays):(parseFloat(mEL.value)||0);
+    const mGross = ab + hra + util + conv + eg1 + eg2;
+    const mDedXL = pfc_ + eobiV + ptV;
+    const mDed = mDedXL + pfLoan;
 
-    const aGross=mGross*12+basic+ab; // July existing basic, Jan adjusted
-    const aBonus=bmul*basic;
-    const aTaxable=aGross+elPay+aBonus;
-    const tRegFY27=taxFY27(aGross); // tax on regular + extras without EL+bonus
-    const tRegELFY27=taxFY27(aGross+elPay);
-    const tTotalFY27=taxFY27(aTaxable);
-    const tELFY27=tRegELFY27-tRegFY27;
-    const tBonusFY27=tTotalFY27-tRegELFY27;
-    const netBonus=aBonus-tBonusFY27;
-    const netEL=elPay-tELFY27;
-    const aDed=mDed*12;
-    const aNetFY27=aTaxable-tTotalFY27-aDed;
+    // EL on basic
+    let elPay = mode('el')==='auto'? Math.round((basic/30)*elDays) : (parseFloat(mEL.value)||0);
+    // Bonus on basic
+    const aBonus = bmul * basic;
 
-    // FY26 taxes for comparison
-    const tTotalFY26=taxFY26(aTaxable);
-    const taxSaving=tTotalFY26-tTotalFY27;
+    // FY27 annual gross: 12 months of adjusted allowances, July extra basic, Jan extra adjusted
+    const aGross = mGross*12 + basic + ab;
+    const aTaxableFY27 = aGross + elPay + aBonus;
+    const tTotalFY27 = taxFY27(aTaxableFY27);
 
-    // Effective rate on regular (for monthly tax)
-    const effReg=aGross>0?taxFY27(aGross)/aGross:0;
-    const regMonthTax=Math.round(mGross*effReg);
-    const regMonthNet=mGross-mDedXL-pfLoan-regMonthTax;
+    // FY26 taxable income: all on basic (no increment)
+    let hra26=Math.round(basic*PCT.hra), util26=Math.round(basic*PCT.utility), conv26=Math.round(basic*PCT.conveyance);
+    let eg1_26=Math.round(basic*PCT.exgratia1), eg2_26=Math.round(basic*PCT.exgratia2);
+    const mGrossFY26 = basic + hra26 + util26 + conv26 + eg1_26 + eg2_26;
+    const aGrossFY26 = mGrossFY26*12 + basic + basic; // both extra basic
+    const aTaxableFY26 = aGrossFY26 + elPay + aBonus;
+    const tTotalFY26 = taxFY26(aTaxableFY26);
 
-    // Metric cards
+    const taxSaving = tTotalFY26 - tTotalFY27;
+
+    // FY27 breakdown for display
+    const tRegFY27 = taxFY27(aGross);
+    const tRegELFY27 = taxFY27(aGross+elPay);
+    const tELFY27 = tRegELFY27 - tRegFY27;
+    const tBonusFY27 = tTotalFY27 - tRegELFY27;
+    const netBonus = aBonus - tBonusFY27;
+    const netEL = elPay - tELFY27;
+    const aDed = mDed*12;
+    const aNetFY27 = aTaxableFY27 - tTotalFY27 - aDed;
+
+    // Monthly tax rate for projection (based on regular FY27 salary)
+    const effReg = aGross>0 ? taxFY27(aGross)/aGross : 0;
+    const regMonthTax = Math.round(mGross*effReg);
+    const regMonthNet = mGross - mDedXL - pfLoan - regMonthTax;
+
+    // Update UI
     set('metricMonthly',fmt(regMonthNet));
     set('metricYearlyBonusTakeHome',fmt(netBonus));
-    set('metricTaxableIncome',fmt(aTaxable));
+    set('metricTaxableIncome',fmt(aTaxableFY27));
     set('metricThisYearTax',fmt(tTotalFY27));
 
-    // Comparison card
     set('compareFY26',fmt(tTotalFY26));
     set('compareFY27',fmt(tTotalFY27));
     set('compareSaving',fmt(taxSaving));
 
-    adj.textContent='Adjusted Basic: '+fmt(ab);
+    adj.textContent = 'Adjusted Basic: '+fmt(ab);
     set('sumAnnualGross',fmt(aGross));
     set('sumBonusMult',bmul);
     set('sumAnnualBonus',fmt(aBonus));
@@ -415,18 +407,19 @@
     set('sumELPayment',fmt(elPay));
     set('sumELTax',fmt(tELFY27));
     set('sumELNet',fmt(netEL));
-    set('sumAnnualTaxable',fmt(aTaxable));
+    set('sumAnnualTaxable',fmt(aTaxableFY27));
     set('sumAnnualTax',fmt(tTotalFY27));
     set('sumAnnualDeductions',fmt(aDed));
     set('sumAnnualNet',fmt(aNetFY27));
     set('taxSlabInfo',`FY27 Tax = ${fmt(tTotalFY27)} (FY26 was ${fmt(tTotalFY26)})`);
-    set('configEffectiveRate',fmtP(aTaxable>0?(tTotalFY27/aTaxable)*100:0));
+    set('configEffectiveRate',fmtP(aTaxableFY27>0?(tTotalFY27/aTaxableFY27)*100:0));
     set('bonusGrossDisplay',fmt(aBonus));
     set('bonusTaxDisplay',fmt(tBonusFY27));
     set('bonusNetDisplay',fmt(netBonus));
     set('elTaxOutput',fmt(tELFY27));
     set('elNetOutput',fmt(netEL));
 
+    // sync manual inputs
     if(mode('hra')==='auto')mHRA.value=hra;
     if(mode('utility')==='auto')mU.value=util;
     if(mode('conveyance')==='auto')mC.value=conv;
@@ -441,18 +434,18 @@
     let tG=0,tE=0,tD=0,tP=0,tT=0,tH=0;
     for(let i=0;i<12;i++){
       let xb=0,gm=mGross;
-      if(i===0){xb=basic;gm=mGross+basic}
-      if(i===6){xb=ab;gm=mGross+ab}
-      if(i===1){gm=mGross+elPay}
-      const mt_=Math.round(gm*effReg);
-      const th=gm-mDedXL-pfLoan-mt_;
-      tG+=gm;tE+=xb;tD+=mDedXL;tP+=pfLoan;tT+=mt_;tH+=th;
+      if(i===0){ xb=basic; gm=mGross+basic; }      // July: existing basic
+      if(i===6){ xb=ab;    gm=mGross+ab;    }      // January: adjusted basic
+      if(i===1){ gm=mGross+elPay; }                // August: EL payment
+      const mt_ = Math.round(gm*effReg);
+      const th = gm - mDedXL - pfLoan - mt_;
+      tG+=gm; tE+=xb; tD+=mDedXL; tP+=pfLoan; tT+=mt_; tH+=th;
       const tr=document.createElement('tr');
       if(i===0||i===1||i===6)tr.classList.add('highlight-row');
       let extraHtml='<span style="color:var(--slate-300)">—</span>';
-      if(i===0)extraHtml=`<span class="extra-badge">+${fmt(basic)} (existing)</span>`;
-      if(i===6)extraHtml=`<span class="extra-badge">+${fmt(ab)} (adjusted)</span>`;
-      if(i===1)extraHtml=`<span class="extra-badge">+${fmt(elPay)} (EL)</span>`;
+      if(i===0) extraHtml=`<span class="extra-badge">+${fmt(basic)} (existing)</span>`;
+      if(i===6) extraHtml=`<span class="extra-badge">+${fmt(ab)} (adjusted)</span>`;
+      if(i===1) extraHtml=`<span class="extra-badge">+${fmt(elPay)} (EL)</span>`;
       tr.innerHTML=`<td>${months[i]}${(i===0||i===1||i===6)?' ⭐':''}</td><td>${fmt(gm)}</td><td>${extraHtml}</td><td>${fmt(mDedXL)}</td><td>${fmt(pfLoan)}</td><td>${fmt(mt_)}</td><td><strong>${fmt(th)}</strong></td>`;
       tbody.appendChild(tr);
     }
