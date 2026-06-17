@@ -124,6 +124,7 @@
     .table-header{padding:14px 20px;border-bottom:1px solid var(--slate-100);display:flex;align-items:baseline;gap:12px}
     .table-title{font-size:.85rem;font-weight:700;color:var(--primary-800)}
     .table-subtitle{font-size:.65rem;color:var(--slate-400)}
+    .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
     .monthly-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:820px;font-feature-settings:"tnum"}
     .monthly-table thead th{background:var(--primary-800);color:#fff;padding:10px 12px;text-align:right;font-weight:600;font-size:.68rem;letter-spacing:.3px;white-space:nowrap}
     .monthly-table thead th:first-child{text-align:left;padding-left:20px}
@@ -134,7 +135,7 @@
     .monthly-table tfoot td{padding:10px 12px;text-align:right;font-weight:700;background:var(--slate-100);font-size:.76rem;border-top:2px solid var(--slate-300);color:var(--slate-800)}
     .monthly-table tfoot td:first-child{text-align:left;padding-left:20px;color:var(--primary-800)}
     .extra-badge{display:inline-block;background:var(--amber-100);color:var(--amber-700);padding:2px 8px;border-radius:12px;font-size:.64rem;font-weight:600}
-    .slab-table{width:100%;border-collapse:collapse;font-size:.78rem}
+    .slab-table{width:100%;border-collapse:collapse;font-size:.78rem;min-width:750px}
     .slab-table th{background:var(--slate-100);padding:10px 14px;text-align:left;font-weight:700;color:var(--primary-800);font-size:.7rem;text-transform:uppercase;letter-spacing:.3px}
     .slab-table td{padding:10px 14px;border-bottom:1px solid var(--slate-100);color:var(--slate-700)}
     .slab-table tr:hover td{background:var(--slate-50)}
@@ -223,11 +224,8 @@
           <div class="summary-row"><span class="summary-label">Annual Gross Salary</span><span class="summary-value" id="sumAnnualGross">Rs. 0</span></div>
           <div class="summary-row"><span class="summary-label">Annual Bonus (<span id="sumBonusMult">10</span>× Basic)</span><span class="summary-value" id="sumAnnualBonus">Rs. 0</span></div>
           <div class="summary-row"><span class="summary-label">Earned Leave (<span id="sumELDays">15</span> days)</span><span class="summary-value" id="sumELPayment">Rs. 0</span></div>
-          <div class="summary-row"><span class="summary-label">Tax on EL</span><span class="summary-value red" id="sumELTax">Rs. 0</span></div>
-          <div class="summary-row"><span class="summary-label">Net EL</span><span class="summary-value green" id="sumELNet">Rs. 0</span></div>
           <div class="summary-row divider"><span class="summary-label bold">Annual Taxable Income</span><span class="summary-value" id="sumAnnualTaxable">Rs. 0</span></div>
           <div class="summary-row"><span class="summary-label">Annual Tax (FY27)</span><span class="summary-value red lg" id="sumAnnualTax">Rs. 0</span></div>
-          <div class="summary-row"><span class="summary-label">Annual Deductions</span><span class="summary-value" id="sumAnnualDeductions">Rs. 0</span></div>
           <div class="summary-row divider"><span class="summary-label bold">Annual Net Salary</span><span class="summary-value green lg" id="sumAnnualNet">Rs. 0</span></div>
         </div>
       </div>
@@ -242,10 +240,10 @@
         </div>
       </div>
       <div class="card">
-        <div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Tax Comparison FY26 vs FY27</div></div>
+        <div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Tax Comparison (same income)</div></div>
         <div class="card-body">
-          <div class="summary-row"><span class="summary-label">FY26 Tax (on Basic)</span><span class="summary-value red" id="compareFY26">Rs. 0</span></div>
-          <div class="summary-row"><span class="summary-label">FY27 Tax (on Adjusted)</span><span class="summary-value green" id="compareFY27">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">FY26 Tax</span><span class="summary-value red" id="compareFY26">Rs. 0</span></div>
+          <div class="summary-row"><span class="summary-label">FY27 Tax</span><span class="summary-value green" id="compareFY27">Rs. 0</span></div>
           <div class="summary-row divider"><span class="summary-label bold">Your Saving</span><span class="summary-value green lg" id="compareSaving">Rs. 0</span></div>
         </div>
       </div>
@@ -268,7 +266,7 @@
   <!-- FY27 TAX SLABS -->
   <div class="card">
     <div class="card-header"><div class="card-header-icon">📋</div><div class="card-header-title">Income Tax Slabs — FY 2027</div></div>
-    <div style="overflow-x:auto">
+    <div class="table-scroll">
       <table class="slab-table">
         <thead><tr><th>Annual Income</th><th>Tax Rate</th><th>Tax Formula (FY27)</th></tr></thead>
         <tbody>
@@ -280,6 +278,26 @@
           <tr><td class="slab-range">4,100,001 – 5,600,000</td><td>29%</td><td>541,000 + 29% above 4,100,000</td></tr>
           <tr><td class="slab-range">5,600,001 – 7,000,000</td><td>32%</td><td>976,000 + 32% above 5,600,000</td></tr>
           <tr><td class="slab-range">Above 7,000,000</td><td>35%</td><td>1,424,000 + 35% above 7,000,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- FY26 TAX SLABS -->
+  <div class="card">
+    <div class="card-header"><div class="card-header-icon">📋</div><div class="card-header-title">Income Tax Slabs — FY 2026</div></div>
+    <div class="table-scroll">
+      <table class="slab-table">
+        <thead><tr><th>Annual Income</th><th>Tax Rate</th><th>Tax Formula (FY26)</th></tr></thead>
+        <tbody>
+          <tr><td class="slab-range">Up to 600,000</td><td>0%</td><td>Fully exempt</td></tr>
+          <tr><td class="slab-range">600,001 – 1,200,000</td><td>1%</td><td>1% above 600,000</td></tr>
+          <tr><td class="slab-range">1,200,001 – 2,200,000</td><td>11%</td><td>6,000 + 11% above 1,200,000</td></tr>
+          <tr><td class="slab-range">2,200,001 – 3,200,000</td><td>23%</td><td>116,000 + 23% above 2,200,000</td></tr>
+          <tr><td class="slab-range">3,200,001 – 4,100,000</td><td>30%</td><td>346,000 + 30% above 3,200,000</td></tr>
+          <tr><td class="slab-range">4,100,001 – 5,600,000</td><td>35%</td><td>616,000 + 35% above 4,100,000</td></tr>
+          <tr><td class="slab-range">5,600,001 – 7,000,000</td><td>35%</td><td>1,141,000 + 35% above 5,600,000</td></tr>
+          <tr><td class="slab-range">Above 7,000,000</td><td>35%</td><td>1,631,000 + 35% above 7,000,000</td></tr>
         </tbody>
       </table>
     </div>
@@ -339,15 +357,15 @@
     const pfLoan = pfEnabled?(parseFloat(pfa.value)||0):0;
     const elDays = Math.min(15, Math.max(0, parseInt(eld.value,10)||0));
 
-    // --- FY27 allowances on adjusted basic ---
-    let hra = mode('hra')==='auto'? Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
-    let util = mode('utility')==='auto'? Math.round(ab*PCT.utility):(parseFloat(mU.value)||0);
-    let conv = mode('conveyance')==='auto'? Math.round(ab*PCT.conveyance):(parseFloat(mC.value)||0);
-    let eg1 = mode('exgratia1')==='auto'? Math.round(ab*PCT.exgratia1):(parseFloat(mE1.value)||0);
-    let eg2 = mode('exgratia2')==='auto'? Math.round(ab*PCT.exgratia2):(parseFloat(mE2.value)||0);
-    let pfc_ = mode('pf')==='auto'? Math.round(ab*PCT.pf):(parseFloat(mPF.value)||0);
+    // FY27 allowances on adjusted basic
+    let hra=mode('hra')==='auto'?Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
+    let util=mode('utility')==='auto'?Math.round(ab*PCT.utility):(parseFloat(mU.value)||0);
+    let conv=mode('conveyance')==='auto'?Math.round(ab*PCT.conveyance):(parseFloat(mC.value)||0);
+    let eg1=mode('exgratia1')==='auto'?Math.round(ab*PCT.exgratia1):(parseFloat(mE1.value)||0);
+    let eg2=mode('exgratia2')==='auto'?Math.round(ab*PCT.exgratia2):(parseFloat(mE2.value)||0);
+    let pfc_=mode('pf')==='auto'?Math.round(ab*PCT.pf):(parseFloat(mPF.value)||0);
 
-    const mGross = ab + hra + util + conv + eg1 + eg2; // monthly gross (FY27)
+    const mGross = ab + hra + util + conv + eg1 + eg2;
     const mDedXL = pfc_ + eobiV + ptV;
     const mDed = mDedXL + pfLoan;
 
@@ -356,43 +374,33 @@
     // Bonus on basic (both FY26 and FY27)
     const aBonus = bmul * basic;
 
-    // --- FY27 annual income (adjusted base for allowances, July basic, Jan adjusted) ---
-    const aGrossFY27 = mGross*12 + basic + ab;   // 12 months of adj allowances + July existing basic + Jan adjusted basic
-    const aTaxableFY27 = aGrossFY27 + elPay + aBonus;
-    const tTotalFY27 = taxFY27(aTaxableFY27);
+    // IDENTICAL taxable income formula for FY26 and FY27
+    const aGross = mGross*12 + basic + ab;   // July existing basic, Jan adjusted basic
+    const aTaxable = aGross + elPay + aBonus;
 
-    // --- FY26 annual income (all components on basic, no increment) ---
-    let hra26 = Math.round(basic*PCT.hra);
-    let util26 = Math.round(basic*PCT.utility);
-    let conv26 = Math.round(basic*PCT.conveyance);
-    let eg1_26 = Math.round(basic*PCT.exgratia1);
-    let eg2_26 = Math.round(basic*PCT.exgratia2);
-    const mGrossFY26 = basic + hra26 + util26 + conv26 + eg1_26 + eg2_26;
-    const aGrossFY26 = mGrossFY26*12 + basic + basic;   // both extra basics are basic (no increment)
-    const aTaxableFY26 = aGrossFY26 + elPay + aBonus;
-    const tTotalFY26 = taxFY26(aTaxableFY26);
-
+    // Apply different tax slabs to the same taxable income
+    const tTotalFY26 = taxFY26(aTaxable);
+    const tTotalFY27 = taxFY27(aTaxable);
     const taxSaving = tTotalFY26 - tTotalFY27;
 
-    // --- FY27 breakdown for summary display ---
-    const tRegFY27 = taxFY27(aGrossFY27);
-    const tRegELFY27 = taxFY27(aGrossFY27 + elPay);
+    // FY27 breakdown for display
+    const tRegFY27 = taxFY27(aGross);
+    const tRegELFY27 = taxFY27(aGross + elPay);
     const tELFY27 = tRegELFY27 - tRegFY27;
     const tBonusFY27 = tTotalFY27 - tRegELFY27;
     const netBonus = aBonus - tBonusFY27;
     const netEL = elPay - tELFY27;
     const aDed = mDed*12;
-    const aNetFY27 = aTaxableFY27 - tTotalFY27 - aDed;
+    const aNetFY27 = aTaxable - tTotalFY27 - aDed;
 
-    // Monthly effective rate for projection (based on regular FY27 salary)
-    const effReg = aGrossFY27>0 ? taxFY27(aGrossFY27)/aGrossFY27 : 0;
+    const effReg = aGross>0 ? taxFY27(aGross)/aGross : 0;
     const regMonthTax = Math.round(mGross*effReg);
     const regMonthNet = mGross - mDedXL - pfLoan - regMonthTax;
 
-    // --- Update all UI elements ---
+    // Update UI
     set('metricMonthly',fmt(regMonthNet));
     set('metricYearlyBonusTakeHome',fmt(netBonus));
-    set('metricTaxableIncome',fmt(aTaxableFY27));
+    set('metricTaxableIncome',fmt(aTaxable));
     set('metricThisYearTax',fmt(tTotalFY27));
 
     set('compareFY26',fmt(tTotalFY26));
@@ -400,19 +408,16 @@
     set('compareSaving',fmt(taxSaving));
 
     adj.textContent = 'Adjusted Basic: '+fmt(ab);
-    set('sumAnnualGross',fmt(aGrossFY27));
+    set('sumAnnualGross',fmt(aGross));
     set('sumBonusMult',bmul);
     set('sumAnnualBonus',fmt(aBonus));
     set('sumELDays',elDays);
     set('sumELPayment',fmt(elPay));
-    set('sumELTax',fmt(tELFY27));
-    set('sumELNet',fmt(netEL));
-    set('sumAnnualTaxable',fmt(aTaxableFY27));
+    set('sumAnnualTaxable',fmt(aTaxable));
     set('sumAnnualTax',fmt(tTotalFY27));
-    set('sumAnnualDeductions',fmt(aDed));
     set('sumAnnualNet',fmt(aNetFY27));
     set('taxSlabInfo',`FY27 Tax = ${fmt(tTotalFY27)} (FY26 was ${fmt(tTotalFY26)})`);
-    set('configEffectiveRate',fmtP(aTaxableFY27>0?(tTotalFY27/aTaxableFY27)*100:0));
+    set('configEffectiveRate',fmtP(aTaxable>0?(tTotalFY27/aTaxable)*100:0));
     set('bonusGrossDisplay',fmt(aBonus));
     set('bonusTaxDisplay',fmt(tBonusFY27));
     set('bonusNetDisplay',fmt(netBonus));
@@ -433,9 +438,9 @@
     let tG=0,tE=0,tD=0,tP=0,tT=0,tH=0;
     for(let i=0;i<12;i++){
       let xb=0,gm=mGross;
-      if(i===0){ xb=basic; gm=mGross+basic; }      // July: existing basic
-      if(i===6){ xb=ab;    gm=mGross+ab;    }      // January: adjusted basic
-      if(i===1){ gm=mGross+elPay; }                // August: EL payment
+      if(i===0){ xb=basic; gm=mGross+basic; }
+      if(i===6){ xb=ab;    gm=mGross+ab;    }
+      if(i===1){ gm=mGross+elPay; }
       const mt_ = Math.round(gm*effReg);
       const th = gm - mDedXL - pfLoan - mt_;
       tG+=gm; tE+=xb; tD+=mDedXL; tP+=pfLoan; tT+=mt_; tH+=th;
