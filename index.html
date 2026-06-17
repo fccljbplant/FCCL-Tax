@@ -217,7 +217,6 @@
   <!-- SUMMARY + BONUS + TAX COMPARISON -->
   <div class="two-col-grid">
     <div>
-      <!-- Annual Summary Card -->
       <div class="card" style="margin-bottom:0">
         <div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Annual Summary (FY27)</div></div>
         <div class="card-body">
@@ -234,7 +233,6 @@
       </div>
     </div>
     <div>
-      <!-- Bonus Tax Impact -->
       <div class="bonus-card">
         <div class="bonus-card-header"><span>🎯</span><span class="bonus-card-title">Bonus Tax Impact</span></div>
         <div class="bonus-card-body">
@@ -243,7 +241,6 @@
           <div class="bonus-item"><span class="bonus-item-label">Net Bonus</span><span class="bonus-item-value green" id="bonusNetDisplay">Rs. 0</span></div>
         </div>
       </div>
-      <!-- Tax Comparison Card -->
       <div class="card">
         <div class="card-header"><div class="card-header-icon">📊</div><div class="card-header-title">Tax Comparison FY26 vs FY27</div></div>
         <div class="card-body">
@@ -332,51 +329,54 @@
   }
 
   function calc(){
-    const basic=parseFloat(bs.value)||0;
-    const ipct=parseFloat(inc.value)||0;
-    const ab=Math.round(basic*(1+ipct/100));
-    const bmul=parseInt(bm.value,10)||0;
-    const eobiV=parseFloat(eobi.value)||0;
-    const ptV=parseFloat(pt.value)||0;
-    const pfEnabled=pfc.checked;
-    const pfLoan=pfEnabled?(parseFloat(pfa.value)||0):0;
-    const elDays=Math.min(15,Math.max(0,parseInt(eld.value,10)||0));
+    const basic = parseFloat(bs.value)||0;
+    const ipct = parseFloat(inc.value)||0;
+    const ab = Math.round(basic*(1+ipct/100));
+    const bmul = parseInt(bm.value,10)||0;
+    const eobiV = parseFloat(eobi.value)||0;
+    const ptV = parseFloat(pt.value)||0;
+    const pfEnabled = pfc.checked;
+    const pfLoan = pfEnabled?(parseFloat(pfa.value)||0):0;
+    const elDays = Math.min(15, Math.max(0, parseInt(eld.value,10)||0));
 
-    // FY27 allowances on adjusted basic
-    let hra=mode('hra')==='auto'?Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
-    let util=mode('utility')==='auto'?Math.round(ab*PCT.utility):(parseFloat(mU.value)||0);
-    let conv=mode('conveyance')==='auto'?Math.round(ab*PCT.conveyance):(parseFloat(mC.value)||0);
-    let eg1=mode('exgratia1')==='auto'?Math.round(ab*PCT.exgratia1):(parseFloat(mE1.value)||0);
-    let eg2=mode('exgratia2')==='auto'?Math.round(ab*PCT.exgratia2):(parseFloat(mE2.value)||0);
-    let pfc_=mode('pf')==='auto'?Math.round(ab*PCT.pf):(parseFloat(mPF.value)||0);
+    // --- FY27 allowances on adjusted basic ---
+    let hra = mode('hra')==='auto'? Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
+    let util = mode('utility')==='auto'? Math.round(ab*PCT.utility):(parseFloat(mU.value)||0);
+    let conv = mode('conveyance')==='auto'? Math.round(ab*PCT.conveyance):(parseFloat(mC.value)||0);
+    let eg1 = mode('exgratia1')==='auto'? Math.round(ab*PCT.exgratia1):(parseFloat(mE1.value)||0);
+    let eg2 = mode('exgratia2')==='auto'? Math.round(ab*PCT.exgratia2):(parseFloat(mE2.value)||0);
+    let pfc_ = mode('pf')==='auto'? Math.round(ab*PCT.pf):(parseFloat(mPF.value)||0);
 
-    const mGross = ab + hra + util + conv + eg1 + eg2;
+    const mGross = ab + hra + util + conv + eg1 + eg2; // monthly gross (FY27)
     const mDedXL = pfc_ + eobiV + ptV;
     const mDed = mDedXL + pfLoan;
 
-    // EL on basic
+    // EL on basic (both FY26 and FY27)
     let elPay = mode('el')==='auto'? Math.round((basic/30)*elDays) : (parseFloat(mEL.value)||0);
-    // Bonus on basic
+    // Bonus on basic (both FY26 and FY27)
     const aBonus = bmul * basic;
 
-    // FY27 annual gross: 12 months of adjusted allowances, July extra basic, Jan extra adjusted
-    const aGross = mGross*12 + basic + ab;
-    const aTaxableFY27 = aGross + elPay + aBonus;
+    // --- FY27 annual income (adjusted base for allowances, July basic, Jan adjusted) ---
+    const aGrossFY27 = mGross*12 + basic + ab;   // 12 months of adj allowances + July existing basic + Jan adjusted basic
+    const aTaxableFY27 = aGrossFY27 + elPay + aBonus;
     const tTotalFY27 = taxFY27(aTaxableFY27);
 
-    // FY26 taxable income: all on basic (no increment)
-    let hra26=Math.round(basic*PCT.hra), util26=Math.round(basic*PCT.utility), conv26=Math.round(basic*PCT.conveyance);
-    let eg1_26=Math.round(basic*PCT.exgratia1), eg2_26=Math.round(basic*PCT.exgratia2);
+    // --- FY26 annual income (all components on basic, no increment) ---
+    let hra26 = Math.round(basic*PCT.hra);
+    let util26 = Math.round(basic*PCT.utility);
+    let conv26 = Math.round(basic*PCT.conveyance);
+    let eg1_26 = Math.round(basic*PCT.exgratia1);
+    let eg2_26 = Math.round(basic*PCT.exgratia2);
     const mGrossFY26 = basic + hra26 + util26 + conv26 + eg1_26 + eg2_26;
-    const aGrossFY26 = mGrossFY26*12 + basic + basic; // both extra basic
+    const aGrossFY26 = mGrossFY26*12 + basic + basic;   // both extra basics are basic (no increment)
     const aTaxableFY26 = aGrossFY26 + elPay + aBonus;
     const tTotalFY26 = taxFY26(aTaxableFY26);
 
     const taxSaving = tTotalFY26 - tTotalFY27;
 
-    // FY27 breakdown for display
-    const tRegFY27 = taxFY27(aGross);
-    const tRegELFY27 = taxFY27(aGross+elPay);
+    // --- FY27 breakdown for summary display ---
+    const tRegFY27 = taxFY27(aGrossFY27);
+    const tRegELFY27 = taxFY27(aGrossFY27 + elPay);
     const tELFY27 = tRegELFY27 - tRegFY27;
     const tBonusFY27 = tTotalFY27 - tRegELFY27;
     const netBonus = aBonus - tBonusFY27;
@@ -384,12 +384,12 @@
     const aDed = mDed*12;
     const aNetFY27 = aTaxableFY27 - tTotalFY27 - aDed;
 
-    // Monthly tax rate for projection (based on regular FY27 salary)
-    const effReg = aGross>0 ? taxFY27(aGross)/aGross : 0;
+    // Monthly effective rate for projection (based on regular FY27 salary)
+    const effReg = aGrossFY27>0 ? taxFY27(aGrossFY27)/aGrossFY27 : 0;
     const regMonthTax = Math.round(mGross*effReg);
     const regMonthNet = mGross - mDedXL - pfLoan - regMonthTax;
 
-    // Update UI
+    // --- Update all UI elements ---
     set('metricMonthly',fmt(regMonthNet));
     set('metricYearlyBonusTakeHome',fmt(netBonus));
     set('metricTaxableIncome',fmt(aTaxableFY27));
@@ -400,7 +400,7 @@
     set('compareSaving',fmt(taxSaving));
 
     adj.textContent = 'Adjusted Basic: '+fmt(ab);
-    set('sumAnnualGross',fmt(aGross));
+    set('sumAnnualGross',fmt(aGrossFY27));
     set('sumBonusMult',bmul);
     set('sumAnnualBonus',fmt(aBonus));
     set('sumELDays',elDays);
@@ -419,7 +419,6 @@
     set('elTaxOutput',fmt(tELFY27));
     set('elNetOutput',fmt(netEL));
 
-    // sync manual inputs
     if(mode('hra')==='auto')mHRA.value=hra;
     if(mode('utility')==='auto')mU.value=util;
     if(mode('conveyance')==='auto')mC.value=conv;
