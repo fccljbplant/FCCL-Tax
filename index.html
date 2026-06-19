@@ -366,7 +366,6 @@
         <div class="card-body">
           <div class="form-row"><span class="form-label">Leave Days (max 15)</span><input type="number" id="elDays" class="input-field input-sm" value="15" min="0" max="15" step="1"></div>
           <div class="el-info-pill" id="elTaxInfo">
-            <span>Calculated on: <strong>Gross Salary</strong></span>
             <span>Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span>
             <span>Net EL: <strong id="elNetOutput">Rs. 0</strong></span>
           </div>
@@ -567,7 +566,7 @@
 
     const tRegFY27 = taxFY27(aGross);
     const tRegELFY27 = taxFY27(aGross + elPay);
-    const tELFY27 = tRegELFY27 - tRegFY27;
+    const tELFY27 = tRegELFY27 - tRegFY27; // EL tax calculated progressively on gross
     const tBonusFY27 = tTotalFY27 - tRegELFY27;
     const netBonus = aBonus - tBonusFY27;
     const netEL = elPay - tELFY27;
