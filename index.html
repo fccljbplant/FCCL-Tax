@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
@@ -543,18 +542,27 @@
     
     const elDays = Math.min(15, Math.max(0, parseInt(eld.value,10)||0));
 
-    let hra=mode('hra')==='auto'?Math.round(ab*PCT.hra):(parseFloat(mHRA.value)||0);
-    let util=mode('utility')==='auto'?Math.round(ab*PCT.utility):(parseFloat(mU.value)||0);
-    let conv=mode('conveyance')==='auto'?Math.round(ab*PCT.conveyance):(parseFloat(mC.value)||0);
-    let eg1=mode('exgratia1')==='auto'?Math.round(ab*PCT.exgratia1):(parseFloat(mE1.value)||0);
-    let eg2=mode('exgratia2')==='auto'?Math.round(ab*PCT.exgratia2):(parseFloat(mE2.value)||0);
-    let pfc_=mode('pf')==='auto'?Math.round(ab*PCT.pf):(parseFloat(mPF.value)||0);
+    // Calculate Actual Gross (based on actual basic, not adjusted basic)
+    let hraActual = mode('hra')==='auto' ? Math.round(basic*PCT.hra) : (parseFloat(mHRA.value)||0);
+    let utilActual = mode('utility')==='auto' ? Math.round(basic*PCT.utility) : (parseFloat(mU.value)||0);
+    let convActual = mode('conveyance')==='auto' ? Math.round(basic*PCT.conveyance) : (parseFloat(mC.value)||0);
+    let eg1Actual = mode('exgratia1')==='auto' ? Math.round(basic*PCT.exgratia1) : (parseFloat(mE1.value)||0);
+    let eg2Actual = mode('exgratia2')==='auto' ? Math.round(basic*PCT.exgratia2) : (parseFloat(mE2.value)||0);
+    const mGrossActual = basic + hraActual + utilActual + convActual + eg1Actual + eg2Actual;
+
+    // Calculate Adjusted Gross (based on adjusted basic)
+    let hra = mode('hra')==='auto' ? Math.round(ab*PCT.hra) : (parseFloat(mHRA.value)||0);
+    let util = mode('utility')==='auto' ? Math.round(ab*PCT.utility) : (parseFloat(mU.value)||0);
+    let conv = mode('conveyance')==='auto' ? Math.round(ab*PCT.conveyance) : (parseFloat(mC.value)||0);
+    let eg1 = mode('exgratia1')==='auto' ? Math.round(ab*PCT.exgratia1) : (parseFloat(mE1.value)||0);
+    let eg2 = mode('exgratia2')==='auto' ? Math.round(ab*PCT.exgratia2) : (parseFloat(mE2.value)||0);
+    let pfc_ = mode('pf')==='auto' ? Math.round(ab*PCT.pf) : (parseFloat(mPF.value)||0);
 
     const mGross = ab + hra + util + conv + eg1 + eg2;
     const mDedXL = pfc_ + eobiV + ptV;
 
-    // EL Payment is calculated on Gross Salary (mGross) instead of Basic
-    let elPay = Math.round((mGross/30)*elDays);
+    // EL Payment is calculated on Actual Gross Salary (mGrossActual)
+    let elPay = Math.round((mGrossActual / 30) * elDays);
     const aBonus = bmul * basic;
 
     const aGross = mGross*12 + basic + ab;
@@ -566,7 +574,7 @@
 
     const tRegFY27 = taxFY27(aGross);
     const tRegELFY27 = taxFY27(aGross + elPay);
-    const tELFY27 = tRegELFY27 - tRegFY27; // EL tax calculated progressively on gross
+    const tELFY27 = tRegELFY27 - tRegFY27; // EL tax calculated progressively on actual gross
     const tBonusFY27 = tTotalFY27 - tRegELFY27;
     const netBonus = aBonus - tBonusFY27;
     const netEL = elPay - tELFY27;
