@@ -362,10 +362,14 @@
       </div>
 
       <div class="card">
-        <div class="card-header"><div class="card-header-icon">🏖️</div><div class="card-header-title">Earned Leave (on Basic)</div></div>
+        <div class="card-header"><div class="card-header-icon">🏖️</div><div class="card-header-title">Earned Leave</div></div>
         <div class="card-body">
           <div class="form-row"><span class="form-label">Leave Days (max 15)</span><input type="number" id="elDays" class="input-field input-sm" value="15" min="0" max="15" step="1"></div>
-          <div class="el-info-pill" id="elTaxInfo"><span>Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span><span>Net EL: <strong id="elNetOutput">Rs. 0</strong></span></div>
+          <div class="el-info-pill" id="elTaxInfo">
+            <span>Calculated on: <strong>Gross Salary</strong></span>
+            <span>Tax on EL: <strong id="elTaxOutput">Rs. 0</strong></span>
+            <span>Net EL: <strong id="elNetOutput">Rs. 0</strong></span>
+          </div>
         </div>
       </div>
 
@@ -550,8 +554,8 @@
     const mGross = ab + hra + util + conv + eg1 + eg2;
     const mDedXL = pfc_ + eobiV + ptV;
 
-    // EL Payment is always auto now
-    let elPay = Math.round((basic/30)*elDays);
+    // EL Payment is calculated on Gross Salary (mGross) instead of Basic
+    let elPay = Math.round((mGross/30)*elDays);
     const aBonus = bmul * basic;
 
     const aGross = mGross*12 + basic + ab;
